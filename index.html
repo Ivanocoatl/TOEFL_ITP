@@ -163,11 +163,13 @@
                                 </div>
                             </div>
                             
-                            <!-- Reproductor Nativo o Iframe -->
+                            <!-- Reproductor Nativo -->
                             <div class="w-full md:w-auto text-right">
                                 <audio id="main-audio" controls class="w-full h-10 mb-2"></audio>
-                                <p class="text-[10px] text-gray-400">Si el reproductor marca error, carga el archivo ligero manualmente:</p>
-                                <input type="file" id="local-audio-input" accept="audio/*" class="text-[10px] text-gray-400 mt-1 cursor-pointer"/>
+                                <div class="flex flex-col items-end">
+                                    <p class="text-[10px] text-gray-400">Carga manual de respaldo (archivo ligero):</p>
+                                    <input type="file" id="local-audio-input" accept="audio/*" class="text-[10px] text-gray-400 mt-1 cursor-pointer"/>
+                                </div>
                             </div>
                         </div>
 
@@ -185,7 +187,7 @@
                     </div>
                 </div>
 
-                <!-- SECCIÓN STRUCTURE Y READING (SIN CAMBIOS ESTRUCTURALES) -->
+                <!-- SECCIÓN STRUCTURE Y READING -->
                 <div id="view-structure" class="hidden-section p-10">
                     <div class="mb-8 border-b pb-4">
                         <h2 class="text-2xl font-bold uppercase mb-2">Section 2: Structure and Written Expression</h2>
@@ -233,11 +235,13 @@
             document.getElementById('master-audio-player').classList.remove('hidden');
             document.getElementById('current-audio-label').innerText = "Audio " + label;
             
-            // Intentamos cargar el stream ligero (si ya lo subiste a drive)
-            // O usamos el placeholder de descarga directa
+            // Usar el enlace de descarga directa de Drive para que el elemento <audio> lo lea automáticamente
             mainAudio.src = `https://drive.google.com/uc?export=download&id=${id}`;
             mainAudio.classList.remove('audio-disabled');
             audioWarning.classList.add('hidden');
+            
+            // Intentar reproducir automáticamente (algunos navegadores lo bloquean hasta interacción del usuario)
+            mainAudio.play().catch(e => console.log("Reproducción automática bloqueada, esperando clic."));
         }
 
         localAudioInput.addEventListener('change', function(e) {
@@ -249,10 +253,12 @@
                 updateAudioUI();
                 mainAudio.classList.remove('audio-disabled');
                 audioWarning.classList.add('hidden');
+                mainAudio.play();
             }
         });
 
         // --- LÓGICA DE REPRODUCCIONES ---
+        // Contamos un intento cada vez que el audio termina
         mainAudio.addEventListener('ended', function() {
             plays++;
             updateAudioUI();
