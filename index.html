@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOEFL ITP Simulator - Test 1</title>
+    <title>TOEFL ITP Simulator - Pro Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
         body { font-family: 'Roboto', sans-serif; background-color: #f8fafc; color: #1e293b; }
         
+        /* Estilos de Radio Button TOEFL */
         .toefl-radio {
             appearance: none;
             width: 24px;
@@ -21,14 +22,14 @@
             outline: none;
             display: inline-block;
             vertical-align: middle;
-            margin-right: 10px;
+            margin-right: 12px;
         }
         .toefl-radio:checked {
             background-color: #334155;
             border-color: #334155;
         }
         
-        /* Estilos Modo Aprendizaje */
+        /* Estados de Modo Aprendizaje */
         .option-correct { background-color: #dcfce7 !important; border-color: #22c55e !important; }
         .option-wrong { background-color: #fee2e2 !important; border-color: #ef4444 !important; }
         .text-correct { color: #15803d; font-weight: bold; }
@@ -45,7 +46,11 @@
         .audio-card { transition: all 0.3s ease; }
         .audio-card:hover { transform: translateY(-2px); }
 
-        .mode-badge { px-3; py-1; rounded-full; text-xs; font-bold; uppercase; }
+        /* Scrollbar suave */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden">
@@ -53,25 +58,25 @@
     <!-- HEADER -->
     <header class="bg-white border-b shadow-sm p-4 flex justify-between items-center shrink-0 z-10 relative">
         <div class="flex items-center gap-4">
-            <div class="bg-blue-900 text-white p-2 rounded">
-                <i class="fas fa-globe-americas text-2xl"></i>
+            <div class="bg-blue-900 text-white p-2 rounded shadow-md">
+                <i class="fas fa-graduation-cap text-2xl"></i>
             </div>
             <div>
-                <h1 class="text-xl font-bold uppercase tracking-wide">TOEFL ITP® Practice Test</h1>
+                <h1 class="text-xl font-bold uppercase tracking-tight">TOEFL ITP® Simulator</h1>
                 <div class="flex items-center gap-2">
-                    <p class="text-xs text-gray-500">Level 1, Volume 3</p>
-                    <span id="header-mode-badge" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">Modo Real</span>
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Level 1 • Vol. 3</p>
+                    <span id="header-mode-badge" class="bg-blue-100 text-blue-700 text-[9px] px-2 py-0.5 rounded-full font-bold uppercase border border-blue-200">Modo Real Life</span>
                 </div>
             </div>
         </div>
         <div class="flex items-center gap-6">
-            <div id="section-indicator" class="font-semibold text-blue-800 uppercase text-sm tracking-widest">Cargando...</div>
-            <div class="bg-gray-800 text-white px-5 py-2 rounded font-mono text-xl shadow-inner flex items-center gap-2">
-                <i class="far fa-clock"></i>
-                <span id="timer">--:--</span>
+            <div id="section-indicator" class="font-bold text-blue-800 uppercase text-xs tracking-tighter">Cargando...</div>
+            <div class="bg-gray-800 text-white px-4 py-2 rounded-lg font-mono text-xl shadow-inner flex items-center gap-3">
+                <i class="far fa-clock text-blue-400"></i>
+                <span id="timer">00:00</span>
             </div>
-            <button onclick="terminarExamen()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors text-sm">
-                End Test
+            <button onclick="terminarExamen()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-5 rounded-lg shadow-sm transition-colors text-xs uppercase">
+                Finalizar
             </button>
         </div>
     </header>
@@ -79,14 +84,15 @@
     <!-- PANTALLA DE CARGA -->
     <div id="loading-screen" class="absolute inset-0 bg-white z-50 flex flex-col items-center justify-center">
         <div class="loader mb-4"></div>
-        <h2 class="text-xl font-bold text-gray-700">Configurando simulador...</h2>
+        <h2 class="text-xl font-bold text-gray-700">Procesando datos del examen...</h2>
+        <p class="text-sm text-gray-400 mt-2">Sincronizando claves de respuesta y explicaciones</p>
     </div>
 
     <div class="flex flex-1 overflow-hidden">
         <!-- SIDEBAR -->
         <aside class="w-64 bg-white border-r flex flex-col shrink-0">
             <div class="p-4 bg-gray-50 border-b">
-                <h2 class="font-bold text-gray-700 uppercase text-sm tracking-wider">Navegación</h2>
+                <h2 class="font-bold text-gray-400 uppercase text-[10px] tracking-widest">Menú de Navegación</h2>
             </div>
             <nav class="flex-1 overflow-y-auto">
                 <button onclick="cambiarSeccion('instructions')" id="nav-instructions" class="tab-btn w-full text-left p-4 border-b hover:bg-gray-50 tab-active">
@@ -95,145 +101,150 @@
                 <button onclick="cambiarSeccion('listening')" id="nav-listening" class="tab-btn w-full text-left p-4 border-b hover:bg-gray-50">
                     <i class="fas fa-headphones w-6 text-center mr-2 text-blue-500"></i> 1. Listening
                 </button>
-                <button onclick="cambiarSeccion('structure')" id="nav-structure" class="tab-btn w-full text-left p-4 border-b hover:bg-gray-50 text-gray-500" disabled>
+                <button onclick="cambiarSeccion('structure')" id="nav-structure" class="tab-btn w-full text-left p-4 border-b hover:bg-gray-50 text-gray-400" disabled>
                     <i class="fas fa-pen-nib w-6 text-center mr-2"></i> 2. Structure
                 </button>
-                <button onclick="cambiarSeccion('reading')" id="nav-reading" class="tab-btn w-full text-left p-4 border-b hover:bg-gray-50 text-gray-500" disabled>
+                <button onclick="cambiarSeccion('reading')" id="nav-reading" class="tab-btn w-full text-left p-4 border-b hover:bg-gray-50 text-gray-400" disabled>
                     <i class="fas fa-book-open w-6 text-center mr-2"></i> 3. Reading
                 </button>
             </nav>
 
-            <!-- Selector de Modo en Sidebar -->
-            <div class="p-4 border-t bg-gray-50">
-                <p class="text-[10px] font-bold text-gray-400 uppercase mb-2">Configuración</p>
-                <div class="flex flex-col gap-2">
-                    <button id="btn-mode-real" onclick="setAppMode('real')" class="text-xs font-bold py-2 px-3 rounded border-2 border-blue-600 bg-blue-600 text-white w-full transition-all">Modo Real Life</button>
-                    <button id="btn-mode-learning" onclick="setAppMode('learning')" class="text-xs font-bold py-2 px-3 rounded border-2 border-gray-300 text-gray-500 w-full hover:border-orange-400 transition-all">Modo Aprendizaje</button>
+            <div class="p-4 border-t bg-gray-50 space-y-3">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Modo de Estudio</p>
+                <div class="grid grid-cols-1 gap-2">
+                    <button id="btn-mode-real" onclick="setAppMode('real')" class="text-[11px] font-bold py-2 px-3 rounded-md border-2 border-blue-600 bg-blue-600 text-white w-full transition-all flex items-center justify-center gap-2">
+                        <i class="fas fa-stopwatch"></i> REAL LIFE
+                    </button>
+                    <button id="btn-mode-learning" onclick="setAppMode('learning')" class="text-[11px] font-bold py-2 px-3 rounded-md border-2 border-gray-200 text-gray-500 w-full hover:border-orange-400 transition-all flex items-center justify-center gap-2">
+                        <i class="fas fa-lightbulb"></i> APRENDIZAJE
+                    </button>
                 </div>
             </div>
         </aside>
 
         <!-- MAIN CONTENT -->
-        <main class="flex-1 bg-gray-100 overflow-y-auto relative p-8">
-            <div class="max-w-4xl mx-auto bg-white shadow-lg border border-gray-200 min-h-full">
+        <main class="flex-1 bg-slate-50 overflow-y-auto relative p-6">
+            <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-xl border border-slate-200 overflow-hidden min-h-full">
                 
                 <!-- VIEW: Instrucciones -->
-                <div id="view-instructions" class="p-10 space-y-6">
-                    <h2 class="text-3xl font-bold text-center border-b pb-4">Instrucciones Generales</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-4">
-                            <h3 class="font-bold text-lg text-blue-900"><i class="fas fa-vial mr-2"></i>Modo Real Life</h3>
-                            <p class="text-sm text-gray-600">Simulación estricta. No sabrás tus resultados hasta terminar todo el examen. Ideal para medir tu tiempo y presión.</p>
-                            <ul class="text-xs text-gray-500 list-disc pl-4">
-                                <li>Cronómetro activo.</li>
-                                <li>Audio limitado a 2 veces.</li>
-                                <li>Resultados al final.</li>
-                            </ul>
+                <div id="view-instructions" class="p-12 space-y-8">
+                    <div class="text-center space-y-2">
+                        <h2 class="text-4xl font-black text-slate-800">Test de Práctica</h2>
+                        <p class="text-slate-500">Prepárate con retroalimentación instantánea y explicaciones técnicas.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all">
+                            <h3 class="font-bold text-blue-800 mb-4 flex items-center gap-2">
+                                <i class="fas fa-check-circle"></i> Modo Real Life
+                            </h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">Simulación completa bajo presión. No hay correcciones durante el test. Ideal para medir tu tiempo real.</p>
                         </div>
-                        <div class="space-y-4 border-l pl-6">
-                            <h3 class="font-bold text-lg text-orange-600"><i class="fas fa-graduation-cap mr-2"></i>Modo Aprendizaje</h3>
-                            <p class="text-sm text-gray-600">Entrenamiento activo. Recibe retroalimentación inmediata después de cada respuesta elegida.</p>
-                            <ul class="text-xs text-gray-500 list-disc pl-4">
-                                <li>Corrección instantánea.</li>
-                                <li>Explicación de la respuesta correcta.</li>
-                                <li>Sin límite de audio (opcional).</li>
-                            </ul>
+                        <div class="p-6 rounded-2xl bg-orange-50 border border-orange-100 hover:shadow-md transition-all">
+                            <h3 class="font-bold text-orange-800 mb-4 flex items-center gap-2">
+                                <i class="fas fa-magic"></i> Modo Aprendizaje
+                            </h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">Recibe una explicación gramatical cada vez que respondas. El audio no tiene límite de intentos en este modo.</p>
                         </div>
                     </div>
                     
-                    <div class="text-center mt-12 pt-8 border-t flex flex-col items-center gap-4">
-                        <p class="text-gray-500 italic">Selecciona el modo antes de comenzar:</p>
-                        <div class="flex gap-4">
-                            <button onclick="setAppMode('real'); iniciarSeccion('listening')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all transform hover:scale-105">
-                                Iniciar Modo Real Life
+                    <div class="pt-10 border-t flex flex-col items-center gap-4">
+                        <div class="flex gap-4 w-full justify-center">
+                            <button onclick="setAppMode('real'); iniciarSeccion('listening')" class="bg-slate-800 hover:bg-black text-white font-bold py-4 px-10 rounded-xl shadow-lg transition-all transform hover:-translate-y-1">
+                                Iniciar Simulacro Real
                             </button>
-                            <button onclick="setAppMode('learning'); iniciarSeccion('listening')" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all transform hover:scale-105">
-                                Iniciar Modo Aprendizaje
+                            <button onclick="setAppMode('learning'); iniciarSeccion('listening')" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 px-10 rounded-xl shadow-lg transition-all transform hover:-translate-y-1">
+                                Iniciar con Aprendizaje
                             </button>
                         </div>
+                        <p class="text-xs text-slate-400">Recuerda: Los puntos se guardan automáticamente en tu sesión.</p>
                     </div>
                 </div>
 
                 <!-- VIEW: Listening Section -->
                 <div id="view-listening" class="hidden-section p-10">
-                    <div class="mb-8 border-b pb-4">
-                        <h2 class="text-2xl font-bold uppercase mb-2">Section 1: Listening Comprehension</h2>
+                    <div class="mb-10 flex items-center justify-between border-b pb-6">
+                        <h2 class="text-3xl font-bold text-slate-800">1. Listening Comprehension</h2>
+                        <span class="bg-blue-100 text-blue-800 px-4 py-1 rounded-full text-xs font-bold">50 Preguntas</span>
                     </div>
 
+                    <!-- SELECTOR DE AUDIO -->
                     <div id="audio-selection-ui" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-                        <button onclick="cargarAudioDrive('1YfZ1zZCL-Zlie5f6w03VRpPh3DzCHMRU', 'A')" class="audio-card bg-white border-2 border-blue-100 p-4 rounded-xl flex items-center gap-4 hover:border-blue-500 shadow-sm text-left">
-                            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl shrink-0">
-                                <i class="fas fa-file-audio"></i>
+                        <button onclick="cargarAudioDrive('1YfZ1zZCL-Zlie5f6w03VRpPh3DzCHMRU', 'A')" class="audio-card bg-white border-2 border-slate-100 p-5 rounded-2xl flex items-center gap-4 hover:border-blue-400 shadow-sm text-left group">
+                            <div class="w-14 h-14 bg-slate-100 text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 rounded-2xl flex items-center justify-center text-2xl shrink-0 transition-all">
+                                <i class="fas fa-compact-disc"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-gray-800">Audio A</h4>
-                                <p class="text-xs text-gray-500">Practice Test 1 - Volume 3</p>
+                                <h4 class="font-bold text-slate-800">Practice Audio A</h4>
+                                <p class="text-xs text-slate-400">Test Completo Section 1</p>
                             </div>
                         </button>
-                        <button onclick="cargarAudioDrive('1uDKuutxP9uLTYm4rBtz1NMeOCRC2hMlc', 'B')" class="audio-card bg-white border-2 border-blue-100 p-4 rounded-xl flex items-center gap-4 hover:border-blue-500 shadow-sm text-left">
-                            <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-xl shrink-0">
-                                <i class="fas fa-file-audio"></i>
+                        <button onclick="cargarAudioDrive('1uDKuutxP9uLTYm4rBtz1NMeOCRC2hMlc', 'B')" class="audio-card bg-white border-2 border-slate-100 p-5 rounded-2xl flex items-center gap-4 hover:border-blue-400 shadow-sm text-left group">
+                            <div class="w-14 h-14 bg-slate-100 text-slate-400 group-hover:bg-purple-100 group-hover:text-purple-600 rounded-2xl flex items-center justify-center text-2xl shrink-0 transition-all">
+                                <i class="fas fa-compact-disc"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-gray-800">Audio B</h4>
-                                <p class="text-xs text-gray-500">Practice Test 1 - Volume 3</p>
+                                <h4 class="font-bold text-slate-800">Practice Audio B</h4>
+                                <p class="text-xs text-slate-400">Material Alternativo</p>
                             </div>
                         </button>
                     </div>
 
-                    <div id="master-audio-player" class="bg-gray-900 text-white p-6 rounded-2xl mb-10 shadow-xl hidden">
-                        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div id="master-audio-player" class="bg-slate-900 text-white p-6 rounded-3xl mb-12 shadow-2xl hidden">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-8">
                             <div class="flex-1">
-                                <h3 class="font-bold text-xl flex items-center gap-2">
-                                    <i class="fas fa-broadcast-tower text-blue-400"></i> 
-                                    Reproduciendo: <span id="current-audio-label" class="text-blue-400">Audio A</span>
-                                </h3>
-                                <div class="mt-4 flex items-center gap-4">
-                                    <span id="play-counter-badge" class="bg-white/10 text-white text-xs font-bold px-4 py-1.5 rounded-full border border-white/20">
-                                        REPRODUCCIONES: <span id="current-plays" class="text-blue-400">0</span> / 2
-                                    </span>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <div class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                                    <h3 id="current-audio-label" class="font-bold text-lg">Cargando Audio...</h3>
+                                </div>
+                                <div id="play-counter-container" class="inline-flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-2 rounded-xl">
+                                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Intentos</span>
+                                    <div class="h-4 w-[1px] bg-white/20"></div>
+                                    <span class="text-blue-400 font-mono font-bold"><span id="current-plays">0</span> / 2</span>
                                 </div>
                             </div>
-                            <div class="w-full md:w-auto text-right">
-                                <audio id="main-audio" controls class="w-full h-10 mb-2"></audio>
-                                <input type="file" id="local-audio-input" accept="audio/*" class="text-[10px] text-gray-400 mt-1 cursor-pointer"/>
+                            <div class="w-full md:w-auto flex flex-col items-end gap-3">
+                                <audio id="main-audio" controls class="w-full h-10"></audio>
+                                <label class="text-[9px] text-slate-500 cursor-pointer hover:text-slate-300">
+                                    Cargar archivo local como respaldo <input type="file" id="local-audio-input" accept="audio/*" class="hidden"/>
+                                </label>
                             </div>
                         </div>
-                        <p id="audio-warning" class="text-red-400 text-sm font-bold mt-4 hidden text-center bg-red-400/10 py-2 rounded-lg border border-red-400/20">
-                            <i class="fas fa-lock mr-2"></i> Límite alcanzado (Solo en Modo Real).
-                        </p>
+                        <div id="audio-warning" class="mt-4 bg-red-500/20 border border-red-500/40 p-3 rounded-xl hidden text-center">
+                            <p class="text-red-400 text-xs font-bold"><i class="fas fa-exclamation-triangle mr-2"></i> Límite de intentos alcanzado (Solo permitido en Modo Real Life).</p>
+                        </div>
                     </div>
 
-                    <div id="listening-container" class="space-y-10"></div>
-                    <div class="mt-12 text-right border-t pt-6">
-                        <button onclick="iniciarSeccion('structure')" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded shadow transition-colors">
-                            Siguiente Sección <i class="fas fa-arrow-right ml-2"></i>
+                    <div id="listening-container" class="space-y-12"></div>
+                    <div class="mt-16 text-right border-t pt-8">
+                        <button onclick="iniciarSeccion('structure')" class="bg-slate-800 hover:bg-black text-white font-bold py-3 px-8 rounded-xl shadow-md flex items-center gap-3 ml-auto">
+                            Ir a Sección 2: Structure <i class="fas fa-arrow-right"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- SECCIÓN STRUCTURE -->
+                <!-- VIEW: Structure Section -->
                 <div id="view-structure" class="hidden-section p-10">
-                    <div class="mb-8 border-b pb-4">
-                        <h2 class="text-2xl font-bold uppercase mb-2">Section 2: Structure and Written Expression</h2>
+                    <div class="mb-10 border-b pb-6">
+                        <h2 class="text-3xl font-bold text-slate-800">2. Structure and Written Expression</h2>
                     </div>
-                    <div id="structure-container" class="space-y-10"></div>
-                    <div class="mt-12 text-right border-t pt-6">
-                        <button onclick="iniciarSeccion('reading')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded shadow transition-colors">
-                            Siguiente Sección <i class="fas fa-arrow-right ml-2"></i>
+                    <div id="structure-container" class="space-y-12"></div>
+                    <div class="mt-16 text-right border-t pt-8">
+                        <button onclick="iniciarSeccion('reading')" class="bg-slate-800 hover:bg-black text-white font-bold py-3 px-8 rounded-xl shadow-md flex items-center gap-3 ml-auto">
+                            Ir a Sección 3: Reading <i class="fas fa-arrow-right"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- SECCIÓN READING -->
+                <!-- VIEW: Reading Section -->
                 <div id="view-reading" class="hidden-section p-10">
-                    <div class="mb-8 border-b pb-4">
-                        <h2 class="text-2xl font-bold uppercase mb-2">Section 3: Reading Comprehension</h2>
+                    <div class="mb-10 border-b pb-6">
+                        <h2 class="text-3xl font-bold text-slate-800">3. Reading Comprehension</h2>
                     </div>
-                    <div id="reading-container" class="space-y-10"></div>
-                    <div class="mt-12 text-center border-t pt-6">
-                        <button onclick="terminarExamen()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded shadow text-lg transition-transform transform hover:scale-105">
-                            Finalizar Examen
+                    <div id="reading-container" class="space-y-12"></div>
+                    <div class="mt-16 text-center border-t pt-8">
+                        <button onclick="terminarExamen()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-12 rounded-xl shadow-lg transform transition hover:scale-105">
+                            Finalizar y Calificar
                         </button>
                     </div>
                 </div>
@@ -246,7 +257,7 @@
         let timerInterval;
         let plays = 0;
         const maxPlays = 2;
-        let appMode = 'real'; // 'real' o 'learning'
+        let appMode = 'real';
         let examenCompleto = null;
         
         const mainAudio = document.getElementById('main-audio');
@@ -264,16 +275,15 @@
             if(mode === 'learning') {
                 badge.innerText = "Modo Aprendizaje";
                 badge.className = "bg-orange-100 text-orange-700 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase border border-orange-200";
-                btnLearn.className = "text-xs font-bold py-2 px-3 rounded border-2 border-orange-500 bg-orange-500 text-white w-full transition-all";
-                btnReal.className = "text-xs font-bold py-2 px-3 rounded border-2 border-gray-300 text-gray-500 w-full hover:border-blue-400 transition-all";
+                btnLearn.className = "text-[11px] font-bold py-2 px-3 rounded-md border-2 border-orange-500 bg-orange-500 text-white w-full transition-all";
+                btnReal.className = "text-[11px] font-bold py-2 px-3 rounded-md border-2 border-slate-200 text-slate-400 w-full hover:border-blue-400 transition-all";
             } else {
                 badge.innerText = "Modo Real Life";
                 badge.className = "bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase border border-blue-200";
-                btnReal.className = "text-xs font-bold py-2 px-3 rounded border-2 border-blue-600 bg-blue-600 text-white w-full transition-all";
-                btnLearn.className = "text-xs font-bold py-2 px-3 rounded border-2 border-gray-300 text-gray-500 w-full hover:border-orange-400 transition-all";
+                btnReal.className = "text-[11px] font-bold py-2 px-3 rounded-md border-2 border-blue-600 bg-blue-600 text-white w-full transition-all";
+                btnLearn.className = "text-[11px] font-bold py-2 px-3 rounded-md border-2 border-slate-200 text-slate-400 w-full hover:border-orange-400 transition-all";
             }
             
-            // Si el examen ya está renderizado, volver a renderizar para limpiar estados si es necesario
             if(examenCompleto) renderizarExamen(examenCompleto);
         }
 
@@ -282,11 +292,11 @@
             plays = 0;
             updateAudioUI();
             document.getElementById('master-audio-player').classList.remove('hidden');
-            document.getElementById('current-audio-label').innerText = "Audio " + label;
+            document.getElementById('current-audio-label').innerText = "Audio de Práctica " + label;
             mainAudio.src = `https://drive.google.com/uc?export=download&id=${id}`;
             mainAudio.classList.remove('audio-disabled');
             audioWarning.classList.add('hidden');
-            mainAudio.play().catch(e => console.log("Auto-play blocked."));
+            mainAudio.play().catch(e => console.log("User interaction required for autoplay"));
         }
 
         localAudioInput.addEventListener('change', function(e) {
@@ -298,7 +308,6 @@
                 updateAudioUI();
                 mainAudio.classList.remove('audio-disabled');
                 audioWarning.classList.add('hidden');
-                mainAudio.play();
             }
         });
 
@@ -318,50 +327,63 @@
             currentPlaysDisplay.innerText = plays;
         }
 
-        // --- CARGA Y RENDERIZADO ---
+        // --- PROCESAMIENTO Y RENDERIZADO DEL JSON ---
         document.addEventListener('DOMContentLoaded', () => {
             fetch('examen_data.json', { cache: "no-store" })
                 .then(response => response.json())
                 .then(data => {
                     examenCompleto = data;
                     renderizarExamen(data);
-                    document.getElementById('loading-screen').style.display = 'none';
-                    document.getElementById('section-indicator').innerText = 'Instrucciones';
+                    setTimeout(() => {
+                        document.getElementById('loading-screen').style.display = 'none';
+                        document.getElementById('section-indicator').innerText = 'Instrucciones';
+                    }, 500);
                 })
                 .catch(err => {
                     console.error(err);
-                    document.getElementById('loading-screen').innerHTML = "<p class='text-red-500'>Error cargando examen_data.json. Verifica que el archivo esté en la misma carpeta.</p>";
+                    document.getElementById('loading-screen').innerHTML = `
+                        <div class="text-center p-8 bg-red-50 border border-red-200 rounded-2xl">
+                            <i class="fas fa-times-circle text-red-500 text-4xl mb-4"></i>
+                            <h3 class="text-red-800 font-bold">Error al cargar datos</h3>
+                            <p class="text-red-600 text-sm mt-2">Asegúrate de que 'examen_data.json' esté en la misma carpeta que este archivo.</p>
+                        </div>
+                    `;
                 });
         });
 
         function renderizarExamen(data) {
             const letras = ['A', 'B', 'C', 'D'];
             
-            // Helper para renderizar cada pregunta
             const crearHtmlPregunta = (q, sectionKey) => {
-                let html = `<div class="flex items-start gap-4" id="container-${sectionKey}-${q.id}">
-                                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center font-bold text-gray-400 shrink-0 border">${q.id}</div>
-                                <div class="space-y-2 w-full">`;
-                
-                if(q.pregunta && q.pregunta.length > 5) html += `<p class="font-medium text-gray-700">${q.pregunta}</p>`;
+                let html = `<div class="bg-white p-6 rounded-2xl border border-slate-100 hover:shadow-lg transition-all" id="container-${sectionKey}-${q.id}">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 bg-slate-800 text-white rounded-xl flex items-center justify-center font-bold shrink-0 shadow-sm">${q.id}</div>
+                                    <div class="space-y-4 w-full">
+                                        <div class="flex items-center justify-between">
+                                            <p class="font-bold text-slate-700 leading-tight">${q.pregunta || ""}</p>
+                                            ${q.timestamp ? `<span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded-md"><i class="far fa-clock mr-1"></i>${q.timestamp}</span>` : ""}
+                                        </div>
+                                        <div class="grid grid-cols-1 gap-2">`;
                 
                 q.opciones.forEach((op, i) => {
                     const letter = letras[i];
-                    html += `<label id="label-${sectionKey}-${q.id}-${letter}" class="flex items-center group cursor-pointer py-2 px-3 border border-transparent rounded-lg transition-all">
-                                <input type="radio" name="${sectionKey}-${q.id}" value="${letter}" 
-                                       onchange="checkAnswer('${sectionKey}', ${q.id}, '${letter}')" 
-                                       class="toefl-radio">
-                                <span class="text-gray-700 group-hover:text-black">${op}</span>
-                             </label>`;
+                    html += `       <label id="label-${sectionKey}-${q.id}-${letter}" class="flex items-center group cursor-pointer py-3 px-4 border border-slate-100 rounded-xl transition-all hover:bg-slate-50">
+                                        <input type="radio" name="${sectionKey}-${q.id}" value="${letter}" 
+                                               onchange="checkAnswer('${sectionKey}', ${q.id}, '${letter}')" 
+                                               class="toefl-radio">
+                                        <span class="text-slate-600 group-hover:text-slate-900 text-sm">${op}</span>
+                                     </label>`;
                 });
                 
-                // Div para explicaciones (Modo Aprendizaje)
-                html += `<div id="feedback-${sectionKey}-${q.id}" class="mt-3 p-4 rounded-lg hidden text-sm"></div>`;
-                html += `</div></div>`;
+                html += `       </div>
+                                <div id="feedback-${sectionKey}-${q.id}" class="mt-4 p-4 rounded-xl hidden text-xs leading-relaxed animate-in fade-in duration-300"></div>
+                                </div>
+                            </div>
+                        </div>`;
                 return html;
             };
 
-            // Reset containers
+            // Limpiar y Renderizar
             document.getElementById('listening-container').innerHTML = '';
             document.getElementById('structure-container').innerHTML = '';
             document.getElementById('reading-container').innerHTML = '';
@@ -373,11 +395,11 @@
             });
         }
 
-        // --- LÓGICA DE VALIDACIÓN ---
+        // --- LÓGICA DE VALIDACIÓN (NUEVO JSON) ---
         function checkAnswer(section, id, selected) {
             if (appMode !== 'learning') return;
 
-            // Buscar la pregunta en la data
+            // Buscar la pregunta en la data global
             let qData = null;
             if (section === 'lis') qData = examenCompleto.listening.find(x => x.id === id);
             else if (section === 'str') qData = examenCompleto.structure.find(x => x.id === id);
@@ -391,14 +413,14 @@
             if(!qData) return;
 
             const feedbackDiv = document.getElementById(`feedback-${section}-${id}`);
-            const correct = qData.correcta; // Debe estar en tu JSON como "A", "B", etc.
+            const correct = qData.correcta; // Extraído del nuevo JSON
             
-            // Limpiar clases previas de las etiquetas
+            // Bloquear y limpiar etiquetas
             ['A', 'B', 'C', 'D'].forEach(l => {
                 const lbl = document.getElementById(`label-${section}-${id}-${l}`);
                 lbl.classList.remove('option-correct', 'option-wrong', 'text-correct', 'text-wrong');
-                // Deshabilitar radios para que no cambie después de ver la respuesta
                 lbl.querySelector('input').disabled = true;
+                lbl.classList.add('opacity-75');
             });
 
             const isCorrect = (selected === correct);
@@ -408,14 +430,32 @@
             feedbackDiv.classList.remove('hidden', 'bg-green-50', 'bg-red-50', 'text-green-800', 'text-red-800');
             
             if (isCorrect) {
+                labelSelected.classList.remove('opacity-75');
                 labelSelected.classList.add('option-correct', 'text-correct');
-                feedbackDiv.classList.add('bg-green-50', 'text-green-800', 'border', 'border-green-200');
-                feedbackDiv.innerHTML = `<strong>¡Correcto!</strong> ${qData.explicacion || 'Excelente razonamiento estructural.'}`;
+                feedbackDiv.classList.add('bg-green-50', 'text-green-800', 'border', 'border-green-100');
+                feedbackDiv.innerHTML = `<div class="flex gap-2">
+                                            <i class="fas fa-check-circle mt-0.5"></i>
+                                            <div>
+                                                <p class="font-bold mb-1">¡Respuesta Correcta!</p>
+                                                <p>${qData.explicacion || 'Has aplicado correctamente la lógica para este ítem.'}</p>
+                                            </div>
+                                         </div>`;
             } else {
+                labelSelected.classList.remove('opacity-75');
                 labelSelected.classList.add('option-wrong', 'text-wrong');
-                if(labelCorrect) labelCorrect.classList.add('option-correct', 'text-correct');
-                feedbackDiv.classList.add('bg-red-50', 'text-red-800', 'border', 'border-red-200');
-                feedbackDiv.innerHTML = `<strong>Incorrecto.</strong> La respuesta correcta es la (${correct}). ${qData.explicacion || 'Revisa la regla gramatical o el sinónimo utilizado en el audio.'}`;
+                if(labelCorrect) {
+                    labelCorrect.classList.remove('opacity-75');
+                    labelCorrect.classList.add('option-correct', 'text-correct');
+                }
+                feedbackDiv.classList.add('bg-red-50', 'text-red-800', 'border', 'border-red-100');
+                feedbackDiv.innerHTML = `<div class="flex gap-2">
+                                            <i class="fas fa-times-circle mt-0.5"></i>
+                                            <div>
+                                                <p class="font-bold mb-1">Respuesta Incorrecta</p>
+                                                <p class="mb-2">La opción correcta era la <strong>(${correct})</strong>.</p>
+                                                <p class="opacity-80">${qData.explicacion || 'Analiza la estructura gramatical o el contexto del pasaje.'}</p>
+                                            </div>
+                                         </div>`;
             }
         }
 
@@ -426,11 +466,13 @@
             iniciarTimer(mins * 60);
             if (seccion !== 'listening') mainAudio.pause();
 
-            document.getElementById('nav-listening').classList.remove('text-gray-500');
-            document.getElementById('nav-structure').classList.remove('text-gray-500');
-            document.getElementById('nav-structure').disabled = false;
-            document.getElementById('nav-reading').classList.remove('text-gray-500');
-            document.getElementById('nav-reading').disabled = false;
+            // Habilitar pestañas de navegación
+            const tabs = ['listening', 'structure', 'reading'];
+            tabs.forEach(t => {
+                const btn = document.getElementById('nav-' + t);
+                btn.classList.remove('text-gray-400');
+                btn.disabled = false;
+            });
         }
 
         function cambiarSeccion(id) {
@@ -438,9 +480,13 @@
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('tab-active'));
             document.getElementById('view-' + id).classList.remove('hidden-section');
             document.getElementById('nav-' + id).classList.add('tab-active');
-            window.scrollTo(0,0);
-            const txt = {'instructions':'Instrucciones','listening':'Section 1: Listening','structure':'Section 2: Structure','reading':'Section 3: Reading'};
-            document.getElementById('section-indicator').innerText = txt[id];
+            
+            // Scroll al inicio de la sección
+            const mainContent = document.querySelector('main');
+            mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            const titles = {'instructions':'INTRODUCCIÓN','listening':'SECCIÓN 1: LISTENING','structure':'SECCIÓN 2: STRUCTURE','reading':'SECCIÓN 3: READING'};
+            document.getElementById('section-indicator').innerText = titles[id];
         }
 
         function iniciarTimer(sec) {
@@ -449,8 +495,11 @@
             timerInterval = setInterval(() => {
                 const m = Math.floor(t / 60);
                 const s = t % 60;
-                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-                if(t <= 0) { clearInterval(timerInterval); alert("Tiempo agotado"); }
+                document.getElementById('timer').innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
+                if(t <= 0) { 
+                    clearInterval(timerInterval); 
+                    alert("El tiempo de esta sección ha finalizado."); 
+                }
                 t--;
             }, 1000);
         }
@@ -458,7 +507,11 @@
         function terminarExamen() {
             clearInterval(timerInterval);
             mainAudio.pause();
-            alert("Examen finalizado. Revisa tus aciertos.");
+            const confirmacion = confirm("¿Estás seguro de que deseas finalizar el examen ahora?");
+            if(confirmacion) {
+                alert("Simulación finalizada. Tus respuestas han sido procesadas.");
+                cambiarSeccion('instructions');
+            }
         }
     </script>
 </body>
