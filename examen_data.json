@@ -372,7 +372,7 @@
                     "(A) She will help the man with his application.",
                     "(B) She will go to the interview with the man.",
                     "(C) She will lend the man her pen.",
-                    "(D) She will return the man’s documents."
+                    "(D) She will return the man’s documentos."
                 ],
                 "correcta": "C",
                 "explicacion": "Un gesto simple de préstamo de un artículo de papelería para resolver un problema menor.",
@@ -663,7 +663,7 @@
                     "(D) that shadows were"
                 ],
                 "correcta": "D",
-                "explicacion": "Se requiere una cláusula sustantiva con 'that' que funcione como complemento del sustantivo 'conclusion'."
+                "explicacion": "Se requiere una cláusiva sustantiva con 'that' que funcione como complemento del sustantivo 'conclusion'."
             },
             {
                 "id": 2,
@@ -1101,7 +1101,7 @@
                 "id": 38,
                 "pregunta": "38. [A] Even though [B] he practiced, he [C] couldn't [D] master the piece.",
                 "opciones": [
-                    "(A) Even though",
+                    "(A) even though",
                     "(B) practiced",
                     "(C) couldn't",
                     "(D) master"
@@ -2128,9 +2128,1493 @@
                 "correcta": "B",
                 "explicacion": "El hombre advierte sobre el descenso de la temperatura y sugiere abrigarse.",
                 "timestamp": "09:41"
+            },
+            {
+                "id": 31,
+                "pregunta": "31. What is the woman's main reason for visiting the registrar's office?",
+                "opciones": [
+                    "(A) To drop a class.",
+                    "(B) To pick up a transcript.",
+                    "(C) To change her major.",
+                    "(D) To pay her tuition."
+                ],
+                "correcta": "B",
+                "explicacion": "Basado en la Parte B del Audio B, el trámite principal es la solicitud de un certificado de notas.",
+                "timestamp": "11:32"
+            },
+            {
+                "id": 32,
+                "pregunta": "32. Why is the woman unable to get her transcript today?",
+                "opciones": [
+                    "(A) The office is closed.",
+                    "(B) The computer system is down.",
+                    "(C) She doesn't have her ID card.",
+                    "(D) She needs to pay a fee first."
+                ],
+                "correcta": "B",
+                "explicacion": "El empleado informa sobre un fallo técnico que impide la impresión de documentos.",
+                "timestamp": "11:48"
+            },
+            {
+                "id": 33,
+                "pregunta": "33. What does the employee suggest the woman do?",
+                "opciones": [
+                    "(A) Come back tomorrow morning.",
+                    "(B) Wait until the afternoon.",
+                    "(C) Call the office later.",
+                    "(D) Submit an online request."
+                ],
+                "correcta": "A",
+                "explicacion": "Se le pide regresar al día siguiente cuando el sistema se haya restablecido.",
+                "timestamp": "12:04"
+            },
+            {
+                "id": 34,
+                "pregunta": "34. What will the woman probably do next?",
+                "opciones": [
+                    "(A) Go to the library.",
+                    "(B) Visit the student center.",
+                    "(C) Go home and wait.",
+                    "(D) Go to the financial aid office."
+                ],
+                "correcta": "D",
+                "explicacion": "La mujer decide aprovechar el tiempo para realizar otro trámite pendiente.",
+                "timestamp": "12:20"
+            },
+            {
+                "id": 35,
+                "pregunta": "35. What is the talk mainly about?",
+                "opciones": [
+                    "(A) The history of the computer industry.",
+                    "(B) The development of the textile industry.",
+                    "(C) The evolution of the ice industry in the U.S.",
+                    "(D) The impact of the railroad on trade."
+                ],
+                "correcta": "C",
+                "explicacion": "El orador describe el auge y declive del comercio de hielo natural.",
+                "timestamp": "14:15"
+            },
+            {
+                "id": 36,
+                "pregunta": "36. Where did the ice industry originally get its ice?",
+                "opciones": [
+                    "(A) From artificial cooling plants.",
+                    "(B) From mountain glaciers.",
+                    "(C) From frozen lakes and ponds.",
+                    "(D) From underground caves."
+                ],
+                "correcta": "C",
+                "explicacion": "Antes de la refrigeración mecánica, el hielo se cosechaba directamente de cuerpos de agua congelados.",
+                "timestamp": "14:31"
+            },
+            {
+                "id": 37,
+                "pregunta": "37. How was ice stored to keep it from melting?",
+                "opciones": [
+                    "(A) In underground bunkers.",
+                    "(B) In large wooden ice houses covered with hay.",
+                    "(C) In metal containers buried in snow.",
+                    "(D) In specialized refrigerated train cars."
+                ],
+                "correcta": "B",
+                "explicacion": "Se utilizaba paja o heno como aislante térmico en grandes almacenes de madera.",
+                "timestamp": "14:47"
+            },
+            {
+                "id": 38,
+                "pregunta": "38. What led to the decline of the natural ice industry?",
+                "opciones": [
+                    "(A) A series of warm winters.",
+                    "(B) The invention of the electric refrigerator.",
+                    "(C) The high cost of transportation.",
+                    "(D) Pollution in the lakes."
+                ],
+                "correcta": "B",
+                "explicacion": "La llegada del refrigerador doméstico hizo que el suministro de bloques de hielo fuera obsoleto.",
+                "timestamp": "15:03"
+            },
+            {
+                "id": 39,
+                "pregunta": "39. What is the speaker's main topic?",
+                "opciones": [
+                    "(A) The migration patterns of birds.",
+                    "(B) The benefits of group living in animals.",
+                    "(C) The evolution of social hierarchies.",
+                    "(D) The development of animal communication."
+                ],
+                "correcta": "B",
+                "explicacion": "El discurso se enfoca en las ventajas adaptativas de vivir en colonias o grupos.",
+                "timestamp": "17:12"
+            },
+            {
+                "id": 40,
+                "pregunta": "40. According to the speaker, what is one advantage of being in a large group?",
+                "opciones": [
+                    "(A) Better protection from predators.",
+                    "(B) Easier access to water.",
+                    "(C) Reduced competition for food.",
+                    "(D) More space for nesting."
+                ],
+                "correcta": "A",
+                "explicacion": "La vigilancia compartida permite detectar peligros con mayor antelación.",
+                "timestamp": "17:28"
+            },
+            {
+                "id": 41,
+                "pregunta": "41. What does the speaker mention about the 'selfish herd' theory?",
+                "opciones": [
+                    "(A) Individuals move to the center to be safer.",
+                    "(B) Animals cooperate to find hidden food.",
+                    "(C) Dominant males protect the entire group.",
+                    "(D) Young animals are always kept at the edges."
+                ],
+                "correcta": "A",
+                "explicacion": "La teoría sugiere que los individuos buscan el centro del grupo para minimizar su propia exposición al riesgo.",
+                "timestamp": "17:44"
+            },
+            {
+                "id": 42,
+                "pregunta": "42. What will the students probably discuss in the next class?",
+                "opciones": [
+                    "(A) Examples of altruistic behavior.",
+                    "(B) Patterns of animal aggression.",
+                    "(C) Methods of counting populations.",
+                    "(D) The history of evolutionary biology."
+                ],
+                "correcta": "A",
+                "explicacion": "El profesor introduce el tema del altruismo como la siguiente lección del programa.",
+                "timestamp": "18:00"
+            },
+            {
+                "id": 43,
+                "pregunta": "43. What is the main purpose of the talk?",
+                "opciones": [
+                    "(A) To describe the process of fossilization.",
+                    "(B) To explain how sandstone forms.",
+                    "(C) To discuss an important geological discovery.",
+                    "(D) To show the importance of stone cutting."
+                ],
+                "correcta": "C",
+                "explicacion": "El orador presenta un hallazgo de huellas fósiles en Canadá que cambió la visión de la evolución.",
+                "timestamp": "19:55"
+            },
+            {
+                "id": 44,
+                "pregunta": "44. How were the fossils originally discovered?",
+                "opciones": [
+                    "(A) By a group of archaeologists.",
+                    "(B) By stone cutters working in a quarry.",
+                    "(C) By students on a field trip.",
+                    "(D) By accident during road construction."
+                ],
+                "correcta": "B",
+                "explicacion": "Fueron los trabajadores de las canteras quienes primero notaron las marcas inusuales en la piedra.",
+                "timestamp": "20:11"
+            },
+            {
+                "id": 45,
+                "pregunta": "45. What makes this discovery unique?",
+                "opciones": [
+                    "(A) The size of the footprints.",
+                    "(B) The age of the sandstone.",
+                    "(C) It provides evidence of animals on land earlier than expected.",
+                    "(D) The preservation of plant life nearby."
+                ],
+                "correcta": "C",
+                "explicacion": "Las huellas indican que la transición a la tierra ocurrió millones de años antes de lo que se creía.",
+                "timestamp": "20:27"
+            },
+            {
+                "id": 46,
+                "pregunta": "46. What does the speaker imply about the future of this research?",
+                "opciones": [
+                    "(A) More funding is needed.",
+                    "(B) Many questions remain unanswered.",
+                    "(C) The theory is now fully proven.",
+                    "(D) Similar discoveries are expected in other regions."
+                ],
+                "correcta": "B",
+                "explicacion": "El orador menciona que el descubrimiento abre un nuevo campo de interrogantes sobre los primeros colonizadores terrestres.",
+                "timestamp": "20:43"
+            },
+            {
+                "id": 47,
+                "pregunta": "47. What is the talk mainly about?",
+                "opciones": [
+                    "(A) Modern refrigeration techniques.",
+                    "(B) The commercial ice industry of the 19th century.",
+                    "(C) Lake conservation efforts.",
+                    "(D) The export of American hay."
+                ],
+                "correcta": "B",
+                "explicacion": "Sincronizado con el bloque final del audio, describe el negocio del hielo antes de la electricidad.",
+                "timestamp": "33:36"
+            },
+            {
+                "id": 48,
+                "pregunta": "48. According to the speaker, what was used to insulate the ice?",
+                "opciones": [
+                    "(A) Sawdust and hay.",
+                    "(B) Metal blankets.",
+                    "(C) Thick wool.",
+                    "(D) Underground water."
+                ],
+                "correcta": "A",
+                "explicacion": "Se utilizaban materiales naturales baratos para mantener el frío durante meses.",
+                "timestamp": "33:46"
+            },
+            {
+                "id": 49,
+                "pregunta": "49. Why was the ice house often built near railroad tracks?",
+                "opciones": [
+                    "(A) To power the machinery.",
+                    "(B) To facilitate quick delivery to cities.",
+                    "(C) To keep the trains cool.",
+                    "(D) Because the land was cheaper there."
+                ],
+                "correcta": "B",
+                "explicacion": "La logística era vital para que el producto no se derritiera durante el transporte.",
+                "timestamp": "34:11"
+            },
+            {
+                "id": 50,
+                "pregunta": "50. What happened to the industry after the invention of refrigerators?",
+                "opciones": [
+                    "(A) It became obsolete.",
+                    "(B) It shifted to industrial uses only.",
+                    "(C) It expanded to Europe.",
+                    "(D) It began producing artificial ice."
+                ],
+                "correcta": "A",
+                "explicacion": "El orador concluye que la tecnología moderna eliminó la necesidad del hielo natural cosechado.",
+                "timestamp": "34:25"
             }
         ],
-        "structure": [],
-        "reading": []
+        "structure": [
+            {
+                "id": 1,
+                "pregunta": "1. Although the name 'America' comes from Amerigo Vespucci, he _____ not the first European to reach the New World.",
+                "opciones": [
+                    "(A) is",
+                    "(B) was",
+                    "(C) being",
+                    "(D) been"
+                ],
+                "correcta": "B",
+                "explicacion": "Se requiere el verbo en pasado simple ('was') para concordar con el contexto histórico."
+            },
+            {
+                "id": 2,
+                "pregunta": "2. In the late nineteenth century, _____ developed a process for mass-producing steel.",
+                "opciones": [
+                    "(A) Sir Henry Bessemer",
+                    "(B) when Sir Henry Bessemer",
+                    "(C) because Sir Henry Bessemer",
+                    "(D) that Sir Henry Bessemer"
+                ],
+                "correcta": "A",
+                "explicacion": "La oración requiere un sujeto simple para completar la estructura básica."
+            },
+            {
+                "id": 3,
+                "pregunta": "3. The more the population grows, _____ it becomes to provide adequate resources.",
+                "opciones": [
+                    "(A) the difficult",
+                    "(B) more difficult",
+                    "(C) the more difficult",
+                    "(D) most difficult"
+                ],
+                "correcta": "C",
+                "explicacion": "Uso del comparativo correlativo 'the more... the more'."
+            },
+            {
+                "id": 4,
+                "pregunta": "4. Not until the early twentieth century _____ possible to transmit radio signals across the ocean.",
+                "opciones": [
+                    "(A) it was",
+                    "(B) it became",
+                    "(C) was it",
+                    "(D) becoming"
+                ],
+                "correcta": "C",
+                "explicacion": "Cuando una oración comienza con una frase negativa restrictiva como 'Not until', se requiere inversión."
+            },
+            {
+                "id": 5,
+                "pregunta": "5. A fiber-optic cable consists of many thin _____ of glass or plastic.",
+                "opciones": [
+                    "(A) strand",
+                    "(B) strands",
+                    "(C) stranding",
+                    "(D) stranded"
+                ],
+                "correcta": "B",
+                "explicacion": "Después de 'many' se requiere un sustantivo en plural."
+            },
+            {
+                "id": 6,
+                "pregunta": "6. Jupiter is the largest planet in our solar system, _____ more than all the other planets combined.",
+                "opciones": [
+                    "(A) weigh",
+                    "(B) weighing",
+                    "(C) weighs",
+                    "(D) is weighing"
+                ],
+                "correcta": "B",
+                "explicacion": "Uso de una frase de participio presente ('weighing') para añadir información sobre el sujeto."
+            },
+            {
+                "id": 7,
+                "pregunta": "7. _____ many benefits to regular exercise, including improved cardiovascular health.",
+                "opciones": [
+                    "(A) There is",
+                    "(B) There are",
+                    "(C) They are",
+                    "(D) It is"
+                ],
+                "correcta": "B",
+                "explicacion": "Uso de 'There are' para introducir un sujeto plural ('benefits')."
+            },
+            {
+                "id": 8,
+                "pregunta": "8. Unlike most other mammals, _____ no hair on their bodies.",
+                "opciones": [
+                    "(A) whales having",
+                    "(B) whales have",
+                    "(C) that whales have",
+                    "(D) which whales have"
+                ],
+                "correcta": "B",
+                "explicacion": "Se requiere sujeto y verbo principal para completar la oración."
+            },
+            {
+                "id": 9,
+                "pregunta": "9. The discovery of gold in California in 1848 _____ a massive migration to the West.",
+                "opciones": [
+                    "(A) trigger",
+                    "(B) triggered",
+                    "(C) was triggering",
+                    "(D) had triggered"
+                ],
+                "correcta": "B",
+                "explicacion": "Verbo en pasado simple para un evento histórico específico y terminado."
+            },
+            {
+                "id": 10,
+                "pregunta": "10. Neither the students nor the teacher _____ the answer to the complex math problem.",
+                "opciones": [
+                    "(A) know",
+                    "(B) knows",
+                    "(C) knowing",
+                    "(D) known"
+                ],
+                "correcta": "B",
+                "explicacion": "En la estructura 'neither... nor', el verbo concuerda con el sujeto más cercano ('teacher', singular)."
+            },
+            {
+                "id": 11,
+                "pregunta": "11. Despite _____ for hours, the team was unable to solve the technical issue.",
+                "opciones": [
+                    "(A) work",
+                    "(B) working",
+                    "(C) they worked",
+                    "(D) to work"
+                ],
+                "correcta": "B",
+                "explicacion": "Después de la preposición 'despite' se requiere un gerundio o un sustantivo."
+            },
+            {
+                "id": 12,
+                "pregunta": "12. The Eiffel Tower, _____ in 1889, was originally intended to be a temporary structure.",
+                "opciones": [
+                    "(A) complete",
+                    "(B) completed",
+                    "(C) was completed",
+                    "(D) completing"
+                ],
+                "correcta": "B",
+                "explicacion": "Uso de un participio pasado como adjetivo para reducir una cláusula relativa ('which was completed')."
+            },
+            {
+                "id": 13,
+                "pregunta": "13. It is essential that every student _____ the safety guidelines before entering the lab.",
+                "opciones": [
+                    "(A) follows",
+                    "(B) follow",
+                    "(C) following",
+                    "(D) followed"
+                ],
+                "correcta": "B",
+                "explicacion": "Uso del subjuntivo después de adjetivos de importancia ('essential that...'). El verbo va en forma base."
+            },
+            {
+                "id": 14,
+                "pregunta": "14. By the time the sun set, they _____ twenty miles through the forest.",
+                "opciones": [
+                    "(A) walked",
+                    "(B) have walked",
+                    "(C) had walked",
+                    "(D) were walking"
+                ],
+                "correcta": "C",
+                "explicacion": "Uso del pasado perfecto para una acción terminada antes de otro momento en el pasado."
+            },
+            {
+                "id": 15,
+                "pregunta": "15. Rarely _____ such a beautiful sunset in this part of the country.",
+                "opciones": [
+                    "(A) one sees",
+                    "(B) does one see",
+                    "(C) sees one",
+                    "(D) is one seeing"
+                ],
+                "correcta": "B",
+                "explicacion": "Inversión requerida al iniciar la oración con el adverbio negativo 'Rarely'."
+            },
+            {
+                "id": 16,
+                "pregunta": "16. The [A] result of the [B] study [C] were [D] published in a medical journal.",
+                "opciones": [
+                    "(A) result",
+                    "(B) study",
+                    "(C) were",
+                    "(D) published"
+                ],
+                "correcta": "C",
+                "explicacion": "Error: El sujeto 'result' es singular, por lo que el verbo debe ser 'was'."
+            },
+            {
+                "id": 17,
+                "pregunta": "17. This [A] car is [B] much more [C] faster than [D] the one I had before.",
+                "opciones": [
+                    "(A) car",
+                    "(B) much more",
+                    "(C) faster",
+                    "(D) than"
+                ],
+                "correcta": "B",
+                "explicacion": "Error: No se debe usar 'more' con un adjetivo que ya tiene el sufijo '-er'. Lo correcto es 'much faster'."
+            },
+            {
+                "id": 18,
+                "pregunta": "18. The [A] building [B] whom [C] was designed by a famous architect is [D] located downtown.",
+                "opciones": [
+                    "(A) building",
+                    "(B) whom",
+                    "(C) was",
+                    "(D) located"
+                ],
+                "correcta": "B",
+                "explicacion": "Error: 'Whom' se usa para personas. Para objetos se debe usar 'which' o 'that'."
+            },
+            {
+                "id": 19,
+                "pregunta": "19. If I [A] am [B] you, I [C] would [D] accept the offer.",
+                "opciones": [
+                    "(A) am",
+                    "(B) you",
+                    "(C) would",
+                    "(D) accept"
+                ],
+                "correcta": "A",
+                "explicacion": "Error: En el segundo condicional, se debe usar 'were' para situaciones hipotéticas."
+            },
+            {
+                "id": 20,
+                "pregunta": "20. She [A] has [B] been living in New York [C] since [D] three years.",
+                "opciones": [
+                    "(A) has",
+                    "(B) been living",
+                    "(C) since",
+                    "(D) three years"
+                ],
+                "correcta": "C",
+                "explicacion": "Error: Se debe usar 'for' para indicar un periodo de tiempo. 'Since' se usa para un punto específico en el tiempo."
+            },
+            {
+                "id": 21,
+                "pregunta": "21. During [A] the summer, [B] many [C] person [D] visit the national park.",
+                "opciones": [
+                    "(A) During",
+                    "(B) many",
+                    "(C) person",
+                    "(D) visit"
+                ],
+                "correcta": "C",
+                "explicacion": "Error: 'many' requiere un sustantivo plural ('people' en lugar de 'person')."
+            },
+            {
+                "id": 22,
+                "pregunta": "22. The [A] children [B] enjoyed [C] to play in the [D] garden all afternoon.",
+                "opciones": [
+                    "(A) children",
+                    "(B) enjoyed",
+                    "(C) to play",
+                    "(D) garden"
+                ],
+                "correcta": "C",
+                "explicacion": "Error: El verbo 'enjoy' requiere un gerundio ('playing') en lugar de un infinitivo."
+            },
+            {
+                "id": 23,
+                "pregunta": "23. [A] Despite of the rain, the [B] match [C] proceeded [D] as scheduled.",
+                "opciones": [
+                    "(A) Despite of",
+                    "(B) match",
+                    "(C) proceeded",
+                    "(D) as scheduled"
+                ],
+                "correcta": "A",
+                "explicacion": "Error: 'Despite' no lleva la preposición 'of'. Lo correcto es 'Despite the rain' o 'In spite of the rain'."
+            },
+            {
+                "id": 24,
+                "pregunta": "24. The [A] flowers [B] smell [C] sweetly [D] in the spring air.",
+                "opciones": [
+                    "(A) flowers",
+                    "(B) smell",
+                    "(C) sweetly",
+                    "(D) spring"
+                ],
+                "correcta": "C",
+                "explicacion": "Error: Los verbos de percepción (stative verbs) como 'smell' se modifican con adjetivos ('sweet'), no con adverbios."
+            },
+            {
+                "id": 25,
+                "pregunta": "25. Neither the [A] manager [B] nor the [C] employees [D] was satisfied with the results.",
+                "opciones": [
+                    "(A) manager",
+                    "(B) nor",
+                    "(C) employees",
+                    "(D) was"
+                ],
+                "correcta": "D",
+                "explicacion": "Error: El verbo debe concordar con el sujeto más cercano ('employees'), por lo que debería ser 'were'."
+            },
+            {
+                "id": 26,
+                "pregunta": "26. The [A] news [B] about the [C] accident [D] were shocking to everyone.",
+                "opciones": [
+                    "(A) news",
+                    "(B) about",
+                    "(C) accident",
+                    "(D) were"
+                ],
+                "correcta": "D",
+                "explicacion": "Error: 'News' es un sustantivo incontable y siempre lleva verbo en singular ('was')."
+            },
+            {
+                "id": 27,
+                "pregunta": "27. She [A] had [B] hardly [C] no money [D] left after the trip.",
+                "opciones": [
+                    "(A) had",
+                    "(B) hardly",
+                    "(C) no money",
+                    "(D) left"
+                ],
+                "correcta": "C",
+                "explicacion": "Error: Doble negación. Se debe usar 'hardly any money'."
+            },
+            {
+                "id": 28,
+                "pregunta": "28. The [A] report [B] which I [C] wrote it [D] is on your desk.",
+                "opciones": [
+                    "(A) report",
+                    "(B) which",
+                    "(C) wrote it",
+                    "(D) is"
+                ],
+                "correcta": "C",
+                "explicacion": "Error: No se debe repetir el objeto ('it') cuando ya se usa un pronombre relativo ('which')."
+            },
+            {
+                "id": 29,
+                "pregunta": "29. We [A] are [B] looking forward to [C] meet [D] you next week.",
+                "opciones": [
+                    "(A) are",
+                    "(B) looking forward to",
+                    "(C) meet",
+                    "(D) you"
+                ],
+                "correcta": "C",
+                "explicacion": "Error: La expresión 'look forward to' requiere un gerundio ('meeting')."
+            },
+            {
+                "id": 30,
+                "pregunta": "30. The [A] majority of the [B] citizens [C] supports the new [D] policy.",
+                "opciones": [
+                    "(A) majority",
+                    "(B) citizens",
+                    "(C) supports",
+                    "(D) policy"
+                ],
+                "correcta": "C",
+                "explicacion": "Error: 'The majority of' seguido de un plural requiere un verbo en plural ('support')."
+            },
+            {
+                "id": 31,
+                "pregunta": "31. He is [A] much [B] more intelligent [C] than [D] his brother is.",
+                "opciones": [
+                    "(A) much",
+                    "(B) more intelligent",
+                    "(C) than",
+                    "(D) is"
+                ],
+                "correcta": "A",
+                "explicacion": "Uso correcto de 'much' para intensificar un comparativo."
+            },
+            {
+                "id": 32,
+                "pregunta": "32. The [A] reason [B] why he left [C] was [D] because of he was tired.",
+                "opciones": [
+                    "(A) reason",
+                    "(B) why",
+                    "(C) was",
+                    "(D) because of"
+                ],
+                "correcta": "D",
+                "explicacion": "Error: 'Because of' se usa con frases nominales; para una cláusula completa se usa simplemente 'because'."
+            },
+            {
+                "id": 33,
+                "pregunta": "33. Every [A] student [B] in the class [C] have to [D] finish the project.",
+                "opciones": [
+                    "(A) student",
+                    "(B) in the",
+                    "(C) have to",
+                    "(D) finish"
+                ],
+                "correcta": "C",
+                "explicacion": "Error: 'Every' siempre requiere un verbo en singular ('has to')."
+            },
+            {
+                "id": 34,
+                "pregunta": "34. The [A] more [B] you study, [C] the most [D] you will learn.",
+                "opciones": [
+                    "(A) more",
+                    "(B) you study",
+                    "(C) the most",
+                    "(D) you will learn"
+                ],
+                "correcta": "C",
+                "explicacion": "Error: En estructuras correlativas se usa el comparativo en ambas partes ('the more... the more')."
+            },
+            {
+                "id": 35,
+                "pregunta": "35. I [A] wish [B] I [C] can [D] speak French fluently.",
+                "opciones": [
+                    "(A) wish",
+                    "(B) I",
+                    "(C) can",
+                    "(D) speak"
+                ],
+                "correcta": "C",
+                "explicacion": "Error: Después de 'wish' para deseos en el presente se usa el pasado simple ('could')."
+            },
+            {
+                "id": 36,
+                "pregunta": "36. [A] Although he was [B] sick, [C] but he [D] went to work.",
+                "opciones": [
+                    "(A) Although",
+                    "(B) sick",
+                    "(C) but",
+                    "(D) went"
+                ],
+                "correcta": "C",
+                "explicacion": "Error: No se deben usar dos conjunciones de contraste ('although' y 'but') en la misma oración."
+            },
+            {
+                "id": 37,
+                "pregunta": "37. The [A] price of [B] gasoline [C] has [D] rose significantly recently.",
+                "opciones": [
+                    "(A) price",
+                    "(B) gasoline",
+                    "(C) has",
+                    "(D) rose"
+                ],
+                "correcta": "D",
+                "explicacion": "Error: El participio pasado de 'rise' es 'risen'. 'Rose' es el pasado simple."
+            },
+            {
+                "id": 38,
+                "pregunta": "38. [A] Most of the [B] equipments [C] in the lab [D] is outdated.",
+                "opciones": [
+                    "(A) Most of",
+                    "(B) equipments",
+                    "(C) in the",
+                    "(D) is"
+                ],
+                "correcta": "B",
+                "explicacion": "Error: 'Equipment' es un sustantivo incontable y no tiene forma plural."
+            },
+            {
+                "id": 39,
+                "pregunta": "39. She [A] is one of the [B] student [C] who [D] won the scholarship.",
+                "opciones": [
+                    "(A) is",
+                    "(B) student",
+                    "(C) who",
+                    "(D) won"
+                ],
+                "correcta": "B",
+                "explicacion": "Error: La frase 'one of the' requiere un sustantivo en plural ('students')."
+            },
+            {
+                "id": 40,
+                "pregunta": "40. [A] By the time we [B] get there, the [C] show [D] will start.",
+                "opciones": [
+                    "(A) By the time",
+                    "(B) get",
+                    "(C) show",
+                    "(D) will start"
+                ],
+                "correcta": "D",
+                "explicacion": "Error: Se requiere el futuro perfecto ('will have started') para indicar una acción completada antes de un tiempo futuro."
+            }
+        ],
+        "reading": [
+            {
+                "id": 1,
+                "pregunta": "1. What is the primary focus of the first passage in Test B?",
+                "opciones": [
+                    "(A) The history of geological surveys in North America.",
+                    "(B) The chemical composition of forest soils.",
+                    "(C) The adaptation of plants to arid environments.",
+                    "(D) The impact of glaciation on current landscapes."
+                ],
+                "correcta": "C",
+                "explicacion": "El pasaje describe cómo diversas especies vegetales han desarrollado mecanismos para sobrevivir en climas secos."
+            },
+            {
+                "id": 2,
+                "pregunta": "2. The word 'arid' in line 2 is closest in meaning to",
+                "opciones": [
+                    "(A) cold",
+                    "(B) dry",
+                    "(C) mountainous",
+                    "(D) fertile"
+                ],
+                "correcta": "B",
+                "explicacion": "'Arid' se refiere a climas con muy pocas precipitaciones, es decir, secos."
+            },
+            {
+                "id": 3,
+                "pregunta": "3. Which of the following is mentioned as a survival strategy for desert plants?",
+                "opciones": [
+                    "(A) Growing larger leaves to collect dew.",
+                    "(B) Developing deep root systems.",
+                    "(C) Shedding bark during the winter.",
+                    "(D) Producing seeds only once every decade."
+                ],
+                "correcta": "B",
+                "explicacion": "El texto menciona que muchas plantas extienden sus raíces profundamente para alcanzar depósitos de agua subterránea."
+            },
+            {
+                "id": 4,
+                "pregunta": "4. The word 'resilient' in the text is closest in meaning to",
+                "opciones": [
+                    "(A) fragile",
+                    "(B) ancient",
+                    "(C) tough",
+                    "(D) colorful"
+                ],
+                "correcta": "C",
+                "explicacion": "'Resilient' describe la capacidad de resistir o recuperarse de condiciones adversas."
+            },
+            {
+                "id": 5,
+                "pregunta": "5. According to the author, why do some plants have succulent stems?",
+                "opciones": [
+                    "(A) To protect against herbivores.",
+                    "(B) To store water for long periods.",
+                    "(C) To absorb sunlight more efficiently.",
+                    "(D) To aid in the process of pollination."
+                ],
+                "correcta": "B",
+                "explicacion": "Las plantas suculentas utilizan sus tejidos gruesos para almacenar reservas de agua."
+            },
+            {
+                "id": 6,
+                "pregunta": "6. The word 'they' in paragraph 2 refers to",
+                "opciones": [
+                    "(A) roots",
+                    "(B) plants",
+                    "(C) deserts",
+                    "(D) adaptations"
+                ],
+                "correcta": "B",
+                "explicacion": "El pronombre hace referencia al sujeto principal del párrafo, las plantas."
+            },
+            {
+                "id": 7,
+                "pregunta": "7. What is the main idea of the second passage?",
+                "opciones": [
+                    "(A) The role of wind in seed dispersal.",
+                    "(B) The migration patterns of North American birds.",
+                    "(C) The importance of fire in certain ecosystems.",
+                    "(D) The history of national park conservation."
+                ],
+                "correcta": "C",
+                "explicacion": "El segundo pasaje explica cómo los incendios naturales son necesarios para el ciclo de vida de ciertos bosques."
+            },
+            {
+                "id": 8,
+                "pregunta": "8. The word 'essential' is closest in meaning to",
+                "opciones": [
+                    "(A) helpful",
+                    "(B) optional",
+                    "(C) necessary",
+                    "(D) dangerous"
+                ],
+                "correcta": "C",
+                "explicacion": "'Essential' significa que algo es fundamental o indispensable."
+            },
+            {
+                "id": 9,
+                "pregunta": "9. How does fire benefit the giant sequoia tree?",
+                "opciones": [
+                    "(A) It provides nutrients through ash.",
+                    "(B) It helps the cones release their seeds.",
+                    "(C) It eliminates competing vegetation.",
+                    "(D) All of the above."
+                ],
+                "correcta": "D",
+                "explicacion": "El texto enumera estas tres ventajas como resultados positivos de los incendios controlados."
+            },
+            {
+                "id": 10,
+                "pregunta": "10. The word 'dormant' in the text refers to a state of",
+                "opciones": [
+                    "(A) rapid growth",
+                    "(B) inactivity",
+                    "(C) extreme heat",
+                    "(D) decay"
+                ],
+                "correcta": "B",
+                "explicacion": "'Dormant' describe un periodo en el que el crecimiento o desarrollo se detiene temporalmente."
+            },
+            {
+                "id": 11,
+                "pregunta": "11. What happened to the forest when fires were strictly suppressed?",
+                "opciones": [
+                    "(A) The ecosystem became healthier.",
+                    "(B) Dead wood accumulated, leading to more dangerous fires.",
+                    "(C) New species of animals moved in.",
+                    "(D) The soil became more fertile."
+                ],
+                "correcta": "B",
+                "explicacion": "La supresión total evitó los ciclos naturales, permitiendo la acumulación de combustible forestal."
+            },
+            {
+                "id": 12,
+                "pregunta": "12. The word 'unprecedented' is closest in meaning to",
+                "opciones": [
+                    "(A) normal",
+                    "(B) disastrous",
+                    "(C) never seen before",
+                    "(D) beneficial"
+                ],
+                "correcta": "C",
+                "explicacion": "'Unprecedented' se refiere a algo que no tiene precedentes o historia previa."
+            },
+            {
+                "id": 13,
+                "pregunta": "13. What is the author's tone in the discussion of fire management?",
+                "opciones": [
+                    "(A) Critical",
+                    "(B) Informative",
+                    "(C) Indifferent",
+                    "(D) Alarmed"
+                ],
+                "correcta": "B",
+                "explicacion": "El autor presenta hechos y teorías científicas de manera objetiva."
+            },
+            {
+                "id": 14,
+                "pregunta": "14. The word 'it' in the last paragraph refers to",
+                "opciones": [
+                    "(A) fire",
+                    "(B) forest",
+                    "(C) seeds",
+                    "(D) strategy"
+                ],
+                "correcta": "A",
+                "explicacion": "Contextualmente, el pronombre se refiere al fenómeno del fuego."
+            },
+            {
+                "id": 15,
+                "pregunta": "15. Which of the following would be the best title for the passage?",
+                "opciones": [
+                    "(A) Preventing Forest Disasters",
+                    "(B) The Ecological Necessity of Fire",
+                    "(C) Saving the Giant Sequoias",
+                    "(D) A History of Wildlife Management"
+                ],
+                "correcta": "B",
+                "explicacion": "El título resume adecuadamente el enfoque en el papel biológico del fuego."
+            }
+            {
+                "testA": {
+                    "listening": [
+                        {
+                            "id": 1,
+                            "pregunta": "1. What does the woman imply?",
+                            "opciones": [
+                                "(A) She lost the man’s calculator.",
+                                "(B) She will lend the man her calculator.",
+                                "(C) The calculator may be under the man’s book.",
+                                "(D) The man will not have time to find the calculator."
+                            ],
+                            "correcta": "C",
+                            "explicacion": "La mujer dice: 'Check under your notebook. I saw a calculator there a few minutes ago'. Esto indica que es probable que esté ahí.",
+                            "timestamp": "01:46"
+                        },
+                        {
+                            "id": 50,
+                            "pregunta": "50. What is the speaker's attitude toward the discovery?",
+                            "opciones": [
+                                "(A) Skeptical.",
+                                "(B) Disappointed.",
+                                "(C) Enthusiastic.",
+                                "(D) Indifferent."
+                            ],
+                            "correcta": "C",
+                            "explicacion": "El tono del profesor denota gran interés y valoración por la suerte de haber encontrado estas pistas evolutivas.",
+                            "timestamp": "34:25"
+                        }
+                    ],
+                    "structure": [
+                        {
+                            "id": 1,
+                            "pregunta": "1. Based on the premise that light was composed of color, the Impressionists came to the conclusion _____ not really black.",
+                            "opciones": [
+                                "(A) which was that shadows",
+                                "(B) was shadows which",
+                                "(C) were shadows",
+                                "(D) that shadows were"
+                            ],
+                            "correcta": "D",
+                            "explicacion": "Se requiere una cláusula sustantiva con 'that' que funcione como complemento del sustantivo 'conclusion'."
+                        }
+                    ],
+                    "reading": [
+                        {
+                            "id": 1,
+                            "pregunta": "1. What aspect of the United States in the late nineteenth and early twentieth centuries does the passage mainly discuss?",
+                            "opciones": [
+                                "(A) Why young women chose to move from farms to cities",
+                                "(B) The number and types of manufacturing jobs created in cities",
+                                "(C) Changes in settlement patterns between farms and cities",
+                                "(D) The effects of mechanization on western migration"
+                            ],
+                            "correcta": "C",
+                            "explicacion": "El texto discute el cambio de la vida rural a la urbana, lo cual se describe como un cambio en los patrones de asentamiento."
+                        }
+                    ]
+                },
+                "testB": {
+                    "listening": [
+                        {
+                            "id": 1,
+                            "pregunta": "1. What does the woman imply?",
+                            "opciones": [
+                                "(A) She is taking too many courses.",
+                                "(B) She has forgotten which courses she is taking.",
+                                "(C) She is not sure if she can handle the workload.",
+                                "(D) She needs help choosing her courses."
+                            ],
+                            "correcta": "C",
+                            "explicacion": "En el Audio B, la mujer dice que no está segura de poder con los 3 cursos y el trabajo.",
+                            "timestamp": "01:46"
+                        },
+                        {
+                            "id": 50,
+                            "pregunta": "50. What happened to the industry after the invention of refrigerators?",
+                            "opciones": [
+                                "(A) It became obsolete.",
+                                "(B) It shifted to industrial uses only.",
+                                "(C) It expanded to Europe.",
+                                "(D) It began producing artificial ice."
+                            ],
+                            "correcta": "A",
+                            "explicacion": "El orador concluye que la tecnología moderna eliminó la necesidad del hielo natural cosechado.",
+                            "timestamp": "34:25"
+                        }
+                    ],
+                    "structure": [
+                        {
+                            "id": 1,
+                            "pregunta": "1. Although the name 'America' comes from Amerigo Vespucci, he _____ not the first European to reach the New World.",
+                            "opciones": [
+                                "(A) is",
+                                "(B) was",
+                                "(C) being",
+                                "(D) been"
+                            ],
+                            "correcta": "B",
+                            "explicacion": "Se requiere el verbo en pasado simple ('was') para concordar con el contexto histórico."
+                        },
+                        {
+                            "id": 40,
+                            "pregunta": "40. [A] By the time we [B] get there, the [C] show [D] will start.",
+                            "opciones": [
+                                "(A) By the time",
+                                "(B) get",
+                                "(C) show",
+                                "(D) will start"
+                            ],
+                            "correcta": "D",
+                            "explicacion": "Error: Se requiere el futuro perfecto ('will have started') para indicar una acción completada antes de un tiempo futuro."
+                        }
+                    ],
+                    "reading": [
+                        {
+                            "id": 1,
+                            "pregunta": "1. What is the primary focus of the first passage in Test B?",
+                            "opciones": [
+                                "(A) The history of geological surveys in North America.",
+                                "(B) The chemical composition of forest soils.",
+                                "(C) The adaptation of plants to arid environments.",
+                                "(D) The impact of glaciation on current landscapes."
+                            ],
+                            "correcta": "C",
+                            "explicacion": "El pasaje describe cómo diversas especies vegetales han desarrollado mecanismos para sobrevivir en climas secos."
+                        },
+                        {
+                            "id": 15,
+                            "pregunta": "15. Which of the following would be the best title for the passage?",
+                            "opciones": [
+                                "(A) Preventing Forest Disasters",
+                                "(B) The Ecological Necessity of Fire",
+                                "(C) Saving the Giant Sequoias",
+                                "(D) A History of Wildlife Management"
+                            ],
+                            "correcta": "B",
+                            "explicacion": "El título resume adecuadamente el enfoque en el papel biológico del fuego."
+                        },
+                        {
+                            "id": 16,
+                            "pregunta": "16. What is the main topic of the third passage?",
+                            "opciones": [
+                                "(A) The difficulties of colonial life.",
+                                "(B) The development of glassmaking in the United States.",
+                                "(C) The export of raw materials to Europe.",
+                                "(D) Techniques for building early furnaces."
+                            ],
+                            "correcta": "B",
+                            "explicacion": "El pasaje detalla la evolución de la industria del vidrio desde los intentos coloniales hasta la producción en masa."
+                        },
+                        {
+                            "id": 17,
+                            "pregunta": "17. The word 'persistent' in line 5 is closest in meaning to",
+                            "opciones": [
+                                "(A) occasional",
+                                "(B) continuous",
+                                "(C) initial",
+                                "(D) accidental"
+                            ],
+                            "correcta": "B",
+                            "explicacion": "'Persistent' se refiere a algo que continúa ocurriendo a pesar de las dificultades."
+                        },
+                        {
+                            "id": 18,
+                            "pregunta": "18. Why were early glassmaking attempts in Jamestown unsuccessful?",
+                            "opciones": [
+                                "(A) Lack of skilled labor.",
+                                "(B) The high cost of fuel.",
+                                "(C) Competition from European imports.",
+                                "(D) Poor quality of local sand."
+                            ],
+                            "correcta": "A",
+                            "explicacion": "El texto menciona que la falta de artesanos experimentados fue un obstáculo crítico."
+                        },
+                        {
+                            "id": 19,
+                            "pregunta": "19. The word 'it' in paragraph 2 refers to",
+                            "opciones": [
+                                "(A) glass",
+                                "(B) industry",
+                                "(C) technique",
+                                "(D) furnace"
+                            ],
+                            "correcta": "A",
+                            "explicacion": "Referencia directa al material que se está produciendo."
+                        },
+                        {
+                            "id": 20,
+                            "pregunta": "20. According to the passage, Caspar Wistar is significant because he",
+                            "opciones": [
+                                "(A) invented a new type of glass.",
+                                "(B) established a successful, long-lasting glass factory.",
+                                "(C) exported glass to England.",
+                                "(D) trained the first American glassblowers."
+                            ],
+                            "correcta": "B",
+                            "explicacion": "Wistar es acreditado con la creación de la primera empresa de vidrio comercialmente viable en las colonias."
+                        },
+                        {
+                            "id": 21,
+                            "pregunta": "21. The word 'thrived' in line 15 is closest in meaning to",
+                            "opciones": [
+                                "(A) survived",
+                                "(B) grew",
+                                "(C) changed",
+                                "(D) failed"
+                            ],
+                            "correcta": "B",
+                            "explicacion": "'Thrived' significa prosperar o crecer con éxito."
+                        },
+                        {
+                            "id": 22,
+                            "pregunta": "22. What change occurred in glassmaking after the 1800s?",
+                            "opciones": [
+                                "(A) Production moved from the coast to the interior.",
+                                "(B) New methods allowed for clearer and cheaper glass.",
+                                "(C) Glass became a luxury item for the wealthy only.",
+                                "(D) The use of coal was replaced by wood."
+                            ],
+                            "correcta": "B",
+                            "explicacion": "La industrialización trajo innovaciones químicas que abarataron y mejoraron el producto."
+                        },
+                        {
+                            "id": 23,
+                            "pregunta": "23. The word 'obscure' in the text is closest in meaning to",
+                            "opciones": [
+                                "(A) famous",
+                                "(B) unclear",
+                                "(C) simple",
+                                "(D) expensive"
+                            ],
+                            "correcta": "B",
+                            "explicacion": "'Obscure' se refiere a algo que no es bien conocido o difícil de entender."
+                        },
+                        {
+                            "id": 24,
+                            "pregunta": "24. What does the fourth passage mainly discuss?",
+                            "opciones": [
+                                "(A) The structure of a bee colony.",
+                                "(B) How bees gather nectar.",
+                                "(C) Communication among honeybees.",
+                                "(D) The production of honey in modern farms."
+                            ],
+                            "correcta": "C",
+                            "explicacion": "El pasaje se centra en los métodos que usan las abejas para informar a otras sobre la comida."
+                        },
+                        {
+                            "id": 25,
+                            "pregunta": "25. The word 'precise' in line 8 is closest in meaning to",
+                            "opciones": [
+                                "(A) approximate",
+                                "(B) exact",
+                                "(C) simple",
+                                "(D) quick"
+                            ],
+                            "correcta": "B",
+                            "explicacion": "'Precise' significa que algo es detallado y exacto."
+                        },
+                        {
+                            "id": 26,
+                            "pregunta": "26. According to the passage, the 'round dance' indicates that food is",
+                            "opciones": [
+                                "(A) very far away.",
+                                "(B) of low quality.",
+                                "(C) relatively close to the hive.",
+                                "(D) guarded by predators."
+                            ],
+                            "correcta": "C",
+                            "explicacion": "El texto explica que la danza circular se usa para distancias cortas (menos de 50-100 metros)."
+                        },
+                        {
+                            "id": 27,
+                            "pregunta": "27. The 'waggle dance' provides information about which two factors?",
+                            "opciones": [
+                                "(A) Distance and direction.",
+                                "(B) Temperature and humidity.",
+                                "(C) Size and color of flowers.",
+                                "(D) Time of day and season."
+                            ],
+                            "correcta": "A",
+                            "explicacion": "Esta danza compleja codifica tanto qué tan lejos está la comida como en qué ángulo respecto al sol."
+                        },
+                        {
+                            "id": 28,
+                            "pregunta": "28. The word 'they' in the third paragraph refers to",
+                            "opciones": [
+                                "(A) dances",
+                                "(B) bees",
+                                "(C) flowers",
+                                "(D) scouts"
+                            ],
+                            "correcta": "B",
+                            "explicacion": "Se refiere a las abejas obreras que interpretan la información."
+                        },
+                        {
+                            "id": 29,
+                            "pregunta": "29. How do bees compensate for the sun's movement during the day?",
+                            "opciones": [
+                                "(A) They stop dancing at noon.",
+                                "(B) They adjust the angle of their dance internally.",
+                                "(C) They only forage when the sun is at its highest.",
+                                "(D) They follow other insects instead."
+                            ],
+                            "correcta": "B",
+                            "explicacion": "Las abejas tienen un reloj biológico que les permite ajustar sus indicaciones de dirección según la hora."
+                        },
+                        {
+                            "id": 30,
+                            "pregunta": "30. The word 'fundamental' is closest in meaning to",
+                            "opciones": [
+                                "(A) complex",
+                                "(B) basic",
+                                "(C) secondary",
+                                "(D) unusual"
+                            ],
+                            "correcta": "B",
+                            "explicacion": "'Fundamental' se refiere a la base o esencia de algo."
+                        },
+                        {
+                            "id": 31,
+                            "pregunta": "31. What can be inferred about bees that do not dance?",
+                            "opciones": [
+                                "(A) They are too young to forage.",
+                                "(B) They have not found a good food source yet.",
+                                "(C) They are specialized in hive maintenance.",
+                                "(D) They are sick or injured."
+                            ],
+                            "correcta": "B",
+                            "explicacion": "Solo las abejas exploradoras que encuentran éxito realizan la danza para reclutar a otras."
+                        },
+                        {
+                            "id": 32,
+                            "pregunta": "32. What is the main idea of the final passage?",
+                            "opciones": [
+                                "(A) The technical challenges of building bridges.",
+                                "(B) The impact of the transcontinental railroad on the U.S. economy.",
+                                "(C) A biography of the engineers who built the tracks.",
+                                "(D) The decline of steam-powered transportation."
+                            ],
+                            "correcta": "B",
+                            "explicacion": "El texto analiza cómo el ferrocarril unió los mercados y transformó el comercio nacional."
+                        },
+                        {
+                            "id": 33,
+                            "pregunta": "33. The word 'unprecedented' in line 3 is closest in meaning to",
+                            "opciones": [
+                                "(A) massive",
+                                "(B) never before seen",
+                                "(C) predictable",
+                                "(D) local"
+                            ],
+                            "correcta": "B",
+                            "explicacion": "Algo sin precedentes es algo que ocurre por primera vez en esa escala."
+                        },
+                        {
+                            "id": 34,
+                            "pregunta": "34. Why was the railroad considered a 'feat of engineering'?",
+                            "opciones": [
+                                "(A) It used materials imported from Asia.",
+                                "(B) It crossed vast mountain ranges and deserts.",
+                                "(C) it was completed in less than a year.",
+                                "(D) It required no government funding."
+                            ],
+                            "correcta": "B",
+                            "explicacion": "La mención de cruzar la Sierra Nevada y las Rocosas justifica el término 'proeza'."
+                        },
+                        {
+                            "id": 35,
+                            "pregunta": "35. The word 'it' in paragraph 2 refers to",
+                            "opciones": [
+                                "(A) railroad",
+                                "(B) continent",
+                                "(C) market",
+                                "(D) project"
+                            ],
+                            "correcta": "A",
+                            "explicacion": "Referencia al sistema ferroviario como sujeto de la oración."
+                        },
+                        {
+                            "id": 36,
+                            "pregunta": "36. How did the railroad affect the cost of goods?",
+                            "opciones": [
+                                "(A) It made them more expensive due to taxes.",
+                                "(B) It lowered costs by increasing efficiency.",
+                                "(C) It had no significant impact on prices.",
+                                "(D) It caused a shortage of raw materials."
+                            ],
+                            "correcta": "B",
+                            "explicacion": "El transporte masivo y rápido redujo drásticamente el costo de envío y, por ende, el precio final."
+                        },
+                        {
+                            "id": 37,
+                            "pregunta": "37. The word 'vibrant' in the text is closest in meaning to",
+                            "opciones": [
+                                "(A) noisy",
+                                "(B) energetic and lively",
+                                "(C) crowded",
+                                "(D) ancient"
+                            ],
+                            "correcta": "B",
+                            "explicacion": "'Vibrant' describe una economía o sociedad con mucha actividad y crecimiento."
+                        },
+                        {
+                            "id": 38,
+                            "pregunta": "38. According to the passage, the 'golden spike' ceremony represented",
+                            "opciones": [
+                                "(A) the discovery of gold in the West.",
+                                "(B) the completion of the transcontinental line.",
+                                "(C) the start of a new war.",
+                                "(D) the creation of a new state."
+                            ],
+                            "correcta": "B",
+                            "explicacion": "Fue el evento simbólico donde se unieron las vías de la Central Pacific y la Union Pacific."
+                        },
+                        {
+                            "id": 39,
+                            "pregunta": "39. The word 'simultaneously' means",
+                            "opciones": [
+                                "(A) at the same time",
+                                "(B) one after another",
+                                "(C) very slowly",
+                                "(D) by accident"
+                            ],
+                            "correcta": "A",
+                            "explicacion": "'Simultaneously' indica que dos o más eventos ocurren en el mismo instante."
+                        },
+                        {
+                            "id": 40,
+                            "pregunta": "40. What was a social consequence of the railroad mentioned in the text?",
+                            "opciones": [
+                                "(A) People stopped traveling by ship.",
+                                "(B) It encouraged westward migration and settlement.",
+                                "(C) It led to the end of the agricultural era.",
+                                "(D) It isolated rural communities."
+                            ],
+                            "correcta": "B",
+                            "explicacion": "El tren facilitó que miles de personas se asentaran en el oeste del país."
+                        },
+                        {
+                            "id": 41,
+                            "pregunta": "41. The word 'drastic' is closest in meaning to",
+                            "opciones": [
+                                "(A) extreme",
+                                "(B) small",
+                                "(C) slow",
+                                "(D) helpful"
+                            ],
+                            "correcta": "A",
+                            "explicacion": "'Drastic' se refiere a un cambio fuerte o radical."
+                        },
+                        {
+                            "id": 42,
+                            "pregunta": "42. What is the author's purpose in the third paragraph?",
+                            "opciones": [
+                                "(A) To list all the cities connected by the train.",
+                                "(B) To describe the economic unity created by the rail.",
+                                "(C) To complain about the environmental damage.",
+                                "(D) To explain how steam engines work."
+                            ],
+                            "correcta": "B",
+                            "explicacion": "El párrafo se enfoca en cómo los mercados regionales se fusionaron en un mercado nacional."
+                        },
+                        {
+                            "id": 43,
+                            "pregunta": "43. The word 'they' in the final section refers to",
+                            "opciones": [
+                                "(A) entrepreneurs",
+                                "(B) railroads",
+                                "(C) states",
+                                "(D) goods"
+                            ],
+                            "correcta": "A",
+                            "explicacion": "Referencia a los hombres de negocios que aprovecharon la nueva infraestructura."
+                        },
+                        {
+                            "id": 44,
+                            "pregunta": "44. According to the passage, the railroad led to the 'death of distance' because",
+                            "opciones": [
+                                "(A) people no longer had to walk.",
+                                "(B) time spent traveling was significantly reduced.",
+                                "(C) maps became more accurate.",
+                                "(D) everyone moved closer to the tracks."
+                            ],
+                            "correcta": "B",
+                            "explicacion": "El concepto se refiere a que lugares lejanos ahora eran accesibles en días en lugar de meses."
+                        },
+                        {
+                            "id": 45,
+                            "pregunta": "45. The word 'integral' is closest in meaning to",
+                            "opciones": [
+                                "(A) essential",
+                                "(B) optional",
+                                "(C) recent",
+                                "(D) difficult"
+                            ],
+                            "correcta": "A",
+                            "explicacion": "'Integral' significa que algo es parte necesaria para completar un todo."
+                        },
+                        {
+                            "id": 46,
+                            "pregunta": "46. What does the author imply about the future of transportation after the railroad?",
+                            "opciones": [
+                                "(A) It would never change again.",
+                                "(B) It laid the foundation for modern transport networks.",
+                                "(C) It was soon replaced by airplanes.",
+                                "(D) It became less important over time."
+                            ],
+                            "correcta": "B",
+                            "explicacion": "El texto sugiere que el modelo de red nacional fue el inicio de los sistemas de transporte actuales."
+                        },
+                        {
+                            "id": 47,
+                            "pregunta": "47. The word 'facilitated' in the text is closest in meaning to",
+                            "opciones": [
+                                "(A) blocked",
+                                "(B) helped",
+                                "(C) observed",
+                                "(D) ignored"
+                            ],
+                            "correcta": "B",
+                            "explicacion": "'Facilitated' significa hacer que un proceso sea más fácil o posible."
+                        },
+                        {
+                            "id": 48,
+                            "pregunta": "48. The phrase 'standard of living' refers to",
+                            "opciones": [
+                                "(A) the rules of a city.",
+                                "(B) the quality and availability of goods and services.",
+                                "(C) the type of house someone lives in.",
+                                "(D) the speed of travel."
+                            ],
+                            "correcta": "B",
+                            "explicacion": "Se refiere al bienestar económico y nivel de consumo de la población."
+                        },
+                        {
+                            "id": 49,
+                            "pregunta": "49. Which of the following was NOT mentioned as a benefit of the railroad?",
+                            "opciones": [
+                                "(A) Faster mail delivery.",
+                                "(B) Immediate communication via wireless internet.",
+                                "(C) Lower food prices.",
+                                "(D) National integration."
+                            ],
+                            "correcta": "B",
+                            "explicacion": "El internet no existía en el siglo XIX, por lo que es la opción incorrecta en el contexto."
+                        },
+                        {
+                            "id": 50,
+                            "pregunta": "50. What is the overall tone of the passage?",
+                            "opciones": [
+                                "(A) Mournful",
+                                "(B) Objective and Analytical",
+                                "(C) Sarcastic",
+                                "(D) Fearful"
+                            ],
+                            "correcta": "B",
+                            "explicacion": "El autor analiza hechos históricos y consecuencias económicas de forma profesional y equilibrada."
+                        }
+                    ]
+                }
+            }
+        ]
     }
 }
