@@ -39,6 +39,7 @@
         <button onclick="switchTab('listening')" id="tab-listening" class="tab-active pb-3 pt-4 text-lg">1. Listening</button>
         <button onclick="switchTab('structure')" id="tab-structure" class="tab-inactive pb-3 pt-4 text-lg">2. Structure (Longman)</button>
         <button onclick="switchTab('reading')" id="tab-reading" class="tab-inactive pb-3 pt-4 text-lg">3. Reading (Skimming)</button>
+        <button onclick="switchTab('pdfview')" id="tab-pdfview" class="tab-inactive pb-3 pt-4 text-lg">4. PDF (Libro Vol 3)</button>
     </nav>
 
     <!-- Main Content Area -->
@@ -50,14 +51,19 @@
                 <h2 class="text-2xl font-bold mb-2 flex items-center gap-2"><i class="fas fa-headphones-alt text-blue-500"></i> Listening Comprehension</h2>
                 <p class="text-gray-600 mb-4 text-sm"><strong>Tip moderno:</strong> En la Parte A, la respuesta casi siempre está en lo que dice la segunda persona. Busca sinónimos, no las palabras exactas.</p>
                 
-                <!-- Audio Player usando tus archivos locales -->
-                <div class="bg-gray-50 p-4 rounded-lg mb-6 border border-gray-200">
-                    <p class="font-semibold mb-2 text-gray-700">Audio Parte A (Volumen 3)</p>
-                    <audio controls class="w-full">
-                        <!-- El navegador buscará este archivo en la misma carpeta donde esté el HTML -->
-                        <source src="TOEFL ITP PRACTICE TEST LEVEL 1 VOLUME 3 AUDIO A.mp3" type="audio/mpeg">
-                        Tu navegador no soporta el elemento de audio.
-                    </audio>
+                <!-- Audio Player Streaming from Google Drive -->
+                <div class="bg-blue-50 border border-blue-200 p-5 rounded-xl mb-6 shadow-sm">
+                    <p class="font-semibold text-blue-900 mb-2"><i class="fab fa-google-drive mr-2"></i>Audio desde Google Drive</p>
+                    <p class="text-sm text-blue-700 mb-4">Pega el enlace de Google Drive de tu audio (asegúrate de que tenga el permiso "Cualquier persona con el enlace"). El reproductor nativo soportará archivos de +25MB.</p>
+                    
+                    <div class="flex gap-2 mb-4">
+                        <input type="text" id="drive-link" placeholder="https://drive.google.com/file/d/TU_ID_AQUI/view" class="flex-1 border border-blue-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button onclick="cargarAudioDrive()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg text-sm transition-colors">Cargar Reproductor</button>
+                    </div>
+                    
+                    <div id="audio-container" class="hidden w-full h-24 rounded-lg overflow-hidden border border-gray-300">
+                        <!-- El iframe del reproductor de Drive se inyectará aquí -->
+                    </div>
                 </div>
 
                 <!-- Preguntas de ejemplo -->
@@ -136,6 +142,16 @@
             </div>
         </div>
 
+        <!-- SECTION 4: PDF VIEWER -->
+        <div id="sec-pdfview" class="space-y-6 hidden h-[800px]">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col">
+                <h2 class="text-2xl font-bold mb-2 flex items-center gap-2"><i class="fas fa-file-pdf text-red-500"></i> Libro PDF (Volumen 3)</h2>
+                <p class="text-gray-600 mb-4 text-sm">Tu libro precargado directamente desde tu Google Drive. Usa las herramientas del visor para hacer zoom o buscar (Ctrl+F).</p>
+                <!-- Se usa el ID exacto que extraje de tu Drive -->
+                <iframe src="https://drive.google.com/file/d/11enpKP-i0sKGE4Fcs78JUAOCLNM0yhB3/preview" class="w-full flex-1 border-2 border-gray-200 rounded-lg" allow="autoplay"></iframe>
+            </div>
+        </div>
+
         <div class="mt-8 text-center pb-12">
             <button onclick="calificarExamen()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 text-lg">
                 <i class="fas fa-check-double mr-2"></i> Calificar Simulación
@@ -154,19 +170,37 @@
     </div>
 
     <script>
+        // --- STREAMING DESDE GOOGLE DRIVE ---
+        function cargarAudioDrive() {
+            const link = document.getElementById('drive-link').value;
+            const container = document.getElementById('audio-container');
+            
+            // Expresión regular para extraer el ID del enlace de Drive (funciona con links de view o sharing)
+            const regex = /\/d\/(.*?)\//;
+            const match = link.match(regex);
+            
+            if (match && match[1]) {
+                const fileId = match[1];
+                // Usamos el reproductor preview nativo para burlar el límite de 25MB
+                const iframeHtml = `<iframe src="https://drive.google.com/file/d/${fileId}/preview" width="100%" height="100" allow="autoplay" class="border-none"></iframe>`;
+                
+                container.innerHTML = iframeHtml;
+                container.classList.remove('hidden');
+            } else {
+                alert("Por favor, introduce un enlace de compartir de Google Drive válido.");
+            }
+        }
+
         // --- NAVEGACIÓN DE TABS ---
         function switchTab(tabId) {
-            const sections = ['listening', 'structure', 'reading'];
+            const sections = ['listening', 'structure', 'reading', 'pdfview'];
             
             sections.forEach(sec => {
-                // Ocultar todas las secciones
                 document.getElementById('sec-' + sec).classList.add('hidden');
-                // Resetear estilos de los botones
                 const btn = document.getElementById('tab-' + sec);
                 btn.className = 'tab-inactive pb-3 pt-4 text-lg';
             });
 
-            // Mostrar la sección activa
             document.getElementById('sec-' + tabId).classList.remove('hidden');
             const activeBtn = document.getElementById('tab-' + tabId);
             activeBtn.className = 'tab-active pb-3 pt-4 text-lg transition-all';
@@ -183,7 +217,6 @@
         }, 1000);
 
         // --- EL HACK MODERNO (Llenar al azar C o D) ---
-        // Basado en el consejo estadístico para cuando te quedan pocos segundos
         function aplicarHack() {
             const questions = document.querySelectorAll('.question-block');
             let filledCount = 0;
@@ -194,7 +227,6 @@
                 radios.forEach(r => { if(r.checked) isAnswered = true; });
 
                 if (!isAnswered) {
-                    // Elegir aleatoriamente entre C (índice 2) y D (índice 3)
                     const randomChoice = Math.random() < 0.5 ? 2 : 3;
                     radios[randomChoice].checked = true;
                     filledCount++;
@@ -210,7 +242,6 @@
 
         // --- CALIFICACIÓN SIMPLE ---
         function calificarExamen() {
-            // Respuestas correctas simuladas: 1:C, 2:D, 3:C, 4:B
             const answers = { q1: 'C', q2: 'D', q3: 'C', q4: 'B' };
             let correctas = 0;
 
@@ -221,7 +252,6 @@
                 }
             }
 
-            // Mostrar el modal
             const modal = document.getElementById('resultModal');
             const scoreText = document.getElementById('scoreText');
             scoreText.innerHTML = `Acertaste <strong>${correctas} de 4</strong> preguntas en esta demostración.<br><span class="text-sm mt-2 block text-gray-500">Recuerda: El objetivo es pasar de 436 a 500+.</span>`;
