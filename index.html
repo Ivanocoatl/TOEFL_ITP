@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEFL ITP Trainer - Método Híbrido</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .tab-active { border-bottom: 4px solid #3b82f6; color: #1d4ed8; font-weight: 600; }
+        .tab-inactive { color: #6b7280; }
+        .tab-inactive:hover { color: #374151; }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+
+    <!-- Navbar & Timer -->
+    <header class="bg-white shadow-md p-4 flex justify-between items-center z-10">
+        <div class="flex items-center gap-3">
+            <i class="fas fa-graduation-cap text-blue-600 text-3xl"></i>
+            <h1 class="text-xl font-bold text-gray-800">TOEFL ITP <span class="text-blue-600">Trainer</span></h1>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="bg-red-100 text-red-700 px-4 py-2 rounded-lg font-mono font-bold text-lg flex items-center gap-2 shadow-sm">
+                <i class="fas fa-stopwatch"></i>
+                <span id="timer">25:00</span>
+            </div>
+            <!-- Botón del Hack Moderno (Estrategia C/D) -->
+            <button onclick="aplicarHack()" class="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-2 px-4 rounded-lg shadow transition-colors flex items-center gap-2 text-sm">
+                <i class="fas fa-bolt"></i> ¡Me quedo sin tiempo! (Hack C/D)
+            </button>
+        </div>
+    </header>
+
+    <!-- Tabs Navigation -->
+    <nav class="bg-white border-b px-6 flex gap-6 mt-1">
+        <button onclick="switchTab('listening')" id="tab-listening" class="tab-active pb-3 pt-4 text-lg">1. Listening</button>
+        <button onclick="switchTab('structure')" id="tab-structure" class="tab-inactive pb-3 pt-4 text-lg">2. Structure (Longman)</button>
+        <button onclick="switchTab('reading')" id="tab-reading" class="tab-inactive pb-3 pt-4 text-lg">3. Reading (Skimming)</button>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto p-6 max-w-5xl mx-auto w-full">
+        
+        <!-- SECTION 1: LISTENING -->
+        <div id="sec-listening" class="space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <h2 class="text-2xl font-bold mb-2 flex items-center gap-2"><i class="fas fa-headphones-alt text-blue-500"></i> Listening Comprehension</h2>
+                <p class="text-gray-600 mb-4 text-sm"><strong>Tip moderno:</strong> En la Parte A, la respuesta casi siempre está en lo que dice la segunda persona. Busca sinónimos, no las palabras exactas.</p>
+                
+                <!-- Audio Player usando tus archivos locales -->
+                <div class="bg-gray-50 p-4 rounded-lg mb-6 border border-gray-200">
+                    <p class="font-semibold mb-2 text-gray-700">Audio Parte A (Volumen 3)</p>
+                    <audio controls class="w-full">
+                        <!-- El navegador buscará este archivo en la misma carpeta donde esté el HTML -->
+                        <source src="TOEFL ITP PRACTICE TEST LEVEL 1 VOLUME 3 AUDIO A.mp3" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <!-- Preguntas de ejemplo -->
+                <div class="space-y-6">
+                    <div class="question-block" data-qnum="1">
+                        <p class="font-semibold text-lg mb-3">1. What does the woman imply?</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pl-4">
+                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-blue-50 cursor-pointer transition-colors"><input type="radio" name="q1" value="A"> (A) She doesn't have time to help.</label>
+                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-blue-50 cursor-pointer transition-colors"><input type="radio" name="q1" value="B"> (B) She wants to study together.</label>
+                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-blue-50 cursor-pointer transition-colors"><input type="radio" name="q1" value="C"> (C) The man should ask someone else.</label>
+                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-blue-50 cursor-pointer transition-colors"><input type="radio" name="q1" value="D"> (D) She has already finished the assignment.</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: STRUCTURE -->
+        <div id="sec-structure" class="space-y-6 hidden">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <h2 class="text-2xl font-bold mb-2 flex items-center gap-2"><i class="fas fa-code-branch text-green-500"></i> Structure and Written Expression</h2>
+                <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
+                    <p class="text-sm text-green-800"><strong>Regla Longman (Skills 1-5):</strong> Toda oración en inglés requiere un <u>Sujeto</u> y un <u>Verbo</u>. Cuidado con los apositivos (frases entre comas) que intentan engañarte fingiendo ser el sujeto principal.</p>
+                </div>
+
+                <div class="space-y-8">
+                    <!-- Pregunta Longman Ejercicio 1 -->
+                    <div class="question-block" data-qnum="2">
+                        <p class="font-semibold text-lg mb-3">2. _____, George, is attending the lecture.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pl-4">
+                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-green-50 cursor-pointer transition-colors"><input type="radio" name="q2" value="A"> (A) Right now</label>
+                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-green-50 cursor-pointer transition-colors"><input type="radio" name="q2" value="B"> (B) Happily</label>
+                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-green-50 cursor-pointer transition-colors"><input type="radio" name="q2" value="C"> (C) Because of the time</label>
+                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-green-50 cursor-pointer transition-colors"><input type="radio" name="q2" value="D"> (D) My friend</label>
+                        </div>
+                    </div>
+
+                    <!-- Pregunta Longman Ejercicio 2 -->
+                    <div class="question-block" data-qnum="3">
+                        <p class="font-semibold text-lg mb-3">3. The boy _____ going to the movies with a friend.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pl-4">
+                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-green-50 cursor-pointer transition-colors"><input type="radio" name="q3" value="A"> (A) he is</label>
+                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-green-50 cursor-pointer transition-colors"><input type="radio" name="q3" value="B"> (B) he always was</label>
+                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-green-50 cursor-pointer transition-colors"><input type="radio" name="q3" value="C"> (C) is</label>
+                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-green-50 cursor-pointer transition-colors"><input type="radio" name="q3" value="D"> (D) will be</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: READING -->
+        <div id="sec-reading" class="space-y-6 hidden">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <h2 class="text-2xl font-bold mb-2 flex items-center gap-2"><i class="fas fa-book-open text-purple-500"></i> Reading Comprehension</h2>
+                <div class="bg-purple-50 border-l-4 border-purple-500 p-4 mb-6">
+                    <p class="text-sm text-purple-800"><strong>Técnica de Skimming:</strong> NO leas todo el texto. Lee la primera línea de cada párrafo, luego ve directo a la pregunta, identifica palabras clave y escanéalas en el texto.</p>
+                </div>
+
+                <div class="p-5 bg-gray-50 border rounded-lg mb-6 text-gray-800 text-justify leading-relaxed">
+                    <p class="mb-3">The first commercially successful steam engine was built by Thomas Newcomen in 1712. It was a massive, inefficient machine that required enormous amounts of coal, but it revolutionized the pumping of water out of deep coal mines in England.</p>
+                    <p>Decades later, James Watt drastically improved the design. Watt's addition of a separate condenser prevented the loss of heat that plagued Newcomen's engine, making it far more powerful and fuel-efficient.</p>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="question-block" data-qnum="4">
+                        <p class="font-semibold text-lg mb-3">4. The word "plagued" in paragraph 2 is closest in meaning to:</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pl-4">
+                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-purple-50 cursor-pointer transition-colors"><input type="radio" name="q4" value="A"> (A) assisted</label>
+                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-purple-50 cursor-pointer transition-colors"><input type="radio" name="q4" value="B"> (B) bothered</label>
+                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-purple-50 cursor-pointer transition-colors"><input type="radio" name="q4" value="C"> (C) destroyed</label>
+                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-purple-50 cursor-pointer transition-colors"><input type="radio" name="q4" value="D"> (D) created</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center pb-12">
+            <button onclick="calificarExamen()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 text-lg">
+                <i class="fas fa-check-double mr-2"></i> Calificar Simulación
+            </button>
+        </div>
+    </main>
+
+    <!-- Modal de Resultados -->
+    <div id="resultModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full text-center">
+            <i class="fas fa-trophy text-5xl text-yellow-500 mb-4"></i>
+            <h2 class="text-2xl font-bold mb-2">¡Simulación Terminada!</h2>
+            <p id="scoreText" class="text-gray-600 mb-6 text-lg">Puntaje estimado calculando...</p>
+            <button onclick="document.getElementById('resultModal').classList.add('hidden')" class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-6 rounded-lg">Cerrar y Revisar</button>
+        </div>
+    </div>
+
+    <script>
+        // --- NAVEGACIÓN DE TABS ---
+        function switchTab(tabId) {
+            const sections = ['listening', 'structure', 'reading'];
+            
+            sections.forEach(sec => {
+                // Ocultar todas las secciones
+                document.getElementById('sec-' + sec).classList.add('hidden');
+                // Resetear estilos de los botones
+                const btn = document.getElementById('tab-' + sec);
+                btn.className = 'tab-inactive pb-3 pt-4 text-lg';
+            });
+
+            // Mostrar la sección activa
+            document.getElementById('sec-' + tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById('tab-' + tabId);
+            activeBtn.className = 'tab-active pb-3 pt-4 text-lg transition-all';
+        }
+
+        // --- TEMPORIZADOR BÁSICO ---
+        let time = 25 * 60; // 25 minutos para structure
+        setInterval(() => {
+            const minutes = Math.floor(time / 60);
+            let seconds = time % 60;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            document.getElementById('timer').innerText = `${minutes}:${seconds}`;
+            if(time > 0) time--;
+        }, 1000);
+
+        // --- EL HACK MODERNO (Llenar al azar C o D) ---
+        // Basado en el consejo estadístico para cuando te quedan pocos segundos
+        function aplicarHack() {
+            const questions = document.querySelectorAll('.question-block');
+            let filledCount = 0;
+            
+            questions.forEach(q => {
+                const radios = q.querySelectorAll('input[type="radio"]');
+                let isAnswered = false;
+                radios.forEach(r => { if(r.checked) isAnswered = true; });
+
+                if (!isAnswered) {
+                    // Elegir aleatoriamente entre C (índice 2) y D (índice 3)
+                    const randomChoice = Math.random() < 0.5 ? 2 : 3;
+                    radios[randomChoice].checked = true;
+                    filledCount++;
+                }
+            });
+
+            if(filledCount > 0) {
+                alert(`¡Hack aplicado! Se rellenaron ${filledCount} preguntas en blanco usando opciones C o D para maximizar probabilidad.`);
+            } else {
+                alert('Todas las preguntas ya están contestadas. ¡Buen ritmo!');
+            }
+        }
+
+        // --- CALIFICACIÓN SIMPLE ---
+        function calificarExamen() {
+            // Respuestas correctas simuladas: 1:C, 2:D, 3:C, 4:B
+            const answers = { q1: 'C', q2: 'D', q3: 'C', q4: 'B' };
+            let correctas = 0;
+
+            for (const [qName, correctVal] of Object.entries(answers)) {
+                const selected = document.querySelector(`input[name="${qName}"]:checked`);
+                if (selected && selected.value === correctVal) {
+                    correctas++;
+                }
+            }
+
+            // Mostrar el modal
+            const modal = document.getElementById('resultModal');
+            const scoreText = document.getElementById('scoreText');
+            scoreText.innerHTML = `Acertaste <strong>${correctas} de 4</strong> preguntas en esta demostración.<br><span class="text-sm mt-2 block text-gray-500">Recuerda: El objetivo es pasar de 436 a 500+.</span>`;
+            modal.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
