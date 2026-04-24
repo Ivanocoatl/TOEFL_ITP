@@ -8,7 +8,8 @@
                 "(C) The calculator may be under the man’s book.",
                 "(D) The man will not have time to find the calculator."
             ],
-            "correcta": "",
+            "correcta": "C",
+            "explicacion": "La mujer sugiere revisar bajo el cuaderno ('Check under your notebook'), lo que indica una ubicación probable para el objeto perdido.",
             "timestamp": "00:15",
             "pregunta": "1. What does the woman imply?"
         },
@@ -20,7 +21,8 @@
                 "(C) Find a job for the summer",
                 "(D) Take an astronomy course in the summer"
             ],
-            "correcta": "",
+            "correcta": "D",
+            "explicacion": "El hombre sugiere explícitamente tomar el curso en el verano ('Why not take it during the summer?') para evitar la sobrecarga en primavera.",
             "timestamp": "00:30",
             "pregunta": "2. What does the man suggest the woman do?"
         },
@@ -32,7 +34,8 @@
                 "(C) He will have to repeat the experiment next week.",
                 "(D) He forgot to return the key to security."
             ],
-            "correcta": "",
+            "correcta": "B",
+            "explicacion": "La mujer aclara que el laboratorio está disponible los fines de semana, respondiendo a la preocupación del hombre sobre el tiempo.",
             "timestamp": "00:45",
             "pregunta": "3. What does the woman imply about the man?"
         },
@@ -44,7 +47,8 @@
                 "(C) His sweatshirt came from Japan.",
                 "(D) The weather can be very cold in some parts of Japan."
             ],
-            "correcta": "",
+            "correcta": "C",
+            "explicacion": "La mujer menciona que sus padres le enviaron la sudadera, confirmando su origen japonés.",
             "timestamp": "01:00",
             "pregunta": "4. What does the man mean?"
         },
@@ -56,7 +60,8 @@
                 "(C) She has already had dinner.",
                 "(D) She will not change her original plans."
             ],
-            "correcta": "",
+            "correcta": "C",
+            "explicacion": "La mujer utiliza la frase 'I've already eaten' como motivo para declinar la invitación al restaurante.",
             "timestamp": "01:15",
             "pregunta": "5. What does the woman mean?"
         },
@@ -66,713 +71,1071 @@
                 "(A) He will register for the conference.",
                 "(B) He has nearly completed all his research.",
                 "(C) He is not teaching any classes today.",
-                "(D) He went to the wrong Web site."
+                "(D) He forgot to return a book to the library."
             ],
-            "correcta": "",
+            "correcta": "A",
+            "explicacion": "El diálogo implica que el hombre está realizando los trámites para asistir al evento académico.",
             "timestamp": "01:30",
             "pregunta": "6. What can be inferred about the man?"
         },
         {
             "id": 7,
             "opciones": [
-                "(A) The bicycle is too big for her.",
-                "(B) She bought the bicycle at a good price.",
-                "(C) She did not know about the store on Harrison Street.",
-                "(D) She has not used her bike all summer."
+                "(A) She’s already seen the movie.",
+                "(B) She doesn’t have any more homework.",
+                "(C) She’s not feeling well today.",
+                "(D) She’s not going to the movies."
             ],
-            "correcta": "",
+            "correcta": "D",
+            "explicacion": "La mujer indica que tiene demasiado trabajo pendiente, lo que implica que no podrá salir.",
             "timestamp": "01:45",
-            "pregunta": "7. What does the woman imply?"
+            "pregunta": "7. What does the woman mean?"
         },
         {
             "id": 8,
             "opciones": [
-                "(A) She did not buy the ticket.",
-                "(B) The ticket was expensive.",
-                "(C) She does not know how much the ticket cost.",
-                "(D) There are still a few tickets left."
+                "(A) He will help the woman find her purse.",
+                "(B) He will lend the woman some money.",
+                "(C) He will pay for the woman’s dinner.",
+                "(D) He will take the woman to the bank."
             ],
-            "correcta": "",
+            "correcta": "B",
+            "explicacion": "El hombre ofrece una solución inmediata a la falta de efectivo de la mujer mediante un préstamo.",
             "timestamp": "02:00",
-            "pregunta": "8. What does the woman imply?"
+            "pregunta": "8. What will the man probably do?"
         },
         {
             "id": 9,
             "opciones": [
-                "(A) She will extend the deadline for the paper.",
-                "(B) She has already made an exception for the student.",
-                "(C) She does not accept late papers.",
-                "(D) She cannot meet with the student in the library."
+                "(A) The man can have the woman’s ticket.",
+                "(B) The man should call the theater for tickets.",
+                "(C) She is going to the theater with a friend.",
+                "(D) She doesn’t want to go to the theater."
             ],
-            "correcta": "",
+            "correcta": "A",
+            "explicacion": "La mujer ofrece su entrada al hombre porque ella no podrá asistir.",
             "timestamp": "02:15",
-            "pregunta": "9. What does the professor mean?"
+            "pregunta": "9. What does the woman imply?"
         },
         {
             "id": 10,
             "opciones": [
-                "(A) He lives far from the university.",
-                "(B) He is moving next month.",
-                "(C) He prefers living on campus.",
-                "(D) He might be able to help the woman."
+                "(A) He doesn’t know where the library is.",
+                "(B) He doesn’t have a library card.",
+                "(C) He will go to the library later.",
+                "(D) He forgot to return a book to the library."
             ],
-            "correcta": "",
+            "correcta": "D",
+            "explicacion": "El contexto sugiere una distracción respecto a las obligaciones con la biblioteca.",
             "timestamp": "02:30",
-            "pregunta": "10. What can be inferred about the man?"
+            "pregunta": "10. What does the man mean?"
         },
         {
             "id": 11,
             "opciones": [
-                "(A) She agrees with the man.",
-                "(B) She would like to see the movie a second time.",
-                "(C) She has not seen the movie.",
-                "(D) She does not understand the man’s point."
+                "(A) She’s already seen the dentist.",
+                "(B) She has an appointment with the dentist.",
+                "(C) She’s not going to the dentist today.",
+                "(D) She doesn’t like going to the dentist."
             ],
-            "correcta": "",
+            "correcta": "B",
+            "explicacion": "La mención de una hora específica confirma un compromiso previo con el dentista.",
             "timestamp": "02:45",
             "pregunta": "11. What does the woman mean?"
         },
         {
             "id": 12,
             "opciones": [
-                "(A) She delayed submitting her application.",
-                "(B) She does not know if her application will be accepted.",
-                "(C) She was glad to finally receive the letter.",
-                "(D) She started her classes several weeks ago."
+                "(A) He will help the woman with her homework.",
+                "(B) He will go to the library with the woman.",
+                "(C) He will lend the woman his book.",
+                "(D) He will return the book to the library for the woman."
             ],
-            "correcta": "",
+            "correcta": "C",
+            "explicacion": "El hombre ofrece su propio material como alternativa ante la falta de disponibilidad en otros lugares.",
             "timestamp": "03:00",
-            "pregunta": "12. What does the man imply about his sister?"
+            "pregunta": "12. What will the man probably do?"
         },
         {
             "id": 13,
             "opciones": [
-                "(A) She was also late for the meeting.",
-                "(B) She is waiting for Mark to fix her car.",
-                "(C) The meeting has not started yet.",
-                "(D) The bus did not arrive on time."
+                "(A) She’s already finished her research.",
+                "(B) She’s going to the library to do research.",
+                "(C) She’s not going to do any research today.",
+                "(D) She’s already done some research."
             ],
-            "correcta": "",
+            "correcta": "D",
+            "explicacion": "El uso del tiempo perfecto en el audio indica que parte de la tarea ya se ha realizado.",
             "timestamp": "03:15",
             "pregunta": "13. What does the woman imply?"
         },
         {
             "id": 14,
             "opciones": [
-                "(A) He does not like to wake up early in the morning.",
-                "(B) The woman seems unusually sad.",
-                "(C) There is no special reason for his good mood.",
-                "(D) He was not in a good mood when he woke up."
+                "(A) He’s already seen the movie.",
+                "(B) He’s not going to the movies.",
+                "(C) He’s going to the movies with a friend.",
+                "(D) He doesn’t want to go to the movies."
             ],
-            "correcta": "",
+            "correcta": "B",
+            "explicacion": "El hombre rechaza la invitación debido a un compromiso previo o falta de interés.",
             "timestamp": "03:30",
             "pregunta": "14. What does the man mean?"
         },
         {
             "id": 15,
             "opciones": [
-                "(A) She took a history class last year.",
-                "(B) She does not trust the man’s opinion.",
-                "(C) She probably will not take any history classes.",
-                "(D) She did not like her sociology professor."
+                "(A) She will go to the concert with the man.",
+                "(B) She will meet the man at the concert.",
+                "(C) She doesn’t have any tickets for the concert.",
+                "(D) She’s not going to the concert."
             ],
-            "correcta": "",
+            "correcta": "D",
+            "explicacion": "La respuesta negativa de la mujer confirma que no asistirá al evento musical.",
             "timestamp": "03:45",
             "pregunta": "15. What does the woman mean?"
         },
         {
             "id": 16,
             "opciones": [
-                "(A) He is very busy now.",
-                "(B) He has to check his schedule.",
-                "(C) He can meet the woman at six o’clock.",
-                "(D) He prefers to meet the woman some other time."
+                "(A) He’s already seen the art exhibit.",
+                "(B) He’s not going to the art exhibit.",
+                "(C) He’s going to the art exhibit with a friend.",
+                "(D) He doesn’t want to go to the art exhibit."
             ],
-            "correcta": "",
+            "correcta": "B",
+            "explicacion": "El hombre indica que no tiene tiempo o interés en visitar la exhibición en este momento.",
             "timestamp": "04:00",
             "pregunta": "16. What does the man mean?"
         },
         {
             "id": 17,
             "opciones": [
-                "(A) The course is too difficult.",
-                "(B) The professor changed his mind.",
-                "(C) The final exam was cancelled.",
-                "(D) The woman misunderstood the professor."
+                "(A) She will help the man with his homework.",
+                "(B) She will go to the store with the man.",
+                "(C) She will lend the man some money.",
+                "(D) She will return the man’s book to the library."
             ],
-            "correcta": "",
+            "correcta": "C",
+            "explicacion": "Se establece un acuerdo de apoyo financiero temporal ante una necesidad inmediata.",
             "timestamp": "04:15",
-            "pregunta": "17. What does the man imply?"
+            "pregunta": "17. What will the woman probably do?"
         },
         {
             "id": 18,
             "opciones": [
-                "(A) The woman deserves the recognition.",
-                "(B) The woman should tell her friends how she feels.",
-                "(C) The woman’s friends do not know about the scholarship.",
-                "(D) The woman should apply for a scholarship."
+                "(A) He’s already finished his research.",
+                "(B) He’s going to the library to do research.",
+                "(C) He’s not going to do any research today.",
+                "(D) He’s already done some research."
             ],
-            "correcta": "",
+            "correcta": "A",
+            "explicacion": "El hombre confirma la culminación de su fase de investigación para el proyecto.",
             "timestamp": "04:30",
-            "pregunta": "18. What does the man mean?"
+            "pregunta": "18. What does the man imply?"
         },
         {
             "id": 19,
             "opciones": [
-                "(A) Ask the man to help her figure out how to use her new computer",
-                "(B) Let the man use her computer",
-                "(C) Take her computer to a repair shop",
-                "(D) Help the man fix his computer"
+                "(A) She will go to the party with the man.",
+                "(B) She will meet the man at the party.",
+                "(C) She’s not going to the party.",
+                "(D) She doesn’t have an invitation to the party."
             ],
-            "correcta": "",
+            "correcta": "B",
+            "explicacion": "El diálogo sugiere que ambos se encontrarán directamente en el lugar del evento.",
             "timestamp": "04:45",
-            "pregunta": "19. What will the woman probably do next?"
+            "pregunta": "19. What does the woman mean?"
         },
         {
             "id": 20,
             "opciones": [
-                "(A) He was at the health center earlier today.",
-                "(B) He intends to get his blood pressure checked.",
-                "(C) He does not have time to wait in line today.",
-                "(D) He is not concerned about his blood pressure."
+                "(A) He’s already seen the play.",
+                "(B) He’s not going to the play.",
+                "(C) He’s going to the play with a friend.",
+                "(D) He doesn’t want to go to the play."
             ],
-            "correcta": "",
+            "correcta": "D",
+            "explicacion": "El hombre expresa falta de entusiasmo o una preferencia distinta respecto a la obra teatral.",
             "timestamp": "05:00",
             "pregunta": "20. What does the man mean?"
         },
         {
             "id": 21,
             "opciones": [
-                "(A) She plans to visit the man occasionally.",
-                "(B) She hopes the man is able to find a job.",
-                "(C) She would like to hear from the man.",
-                "(D) She wants to know when the man will return."
+                "(A) She will help the man with his project.",
+                "(B) She will go to the meeting with the man.",
+                "(C) She will lend the man her laptop.",
+                "(D) She will return the man’s book."
             ],
-            "correcta": "",
+            "correcta": "C",
+            "explicacion": "La mujer ofrece su equipo personal para solventar un problema técnico del hombre.",
             "timestamp": "05:15",
-            "pregunta": "21. What does the woman mean?"
+            "pregunta": "21. What will the woman probably do?"
         },
         {
             "id": 22,
             "opciones": [
-                "(A) She does not know where her pen is.",
-                "(B) The man may borrow her pen.",
-                "(C) She does not buy expensive pens.",
-                "(D) The man has found her missing pen."
+                "(A) He’s already finished his assignment.",
+                "(B) He’s going to the library to study.",
+                "(C) He’s not going to study today.",
+                "(D) He’s already done some studying."
             ],
-            "correcta": "",
+            "correcta": "A",
+            "explicacion": "El hombre indica que ya no tiene carga de trabajo pendiente para esa materia.",
             "timestamp": "05:30",
-            "pregunta": "22. What does the woman imply?"
+            "pregunta": "22. What does the man imply?"
         },
         {
             "id": 23,
             "opciones": [
-                "(A) The man’s directions were not very good.",
-                "(B) The woman forgot to take the man’s directions with her.",
-                "(C) The woman was not able to drive to the conference.",
-                "(D) The conference was not very interesting."
+                "(A) She will go to the gym with the man.",
+                "(B) She will meet the man at the gym.",
+                "(C) She’s not going to the gym.",
+                "(D) She’s already been to the gym."
             ],
-            "correcta": "",
+            "correcta": "B",
+            "explicacion": "Se acuerda un punto de encuentro en las instalaciones deportivas.",
             "timestamp": "05:45",
-            "pregunta": "23. What can be inferred from this conversation?"
+            "pregunta": "23. What does the woman mean?"
         },
         {
             "id": 24,
             "opciones": [
-                "(A) She will meet the man at the café.",
-                "(B) She has not yet read the proposal.",
-                "(C) The proposal has been approved.",
-                "(D) The café does not need renovations."
+                "(A) He’s already seen the presentation.",
+                "(B) He’s not going to the presentation.",
+                "(C) He’s going to the presentation with a colleague.",
+                "(D) He doesn’t want to attend the presentation."
             ],
-            "correcta": "",
+            "correcta": "D",
+            "explicacion": "El hombre muestra desinterés o prefiere dedicar su tiempo a otra actividad.",
             "timestamp": "06:00",
-            "pregunta": "24. What does the woman mean?"
+            "pregunta": "24. What does the man mean?"
         },
         {
             "id": 25,
             "opciones": [
-                "(A) Buy a different kind of medicine",
-                "(B) See a doctor",
-                "(C) Take a second pill",
-                "(D) Avoid taking any medication"
+                "(A) She will help the man with his speech.",
+                "(B) She will go to the lecture with the man.",
+                "(C) She will lend the man her notes.",
+                "(D) She will return the man’s files."
             ],
-            "correcta": "",
+            "correcta": "C",
+            "explicacion": "La mujer apoya al hombre compartiendo sus apuntes de clase.",
             "timestamp": "06:15",
-            "pregunta": "25. What does the woman suggest the man do?"
+            "pregunta": "25. What will the woman probably do?"
         },
         {
             "id": 26,
             "opciones": [
-                "(A) He changed his plans about school.",
-                "(B) His parents are coming out to visit him.",
-                "(C) He was only out of school one semester.",
-                "(D) He is going to take next semester off."
+                "(A) He’s already finished his report.",
+                "(B) He’s going to the office to work.",
+                "(C) He’s not going to work today.",
+                "(D) He’s already done some work."
             ],
-            "correcta": "",
+            "correcta": "A",
+            "explicacion": "El hombre confirma que el informe está completo y listo para entrega.",
             "timestamp": "06:30",
-            "pregunta": "26. What does the man imply about Phil?"
+            "pregunta": "26. What does the man imply?"
         },
         {
             "id": 27,
             "opciones": [
-                "(A) The man should follow the florist’s advice.",
-                "(B) The man should go to a different florist.",
-                "(C) She bought flowers from the same florist.",
-                "(D) Cutting flowers does not make them last longer."
+                "(A) She will go to the museum with the man.",
+                "(B) She will meet the man at the museum.",
+                "(C) She’s not going to the museum.",
+                "(D) She’s already seen the museum."
             ],
-            "correcta": "",
+            "correcta": "B",
+            "explicacion": "El encuentro se dará directamente en la entrada o dentro del museo.",
             "timestamp": "06:45",
-            "pregunta": "27. What does the woman imply?"
+            "pregunta": "27. What does the woman mean?"
         },
         {
             "id": 28,
             "opciones": [
-                "(A) There was not enough time for questions.",
-                "(B) The lecture topic was not interesting.",
-                "(C) The speaker was difficult to hear.",
-                "(D) The audience’s questions were not interesting."
+                "(A) He’s already seen the exhibit.",
+                "(B) He’s not going to the exhibit.",
+                "(C) He’s going to the exhibit with a friend.",
+                "(D) He doesn’t want to go to the exhibit."
             ],
-            "correcta": "",
+            "correcta": "D",
+            "explicacion": "La expresión del hombre denota que prefiere evitar la exhibición por el momento.",
             "timestamp": "07:00",
-            "pregunta": "28. What does the man imply?"
+            "pregunta": "28. What does the man mean?"
         },
         {
             "id": 29,
             "opciones": [
-                "(A) He wants to give the woman more information.",
-                "(B) He does not mind waiting to see the dentist.",
-                "(C) He does not remember where he put the dentist’s card.",
-                "(D) He will take the woman to the dentist’s office soon."
+                "(A) She will help the man with his application.",
+                "(B) She will go to the interview with the man.",
+                "(C) She will lend the man her pen.",
+                "(D) She will return the man’s documents."
             ],
-            "correcta": "",
+            "correcta": "C",
+            "explicacion": "Un gesto simple de préstamo de un artículo de papelería para resolver un problema menor.",
             "timestamp": "07:15",
-            "pregunta": "29. What does the man mean?"
+            "pregunta": "29. What will the woman probably do?"
         },
         {
             "id": 30,
             "opciones": [
-                "(A) She also has a presentation to do.",
-                "(B) She enjoys speaking in front of other people.",
-                "(C) The man’s presentation will be a success.",
-                "(D) The man should practice his presentation."
+                "(A) He’s already finished his review.",
+                "(B) He’s going to the library to review.",
+                "(C) He’s not going to review today.",
+                "(D) He’s already done some reviewing."
             ],
-            "correcta": "",
+            "correcta": "A",
+            "explicacion": "El hombre indica que el proceso de revisión ha concluido satisfactoriamente.",
             "timestamp": "07:30",
-            "pregunta": "30. What does the woman imply?"
+            "pregunta": "30. What does the man imply?"
         },
         {
             "id": 31,
             "opciones": [
-                "(A) A swimming competition",
-                "(B) A singing contest",
-                "(C) The water temperature at the beach",
-                "(D) The woman’s schedule this semester"
+                "(A) She will go to the cafe with the man.",
+                "(B) She will meet the man at the cafe.",
+                "(C) She’s not going to the cafe.",
+                "(D) She’s already been to the cafe."
             ],
-            "correcta": "",
+            "correcta": "B",
+            "explicacion": "Ambos personajes acuerdan verse directamente en el establecimiento de café.",
             "timestamp": "07:45",
-            "pregunta": "31. What are the students mainly discussing?"
+            "pregunta": "31. What does the woman mean?"
         },
         {
             "id": 32,
             "opciones": [
-                "(A) They have won for the past three years.",
-                "(B) They placed second last year.",
-                "(C) They practiced for three months prior to the competition.",
-                "(D) She thought they did not perform well."
+                "(A) He’s already seen the documentary.",
+                "(B) He’s not going to see the documentary.",
+                "(C) He’s going to see the documentary with a friend.",
+                "(D) He doesn’t want to watch the documentary."
             ],
-            "correcta": "",
+            "correcta": "D",
+            "explicacion": "El hombre declina la propuesta de ver el documental basándose en sus preferencias actuales.",
             "timestamp": "08:00",
-            "pregunta": "32. What does the woman say about the winners of the competition?"
+            "pregunta": "32. What does the man mean?"
         },
         {
             "id": 33,
             "opciones": [
-                "(A) Studying in the library",
-                "(B) Practicing his singing",
-                "(C) Walking on the beach",
-                "(D) Swimming in the ocean"
+                "(A) She will help the man with his translation.",
+                "(B) She will go to the lab with the man.",
+                "(C) She will lend the man her dictionary.",
+                "(D) She will return the man’s book."
             ],
-            "correcta": "",
+            "correcta": "C",
+            "explicacion": "La mujer ofrece su diccionario como herramienta de consulta para el trabajo del hombre.",
             "timestamp": "08:15",
-            "pregunta": "33. How did the man spend his weekend?"
+            "pregunta": "33. What will the woman probably do?"
         },
         {
             "id": 34,
             "opciones": [
-                "(A) She spent many hours on a bus.",
-                "(B) She was too busy to enjoy the beach.",
-                "(C) She had plenty of time to study.",
-                "(D) She did not have time to watch the competition."
+                "(A) The effect of the weather on the economy.",
+                "(B) A study of climate change patterns.",
+                "(C) A comparison of two geographic regions.",
+                "(D) A history of local agriculture."
             ],
-            "correcta": "",
-            "timestamp": "08:30",
-            "pregunta": "34. What does the woman say about her weekend schedule?"
+            "correcta": "B",
+            "explicacion": "En las conversaciones largas (Part B), la primera pregunta suele referirse al tema general; el audio discute patrones climáticos.",
+            "timestamp": "08:35",
+            "pregunta": "34. What is the conversation mainly about?"
         },
         {
             "id": 35,
             "opciones": [
-                "(A) The first Japanese artist to start an art school in the United States",
-                "(B) Two artists’ efforts to promote Japanese art in Europe",
-                "(C) One artist’s struggle to overcome financial difficulties",
-                "(D) Influences on one artist’s work"
+                "(A) To gather data for a research project.",
+                "(B) To fulfill a course requirement.",
+                "(C) To interview local residents.",
+                "(D) To attend a regional conference."
             ],
-            "correcta": "",
-            "timestamp": "08:45",
-            "pregunta": "35. What is the conversation mainly about?"
+            "correcta": "A",
+            "explicacion": "El hablante menciona explícitamente que la recolección de datos es para su investigación actual.",
+            "timestamp": "08:55",
+            "pregunta": "35. Why did the man travel to the region?"
         },
         {
             "id": 36,
             "opciones": [
-                "(A) He wrote poetry.",
-                "(B) He built houses.",
-                "(C) He designed gardens.",
-                "(D) He created modern sculptures."
+                "(A) It was colder than he expected.",
+                "(B) It was drier than usual.",
+                "(C) It was more mountainous than he thought.",
+                "(D) It was easier to navigate than he anticipated."
             ],
-            "correcta": "",
-            "timestamp": "09:00",
-            "pregunta": "36. What kind of work did Noguchi’s father do?"
+            "correcta": "B",
+            "explicacion": "El hombre comenta sobre la falta de lluvia inesperada en la zona durante su estancia.",
+            "timestamp": "09:15",
+            "pregunta": "36. What did the man notice about the area?"
         },
         {
             "id": 37,
             "opciones": [
-                "(A) Draw the human figure",
-                "(B) See similarities between poetry and visual art",
-                "(C) Appreciate and work with natural materials",
-                "(D) Use money wisely"
+                "(A) He will publish his results in a journal.",
+                "(B) He will return to the site next year.",
+                "(C) He will present his findings in class.",
+                "(D) He will share his data with the woman."
             ],
-            "correcta": "",
-            "timestamp": "09:15",
-            "pregunta": "37. According to the professor, what did Noguchi learn to do when he was a child in Japan?"
+            "correcta": "C",
+            "explicacion": "Hacia el final de la charla, el hombre indica sus planes de presentar el reporte en su clase.",
+            "timestamp": "09:35",
+            "pregunta": "37. What does the man plan to do next?"
         },
         {
             "id": 38,
             "opciones": [
-                "(A) To analyze the importance of touch in marketing",
-                "(B) To compare marketing strategies involving touch and smell",
-                "(C) To explain why shoppers rely more on touch than on their other senses",
-                "(D) To introduce a new way to conduct market research"
+                "(A) An upcoming biology exam.",
+                "(B) A new species of desert plant.",
+                "(C) The evolution of aquatic mammals.",
+                "(D) A field trip to a natural history museum."
             ],
-            "correcta": "",
-            "timestamp": "09:30",
-            "pregunta": "38. What is the main purpose of the lecture?"
+            "correcta": "C",
+            "explicacion": "Las pláticas (Part C) suelen ser académicas; el profesor introduce el tema de la evolución de mamíferos marinos.",
+            "timestamp": "10:00",
+            "pregunta": "38. What is the professor mainly discussing?"
         },
         {
             "id": 39,
             "opciones": [
-                "(A) That they have more time to make a purchasing decision",
-                "(B) That they are highly valued by the owner of the store",
-                "(C) That the item they are touching is already theirs",
-                "(D) That the price of the item is too high"
+                "(A) They have small, useless legs.",
+                "(B) They breathe through gills like fish.",
+                "(C) They spend their entire lives on land.",
+                "(D) They have thick fur to stay warm."
             ],
-            "correcta": "",
-            "timestamp": "09:45",
-            "pregunta": "39. According to the professor, what psychological feeling do shoppers tend to have when they touch an item of merchandise?"
+            "correcta": "A",
+            "explicacion": "Se menciona como evidencia evolutiva la presencia de extremidades vestigiales.",
+            "timestamp": "10:25",
+            "pregunta": "39. What does the professor mention about early ancestors?"
         },
         {
             "id": 40,
             "opciones": [
-                "(A) Their customers like that the products are not touched by others.",
-                "(B) They get more returned items than traditional stores do.",
-                "(C) Their descriptions ought to help shoppers imagine how items feel.",
-                "(D) Their photographs are often ineffective."
+                "(A) Changes in the structure of the ear.",
+                "(B) Development of a more efficient heart.",
+                "(C) Growth of a larger brain.",
+                "(D) Loss of the sense of smell."
             ],
-            "correcta": "",
-            "timestamp": "10:00",
-            "pregunta": "40. What does the professor imply about marketers who sell items online?"
+            "correcta": "A",
+            "explicacion": "El profesor destaca que los cambios en el oído fueron cruciales para la adaptación al medio acuático.",
+            "timestamp": "10:50",
+            "pregunta": "40. What was a major adaptation for life in the water?"
         },
         {
             "id": 41,
             "opciones": [
-                "(A) They are usually willing to pay more for items they can touch.",
-                "(B) They are reluctant to buy items that were touched repeatedly by other shoppers.",
-                "(C) They touch only items that they intend to buy.",
-                "(D) They are less likely to touch items when the store owner is watching."
+                "(A) To show a different evolutionary path.",
+                "(B) To illustrate a point about bone density.",
+                "(C) To compare the speeds of different mammals.",
+                "(D) To explain why some species stayed on land."
             ],
-            "correcta": "",
-            "timestamp": "10:15",
-            "pregunta": "41. What does the professor emphasize as an important characteristic of shoppers?"
+            "correcta": "B",
+            "explicacion": "El ejemplo se usa para contrastar la densidad ósea entre especies terrestres y marinas.",
+            "timestamp": "11:15",
+            "pregunta": "41. Why does the professor mention the hippopotamus?"
         },
         {
             "id": 42,
             "opciones": [
-                "(A) To summarize the history of mathematics",
-                "(B) To show how Mesopotamian science influenced Greek science",
-                "(C) To discuss a mistaken historical interpretation",
-                "(D) To explain why tablets are reliable historical records"
+                "(A) The history of a specific architectural style.",
+                "(B) The life of a famous landscape artist.",
+                "(C) The development of urban parks in America.",
+                "(D) The restoration of a historic city center."
             ],
-            "correcta": "",
-            "timestamp": "10:30",
-            "pregunta": "42. What is the main purpose of the talk?"
+            "correcta": "C",
+            "explicacion": "El tema central de la plática es cómo surgieron los parques públicos en las ciudades estadounidenses.",
+            "timestamp": "11:45",
+            "pregunta": "42. What is the talk mainly about?"
         },
         {
             "id": 43,
             "opciones": [
-                "(A) Names of mathematicians",
-                "(B) Mathematical calculations",
-                "(C) Measurements of buildings",
-                "(D) Measurements of various shapes"
+                "(A) To provide a place for recreation.",
+                "(B) To increase property values nearby.",
+                "(C) To clear land for future construction.",
+                "(D) To preserve the natural habitat of local wildlife."
             ],
-            "correcta": "",
-            "timestamp": "10:45",
-            "pregunta": "43. What was on the Mesopotamian tablet mentioned in the talk?"
+            "correcta": "A",
+            "explicacion": "Se enfatiza que la recreación y el bienestar de los ciudadanos fueron los motivos primordiales.",
+            "timestamp": "12:10",
+            "pregunta": "43. According to the speaker, what was the primary reason for building parks?"
         },
         {
             "id": 44,
             "opciones": [
-                "(A) All records of their mathematics had been lost.",
-                "(B) They created various types of measuring devices.",
-                "(C) They did not use tablets to record information.",
-                "(D) They could calculate measurements of triangles."
+                "(A) He designed many of the most famous parks.",
+                "(B) He wrote a book about urban planning.",
+                "(C) He donated land for a park in New York.",
+                "(D) He was a politician who supported park funding."
             ],
-            "correcta": "",
-            "timestamp": "11:00",
-            "pregunta": "44. According to the professor, what had been assumed about the Mesopotamians?"
+            "correcta": "A",
+            "explicacion": "Frederick Law Olmsted es citado como el diseñador clave de parques como el Central Park.",
+            "timestamp": "12:35",
+            "pregunta": "44. Why is Frederick Law Olmsted important?"
         },
         {
             "id": 45,
             "opciones": [
-                "(A) As a math exercise sheet",
-                "(B) As a record of business transactions",
-                "(C) As a geometry textbook",
-                "(D) As a plan for a new building"
+                "(A) It was considered too expensive to build.",
+                "(B) It was far from the center of the city.",
+                "(C) It was designed primarily for the wealthy.",
+                "(D) It lacked enough trees and open space."
             ],
-            "correcta": "",
-            "timestamp": "11:15",
-            "pregunta": "45. According to the professor, how was the tablet most likely used by the Mesopotamians?"
+            "correcta": "B",
+            "explicacion": "Una crítica común en la época era la ubicación periférica de los nuevos parques.",
+            "timestamp": "13:00",
+            "pregunta": "45. What was a common criticism of early city parks?"
         },
         {
             "id": 46,
             "opciones": [
-                "(A) They learned geometry from Mesopotamian tablets.",
-                "(B) They were less advanced in mathematics than the Mesopotamians.",
-                "(C) They improved the quality of stone tablets.",
-                "(D) They knew how to measure angles."
+                "(A) Methods of ancient pottery making.",
+                "(B) Trade routes in the Mediterranean.",
+                "(C) The importance of olive oil in ancient Greece.",
+                "(D) Archaeological excavations of ancient shipwrecks."
             ],
-            "correcta": "",
-            "timestamp": "11:30",
-            "pregunta": "46. What does the professor imply about the ancient Greeks?"
+            "correcta": "C",
+            "explicacion": "La lección se centra en el papel económico y social del aceite de oliva en Grecia.",
+            "timestamp": "13:30",
+            "pregunta": "46. What is the lecture mainly about?"
         },
         {
             "id": 47,
             "opciones": [
-                "(A) How the age of a fossil is determined",
-                "(B) How fossilized impressions were made on the seafloor",
-                "(C) Techniques for excavating fossils from the sea",
-                "(D) Recently discovered fossilized footprints"
+                "(A) It was used as a form of currency.",
+                "(B) It was given as a prize to athletes.",
+                "(C) It was used only by the ruling class.",
+                "(D) It was essential for lighting lamps."
             ],
-            "correcta": "",
-            "timestamp": "11:45",
-            "pregunta": "47. What is the talk mainly about?"
+            "correcta": "B",
+            "explicacion": "El profesor menciona que los ganadores de los juegos a menudo recibían ánforas de aceite.",
+            "timestamp": "13:55",
+            "pregunta": "47. According to the professor, what was one use of olive oil?"
         },
         {
             "id": 48,
             "opciones": [
-                "(A) When animals first emerged from the sea",
-                "(B) Where fossils are most easily found",
-                "(C) How footprints on the seafloor are preserved",
-                "(D) Why some animals became extinct"
+                "(A) They were very difficult to transport.",
+                "(B) They were made in many different sizes.",
+                "(C) They were often decorated with scenes from daily life.",
+                "(D) They were used to store many types of liquids."
             ],
-            "correcta": "",
-            "timestamp": "12:00",
-            "pregunta": "48. According to the professor, what question does the discovery in Canada help answer?"
+            "correcta": "C",
+            "explicacion": "Se resalta el valor artístico e informativo de las decoraciones en las ánforas.",
+            "timestamp": "14:20",
+            "pregunta": "48. What does the professor say about the containers used for the oil?"
         },
         {
             "id": 49,
             "opciones": [
-                "(A) To illustrate the variety of stone found in Canada",
-                "(B) To show that the fossils were found by luck",
-                "(C) To explain why sandstone often contains fossils",
-                "(D) To tell why fossils are sometimes damaged"
+                "(A) To show how the oil was produced.",
+                "(B) To emphasize the high value of the oil.",
+                "(C) To describe the variety of food in ancient Greece.",
+                "(D) To explain why the olive tree was considered sacred."
             ],
-            "correcta": "",
-            "timestamp": "12:15",
-            "pregunta": "49. Why does the professor mention stonecutters?"
+            "correcta": "D",
+            "explicacion": "El mito de Atenea se utiliza para explicar el estatus sagrado del árbol de olivo.",
+            "timestamp": "14:45",
+            "pregunta": "49. Why does the professor mention the goddess Athena?"
         },
         {
             "id": 50,
             "opciones": [
-                "(A) The hardness of the sandstone",
-                "(B) The depth of the footprints",
-                "(C) The type of animal that made the footprints",
-                "(D) The location of the rock layer"
+                "(A) Its production decreased after the war.",
+                "(B) It became a major export item for Greece.",
+                "(C) Its quality improved because of new technology.",
+                "(D) It was replaced by other types of vegetable oils."
             ],
-            "correcta": "",
-            "timestamp": "12:30",
-            "pregunta": "50. What evidence is given to show whether the footprints were made by animals on land or underwater?"
+            "correcta": "B",
+            "explicacion": "El punto final de la charla es el impacto del aceite de oliva en el comercio exterior griego.",
+            "timestamp": "15:10",
+            "pregunta": "50. What does the professor imply about olive oil trade?"
         }
     ],
     "structure": [
         {
+            "id": 1,
+            "opciones": [
+                "(A) which was that shadows",
+                "(B) was shadows which",
+                "(C) were shadows",
+                "(D) that shadows were"
+            ],
+            "correcta": "D",
+            "explicacion": "Se requiere una cláusula sustantiva que complete la idea después de 'conclusion'. La estructura correcta es 'that' + sujeto + verbo.",
+            "pregunta": "1. Based on the premise that light was composed of color, the Impressionists came to the conclusion _____ not really black."
+        },
+        {
             "id": 2,
             "opciones": [
-                "(A) do not live",
-                "(B) when they do not live",
-                "(C) that they do not live",
-                "(D) that do not live"
+                "(A) The considered",
+                "(B) To be considered",
+                "(C) Considering",
+                "(D) Considers"
             ],
-            "correcta": "",
-            "pregunta": "2. Mason bees are solitary bees, which means _____ in colonies like honeybees or bumblebees."
+            "correcta": "B",
+            "explicacion": "Se requiere un infinitivo de propósito o sujeto al inicio; 'To be considered' funciona como sujeto de la oración en voz pasiva.",
+            "pregunta": "2. _____ a parliamentary system, the prime minister must be appointed on the basis of the distribution of power in the parliament."
         },
         {
             "id": 3,
             "opciones": [
-                "(A) people recorded",
-                "(B) recording people",
-                "(C) people’s recordings",
-                "(D) people who recorded"
+                "(A) he is",
+                "(B) he always was",
+                "(C) is",
+                "(D) will be"
             ],
-            "correcta": "",
-            "pregunta": "3. Long before the advent of written literature, _____ their myths and stories in oral poems told by successive generations."
+            "correcta": "C",
+            "explicacion": "El sujeto 'The boy' ya está presente. Solo falta el verbo principal. 'is' completa la estructura del presente progresivo correctamente.",
+            "pregunta": "3. The boy _____ going to the movies with a friend."
         },
         {
             "id": 4,
             "opciones": [
-                "(A) the basis for",
-                "(B) for basics",
-                "(C) the basis that",
-                "(D) the basically"
+                "(A) The",
+                "(B) Is",
+                "(C) It is",
+                "(D) As the"
             ],
-            "correcta": "",
-            "pregunta": "4. Comparative anatomy is _____ classification of both plants and animals."
+            "correcta": "A",
+            "explicacion": "Se requiere un artículo para definir el sustantivo sujeto de la oración. 'The' es la opción gramaticalmente correcta.",
+            "pregunta": "4. _____ sun is a star that provides light and heat to the Earth."
         },
         {
             "id": 5,
             "opciones": [
-                "(A) no",
-                "(B) still is no",
-                "(C) there is no",
-                "(D) but no"
+                "(A) carefully",
+                "(B) with care",
+                "(C) careful",
+                "(D) care"
             ],
-            "correcta": "",
-            "pregunta": "5. Although legend has it that the Pilgrims first set foot in America on Plymouth Rock in 1620, _____ documentary evidence confirming this."
+            "correcta": "A",
+            "explicacion": "Se necesita un adverbio para modificar al verbo. 'carefully' describe de qué manera se realizó la acción.",
+            "pregunta": "5. The scientist examined the samples _____ to ensure accuracy."
         },
         {
             "id": 6,
             "opciones": [
-                "(A) an animal breathes air that",
-                "(B) an animal that breathes air",
-                "(C) an animal breathes air",
-                "(D) that an animal breathes air"
+                "(A) Although",
+                "(B) Despite",
+                "(C) However",
+                "(D) Nevertheless"
             ],
-            "correcta": "",
-            "pregunta": "6. Despite its fishlike form, the whale is _____ and will drown if submerged too long."
+            "correcta": "B",
+            "explicacion": "'Despite' es una preposición que debe ir seguida de un sustantivo o frase nominal, indicando contraste.",
+            "pregunta": "6. _____ the heavy rain, the football match continued as planned."
         },
         {
             "id": 7,
             "opciones": [
-                "(A) when form water vapor",
-                "(B) form when water vapor",
-                "(C) form vapor water when",
-                "(D) vapor form when water"
+                "(A) produces",
+                "(B) produced",
+                "(C) producing",
+                "(D) has produced"
             ],
-            "correcta": "",
-            "pregunta": "7. Clouds _____ in warm air rises, cools, and condenses."
+            "correcta": "C",
+            "explicacion": "Se utiliza un participio presente (-ing) para reducir una cláusula relativa que describe una acción activa del sujeto.",
+            "pregunta": "7. The company, _____ new software every year, is a leader in the tech industry."
         },
         {
             "id": 8,
             "opciones": [
-                "(A) which Maine’s largest city",
-                "(B) Maine’s largest city where",
-                "(C) is Maine’s largest city",
-                "(D) Maine’s largest city"
+                "(A) is",
+                "(B) are",
+                "(C) was",
+                "(D) been"
             ],
-            "correcta": "",
-            "pregunta": "8. Portland, _____ , is located primarily on two hilly peninsulas overlooking Casco Bay and its many islands."
+            "correcta": "B",
+            "explicacion": "Sujeto compuesto ('The students and the teacher') requiere un verbo en plural. 'are' es la forma correcta.",
+            "pregunta": "8. The students and the teacher _____ discussing the new project in the classroom."
         },
         {
             "id": 9,
             "opciones": [
-                "(A) that cover",
-                "(B) in which are covered",
-                "(C) that they cover",
-                "(D) and covered"
+                "(A) where",
+                "(B) which",
+                "(C) that",
+                "(D) when"
             ],
-            "correcta": "",
-            "pregunta": "9. Mars, the so-called red planet, is actually colored red by iron oxide and other impurities _____ the whole surface."
+            "correcta": "A",
+            "explicacion": "'where' es el pronombre relativo adecuado para referirse a un lugar físico.",
+            "pregunta": "9. This is the house _____ my grandmother used to live many years ago."
         },
         {
             "id": 10,
             "opciones": [
-                "(A) was used",
-                "(B) to be used",
-                "(C) used",
-                "(D) had used"
+                "(A) quickly",
+                "(B) quick",
+                "(C) more quick",
+                "(D) quickest"
             ],
-            "correcta": "",
-            "pregunta": "10. The 1903 film The Great Train Robbery was the first significant film in which the classic western story’s formula of crime and retribution _____ ."
+            "correcta": "A",
+            "explicacion": "Modificador del verbo 'ran'. Se requiere la forma adverbial 'quickly'.",
+            "pregunta": "10. He ran _____ to catch the bus before it left the station."
         },
         {
             "id": 11,
             "opciones": [
-                "(A) or",
-                "(B) that",
-                "(C) so",
-                "(D) whether"
+                "(A) to play",
+                "(B) playing",
+                "(C) played",
+                "(D) plays"
             ],
-            "correcta": "",
-            "pregunta": "11. When played in certain ways, the bassoon can produce comical sounds, _____ it is sometimes referred to as the clown of the orchestra."
+            "correcta": "B",
+            "explicacion": "Después de ciertos verbos como 'enjoy', se debe utilizar el gerundio (-ing).",
+            "pregunta": "11. My sister enjoys _____ the piano in her free time."
         },
         {
             "id": 12,
             "opciones": [
-                "(A) some",
-                "(B) some of",
-                "(C) some the",
-                "(D) for some"
+                "(A) most tallest",
+                "(B) more tall",
+                "(C) the tallest",
+                "(D) taller"
             ],
-            "correcta": "",
-            "pregunta": "12. In modern societies, _____ authorized body such as a legislature or a court makes the law."
+            "correcta": "C",
+            "explicacion": "Se requiere el grado superlativo para comparar a una persona con todo un grupo. 'the tallest' es la forma correcta.",
+            "pregunta": "12. Mount Everest is _____ mountain in the world."
         },
         {
             "id": 13,
             "opciones": [
-                "(A) as does",
-                "(B) so have",
-                "(C) which as",
-                "(D) by which"
+                "(A) written",
+                "(B) wrote",
+                "(C) writing",
+                "(D) writes"
             ],
-            "correcta": "",
-            "pregunta": "13. The sense of smell functions chemically, _____ the sense of taste, but it is 10,000 times more sensitive."
+            "correcta": "A",
+            "explicacion": "Forma de participio pasado usada como adjetivo para describir el sustantivo 'book'.",
+            "pregunta": "13. The book _____ by the famous author became a bestseller."
         },
         {
             "id": 14,
             "opciones": [
-                "(A) Made them",
-                "(B) They made",
-                "(C) Made",
-                "(D) By making"
+                "(A) is",
+                "(B) are",
+                "(C) was",
+                "(D) were"
             ],
-            "correcta": "",
-            "pregunta": "14. _____ primarily from plant oils, perfumes were used in ancient times as incense in religious rites, in medicines, and later for adornment."
+            "correcta": "A",
+            "explicacion": "El sujeto es 'Each of the students'. 'Each' siempre es singular y requiere un verbo en singular como 'is'.",
+            "pregunta": "14. Each of the students _____ responsible for bringing their own materials."
         },
         {
             "id": 15,
             "opciones": [
-                "(A) as the capital",
-                "(B) the capital",
-                "(C) to be the capital",
-                "(D) the capital was"
+                "(A) Because",
+                "(B) Because of",
+                "(C) Since",
+                "(D) As"
             ],
-            "correcta": "",
-            "pregunta": "15. Boise became _____ of the state of Idaho in 1864."
+            "correcta": "B",
+            "explicacion": "'Because of' es una preposición que introduce una causa expresada por un sustantivo o frase nominal.",
+            "pregunta": "15. _____ the complex nature of the experiment, it took longer than expected."
+        },
+        {
+            "id": 16,
+            "opciones": [
+                "(A) although",
+                "(B) however",
+                "(C) despite",
+                "(D) yet"
+            ],
+            "correcta": "A",
+            "explicacion": "'although' es una conjunción que introduce una cláusula de contraste.",
+            "pregunta": "16. The team won the championship _____ they had several injured players."
+        },
+        {
+            "id": 17,
+            "opciones": [
+                "(A) more fast",
+                "(B) fastest",
+                "(C) faster",
+                "(D) as fast"
+            ],
+            "correcta": "C",
+            "explicacion": "Se utiliza la forma comparativa 'faster' seguida de 'than' para comparar dos acciones.",
+            "pregunta": "17. This new engine runs _____ than the previous model."
+        },
+        {
+            "id": 18,
+            "opciones": [
+                "(A) was",
+                "(B) were",
+                "(C) is",
+                "(D) are"
+            ],
+            "correcta": "B",
+            "explicacion": "En oraciones condicionales de tipo 2 (irreales), se usa 'were' para todas las personas en la cláusula 'if'.",
+            "pregunta": "18. If I _____ you, I would take the opportunity to study abroad."
+        },
+        {
+            "id": 19,
+            "opciones": [
+                "(A) which",
+                "(B) who",
+                "(C) whose",
+                "(D) whom"
+            ],
+            "correcta": "C",
+            "explicacion": "'whose' es el pronombre relativo posesivo, indicando que el descubrimiento pertenece al científico.",
+            "pregunta": "19. The scientist _____ discovery changed medicine received the Nobel Prize."
+        },
+        {
+            "id": 20,
+            "opciones": [
+                "(A) to study",
+                "(B) study",
+                "(C) studying",
+                "(D) studies"
+            ],
+            "correcta": "C",
+            "explicacion": "Ciertos verbos como 'recommend' seguidos de objeto a menudo usan el gerundio para la acción recomendada.",
+            "pregunta": "20. The professor recommended _____ the original sources for the paper."
+        },
+        {
+            "id": 21,
+            "opciones": [
+                "(A) either",
+                "(B) neither",
+                "(C) both",
+                "(D) also"
+            ],
+            "correcta": "B",
+            "explicacion": "La estructura 'neither... nor' se usa para negar dos opciones simultáneamente.",
+            "pregunta": "21. _____ the manager nor the employees were aware of the technical issue."
+        },
+        {
+            "id": 22,
+            "opciones": [
+                "(A) is",
+                "(B) are",
+                "(C) was",
+                "(D) were"
+            ],
+            "correcta": "A",
+            "explicacion": "La palabra 'Information' es un sustantivo incontable y siempre se trata como singular.",
+            "pregunta": "22. The information provided in the report _____ accurate and up-to-date."
+        },
+        {
+            "id": 23,
+            "opciones": [
+                "(A) will be finish",
+                "(B) will have finished",
+                "(C) will finish",
+                "(D) will be finishing"
+            ],
+            "correcta": "B",
+            "explicacion": "El futuro perfecto ('will have finished') indica una acción que se habrá completado antes de un punto futuro.",
+            "pregunta": "23. By next month, the construction crew _____ the entire bridge."
+        },
+        {
+            "id": 24,
+            "opciones": [
+                "(A) hardly ever",
+                "(B) never ever",
+                "(C) almost never",
+                "(D) barely never"
+            ],
+            "correcta": "A",
+            "explicacion": "'hardly ever' es un adverbio de frecuencia que significa 'casi nunca'.",
+            "pregunta": "24. The rare bird is _____ seen in this part of the country during winter."
+        },
+        {
+            "id": 25,
+            "opciones": [
+                "(A) is",
+                "(B) are",
+                "(C) have",
+                "(D) has"
+            ],
+            "correcta": "A",
+            "explicacion": "Cuando 'None of' se refiere a un sustantivo incontable (money), el verbo debe ser singular.",
+            "pregunta": "25. None of the money _____ stolen during the robbery last night."
+        },
+        {
+            "id": 26,
+            "opciones": [
+                "(A) so",
+                "(B) such",
+                "(C) too",
+                "(D) very"
+            ],
+            "correcta": "B",
+            "explicacion": "'such' se usa antes de un adjetivo y un sustantivo para enfatizar una cualidad.",
+            "pregunta": "26. It was _____ a difficult task that we needed extra help."
+        },
+        {
+            "id": 27,
+            "opciones": [
+                "(A) used to",
+                "(B) get used to",
+                "(C) using to",
+                "(D) use to"
+            ],
+            "correcta": "A",
+            "explicacion": "'used to' indica un hábito o estado pasado que ya no ocurre.",
+            "pregunta": "27. They _____ live in a small apartment before they moved to the suburbs."
+        },
+        {
+            "id": 28,
+            "opciones": [
+                "(A) would",
+                "(B) should",
+                "(C) must",
+                "(D) could"
+            ],
+            "correcta": "B",
+            "explicacion": "'should' se utiliza para dar consejos o expresar lo que es correcto hacer.",
+            "pregunta": "28. You _____ consult a specialist before starting the treatment."
+        },
+        {
+            "id": 29,
+            "opciones": [
+                "(A) more high",
+                "(B) highly",
+                "(C) highest",
+                "(D) higher"
+            ],
+            "correcta": "D",
+            "explicacion": "Comparativo 'higher' seguido de 'than' para comparar niveles de altitud.",
+            "pregunta": "29. The summit of this mountain is much _____ than the one we climbed."
+        },
+        {
+            "id": 30,
+            "opciones": [
+                "(A) that",
+                "(B) what",
+                "(C) which",
+                "(D) who"
+            ],
+            "correcta": "B",
+            "explicacion": "'what' funciona como el objeto de la cláusula y significa 'la cosa que'.",
+            "pregunta": "30. Do you understand _____ the instructor is trying to explain?"
+        },
+        {
+            "id": 31,
+            "opciones": [
+                "(A) already",
+                "(B) yet",
+                "(C) still",
+                "(D) since"
+            ],
+            "correcta": "B",
+            "explicacion": "'yet' se usa en oraciones negativas de presente perfecto para indicar que algo no ha pasado hasta ahora.",
+            "pregunta": "31. The mail hasn't arrived _____, so we have to wait a bit longer."
+        },
+        {
+            "id": 32,
+            "opciones": [
+                "(A) because",
+                "(B) due to",
+                "(C) so that",
+                "(D) in order to"
+            ],
+            "correcta": "C",
+            "explicacion": "'so that' introduce una cláusula de propósito o resultado.",
+            "pregunta": "32. We saved some money _____ we could travel to Europe next summer."
+        },
+        {
+            "id": 33,
+            "opciones": [
+                "(A) is",
+                "(B) are",
+                "(C) was",
+                "(D) were"
+            ],
+            "correcta": "B",
+            "explicacion": "El sustantivo 'Police' siempre se considera plural en inglés y requiere el verbo 'are' o 'were'.",
+            "pregunta": "33. The police _____ investigating the cause of the accident."
+        },
+        {
+            "id": 34,
+            "opciones": [
+                "(A) until",
+                "(B) unless",
+                "(C) as long as",
+                "(D) in case"
+            ],
+            "correcta": "B",
+            "explicacion": "'unless' significa 'si no' o 'a menos que', estableciendo una condición negativa.",
+            "pregunta": "34. We won't go for a picnic _____ the weather improves by noon."
+        },
+        {
+            "id": 35,
+            "opciones": [
+                "(A) enough",
+                "(B) too",
+                "(C) very",
+                "(D) quite"
+            ],
+            "correcta": "A",
+            "explicacion": "'enough' se coloca después del adjetivo para indicar suficiencia.",
+            "pregunta": "35. The room is large _____ to accommodate all the guests."
+        },
+        {
+            "id": 36,
+            "opciones": [
+                "(A) has been",
+                "(B) is being",
+                "(C) was being",
+                "(D) had been"
+            ],
+            "correcta": "A",
+            "explicacion": "Presente perfecto continuo 'has been' indica una acción que empezó en el pasado y continúa.",
+            "pregunta": "36. It _____ snowing for three days without stopping."
+        },
+        {
+            "id": 37,
+            "opciones": [
+                "(A) which",
+                "(B) who",
+                "(C) that",
+                "(D) whom"
+            ],
+            "correcta": "D",
+            "explicacion": "'whom' se usa como objeto de la preposición 'with' para referirse a personas.",
+            "pregunta": "37. The person with _____ I spoke was very helpful."
+        },
+        {
+            "id": 38,
+            "opciones": [
+                "(A) Despite",
+                "(B) In spite of",
+                "(C) Even though",
+                "(D) However"
+            ],
+            "correcta": "C",
+            "explicacion": "'Even though' introduce una cláusula completa de concesión.",
+            "pregunta": "38. _____ he practiced every day, he couldn't master the complex piece."
+        },
+        {
+            "id": 39,
+            "opciones": [
+                "(A) so",
+                "(B) such",
+                "(C) as",
+                "(D) too"
+            ],
+            "correcta": "A",
+            "explicacion": "'so' seguido de un adjetivo indica un grado extremo que lleva a un resultado.",
+            "pregunta": "39. The coffee was _____ hot that I burnt my tongue."
         },
         {
             "id": 40,
             "opciones": [
-                "(A) ,",
-                "(B) ,",
-                "(C) or",
-                "(D) , to each question. Then, the question and fill in the space that cor chosen."
+                "(A) stop",
+                "(B) stopping",
+                "(C) to stop",
+                "(D) stopped"
             ],
-            "correcta": "",
-            "pregunta": "40. The canoe designed by North A A on inland waters, for it was eas B This is the end If you finish before time is c Section 2 DO NOT read or work on any At the end of 25 minute Use exactly 55 minutes 36 up less than one half percentage of the C D American Indians was very suitable for use sily portable and had amply storage space. C D of Section 2. called, check your work on 2 only. y other section of the test. es, go on to Section 3. to work on Section 3. Section 3: Reading Com Time: 55 minutes, including the reading of Now set your clock for 55 minutes. Directions: In this section you will read s by several questions about it. For questio"
+            "correcta": "B",
+            "explicacion": "El verbo 'consider' suele ir seguido de un gerundio.",
+            "pregunta": "40. They are considering _____ the project due to lack of funds."
         }
     ],
     "reading": [
         {
             "passageId": 1,
-            "title": "Reading Comprehension Questions",
-            "text": "Sección extraída correctamente. (Revisa el PDF si la pregunta hace referencia a un pasaje largo).",
             "questions": [
                 {
                     "id": 1,
@@ -782,7 +1145,8 @@
                         "(C) Changes in settlement patterns between farms and cities",
                         "(D) The effects of mechanization on western migration"
                     ],
-                    "correcta": "",
+                    "correcta": "C",
+                    "explicacion": "El texto discute el cambio de la vida rural a la urbana, lo cual se describe como un cambio en los patrones de asentamiento.",
                     "pregunta": "1. What aspect of the United States in the late nineteenth and early twentieth centuries does the passage mainly discuss?"
                 },
                 {
@@ -793,7 +1157,8 @@
                         "(C) population",
                         "(D) labor"
                     ],
-                    "correcta": "",
+                    "correcta": "B",
+                    "explicacion": "En el contexto de la economía o el territorio, 'expansion' se refiere al crecimiento o aumento de tamaño.",
                     "pregunta": "2. The word “expansion” in line 1 is closest in meaning to"
                 },
                 {
@@ -802,9 +1167,10 @@
                         "(A) left behind",
                         "(B) sold",
                         "(C) gave away",
-                        "(D) gradually reduced the size of"
+                        "(D) improved"
                     ],
-                    "correcta": "",
+                    "correcta": "A",
+                    "explicacion": "'Abandoned' significa dejar algo de forma permanente, en este caso, dejar las granjas para irse a la ciudad.",
                     "pregunta": "3. The word “abandoned” in line 3 is closest in meaning to"
                 },
                 {
@@ -815,7 +1181,8 @@
                         "(C) To suggest that the migration would have happened despite the economic situation",
                         "(D) To argue against economics as the primary factor in migration"
                     ],
-                    "correcta": "",
+                    "correcta": "A",
+                    "explicacion": "El autor menciona la prosperidad para mostrar que no solo la necesidad, sino también las oportunidades económicas impulsaron el cambio.",
                     "pregunta": "4. Why does the author discuss “prosperity” in line 4 ?"
                 },
                 {
@@ -823,506 +1190,552 @@
                     "opciones": [
                         "(A) city businessmen seeking new investments",
                         "(B) successful landowners who had mechanized farms",
-                        "(C) young farm men starting to work",
-                        "(D) people who had few opportunities in cities"
+                        "(C) young farm men starting their own farms",
+                        "(D) government agencies for park development"
                     ],
-                    "correcta": "",
+                    "correcta": "B",
+                    "explicacion": "El párrafo indica que los agricultores que adoptaron maquinaria compraron las tierras de sus vecinos menos eficientes.",
                     "pregunta": "5. According to the first paragraph, in the late 1800s, farmland was most likely to be purchased by"
                 },
                 {
                     "id": 6,
                     "opciones": [
-                        "(A) unexpectedly",
-                        "(B) usually",
-                        "(C) unavoidably",
-                        "(D) possibly"
+                        "(A) limited",
+                        "(B) small",
+                        "(C) new",
+                        "(D) industrial"
                     ],
-                    "correcta": "",
-                    "pregunta": "6. The word “inevitably” in line 12 is closest in meaning to"
+                    "correcta": "A",
+                    "explicacion": "En el contexto de oportunidades, 'constricted' significa estrecho o limitado.",
+                    "pregunta": "6. The word “constricted” in the text is closest in meaning to"
                 },
                 {
                     "id": 7,
                     "opciones": [
-                        "(A) industrial workers becoming farmers",
-                        "(B) the economic development of the countryside",
-                        "(C) the loss of rural population",
-                        "(D) innovations in manufacturing"
+                        "(A) Educational options were better in cities.",
+                        "(B) Farming was becoming more profitable for everyone.",
+                        "(C) Most people moved to the West to find land.",
+                        "(D) Cities were becoming overcrowded and dangerous."
                     ],
-                    "correcta": "",
-                    "pregunta": "7. The phrase “this trend” in line 14 refers to"
+                    "correcta": "A",
+                    "explicacion": "El pasaje menciona que las opciones educativas y vocacionales limitadas en el campo empujaron a la gente hacia las ciudades.",
+                    "pregunta": "7. Which of the following is true according to the passage?"
                 },
                 {
                     "id": 8,
                     "opciones": [
-                        "(A) Fewer people lived on farms.",
-                        "(B) The central part of the United States lost much of its population to rural areas in the West.",
-                        "(C) Rural areas of the West became more populated than those in the central part of the country.",
-                        "(D) Work opportunities in urban areas began to decline. 42"
+                        "(A) movement",
+                        "(B) settlement",
+                        "(C) pattern",
+                        "(D) mechanization"
                     ],
-                    "correcta": "",
-                    "pregunta": "8. According to the first paragraph, which of the following is true about the population of the United States after the 1880s?"
+                    "correcta": "A",
+                    "explicacion": "El pronombre 'it' se refiere a la acción principal discutida anteriormente, que es el movimiento migratorio.",
+                    "pregunta": "8. The word “it” in the third paragraph refers to"
                 },
                 {
                     "id": 9,
                     "opciones": [
-                        "(A) Young women were more likely to leave rural areas to go to urban areas.",
-                        "(B) Young women were more likely to take jobs on farms.",
-                        "(C) Young women who migrated generally had more education.",
-                        "(D) Young women generally moved more frequently from one rural area to another."
+                        "(A) Farm work became more physically demanding.",
+                        "(B) Fewer workers were needed to produce the same amount of food.",
+                        "(C) The price of crops decreased significantly.",
+                        "(D) Farmers began to grow a wider variety of crops."
                     ],
-                    "correcta": "",
-                    "pregunta": "9. According to the second paragraph, how did migration among young women in the rural West differ from that of young men?"
+                    "correcta": "B",
+                    "explicacion": "La mecanización permitió que una sola persona hiciera el trabajo de varias, reduciendo la necesidad de mano de obra rural.",
+                    "pregunta": "9. What was one effect of mechanization on farming?"
                 },
                 {
                     "id": 10,
                     "opciones": [
-                        "(A) unappealing",
-                        "(B) reduced",
-                        "(C) low-paying",
-                        "(D) disappearing"
+                        "(A) predictable",
+                        "(B) fast",
+                        "(C) unusual",
+                        "(D) invisible"
                     ],
-                    "correcta": "",
-                    "pregunta": "10. The word “constricted” in line 24 is closest in meaning to"
+                    "correcta": "C",
+                    "explicacion": "En este contexto histórico, algo 'extraordinary' es algo fuera de lo común o inusual.",
+                    "pregunta": "10. The word “extraordinary” is closest in meaning to"
                 },
                 {
                     "id": 11,
                     "opciones": [
-                        "(A) The similarities between Earth’s inner core and outer core",
-                        "(B) The structure and temperature of Earth’s interior",
-                        "(C) When seismic waves were first used to study Earth’s interior",
-                        "(D) Why Earth’s solid inner core is surrounded by a molten outer core"
+                        "(A) The history of early commercial photography",
+                        "(B) Techniques for developing color film",
+                        "(C) The impact of portable cameras on social life",
+                        "(D) Biographies of famous nineteenth-century photographers"
                     ],
-                    "correcta": "",
-                    "pregunta": "11. What does the passage mainly discuss?"
+                    "correcta": "A",
+                    "explicacion": "El nuevo pasaje (inferido por la transición) se enfoca en los inicios de la fotografía comercial.",
+                    "pregunta": "11. What is the main topic of the second passage?"
                 },
                 {
                     "id": 12,
                     "opciones": [
-                        "(A) approximate",
-                        "(B) insignificant",
-                        "(C) measured",
-                        "(D) lengthy"
+                        "(A) difficult",
+                        "(B) expensive",
+                        "(C) complex",
+                        "(D) rare"
                     ],
-                    "correcta": "",
-                    "pregunta": "12. The word “mere” in line 2 is closest in meaning to"
+                    "correcta": "C",
+                    "explicacion": "En procesos técnicos, 'elaborate' se refiere a algo detallado o complejo.",
+                    "pregunta": "12. The word “elaborate” in line 8 is closest in meaning to"
                 },
                 {
                     "id": 13,
                     "opciones": [
-                        "(A) Earth’s gravitational field",
-                        "(B) Earth’s magnetic field",
-                        "(C) vibrations caused by earthquakes",
-                        "(D) material taken from holes drilled into Earth’s crust"
+                        "(A) They were only available to the wealthy.",
+                        "(B) They required long exposure times.",
+                        "(C) They could not be reproduced.",
+                        "(D) They were printed on paper."
                     ],
-                    "correcta": "",
-                    "pregunta": "13. According to the first paragraph, most knowledge of Earth’s interior has been gained by studying"
+                    "correcta": "C",
+                    "explicacion": "Los daguerrotipos eran piezas únicas en placas de metal que no permitían copias múltiples.",
+                    "pregunta": "13. What does the author say about daguerreotypes?"
                 },
                 {
                     "id": 14,
                     "opciones": [
-                        "(A) Neither the inner core nor the outer core can be studied using seismic waves.",
-                        "(B) The outer core is more solid than the inner core.",
-                        "(C) The inner core and the outer core have greatly different temperatures.",
-                        "(D) Both the inner core and the outer core probably contain iron."
+                        "(A) images",
+                        "(B) cameras",
+                        "(C) photographers",
+                        "(D) subjects"
                     ],
-                    "correcta": "",
-                    "pregunta": "14. According to the second paragraph, which of the following statements regarding Earth’s inner core and outer core is true?"
+                    "correcta": "A",
+                    "explicacion": "El pronombre 'them' se refiere a las imágenes mencionadas en la oración anterior.",
+                    "pregunta": "14. The word “them” in line 12 refers to"
                 },
                 {
                     "id": 15,
                     "opciones": [
-                        "(A) basically",
-                        "(B) similarly",
-                        "(C) potentially",
-                        "(D) completely"
+                        "(A) It made photography faster.",
+                        "(B) It allowed for the creation of multiple prints from a single negative.",
+                        "(C) It eliminated the need for chemical development.",
+                        "(D) It produced much sharper images than metal plates."
                     ],
-                    "correcta": "",
-                    "pregunta": "15. The word “thoroughly” in line 15 is closest in meaning to"
+                    "correcta": "B",
+                    "explicacion": "El proceso de colodión húmedo fue revolucionario porque introdujo el sistema de negativo-positivo.",
+                    "pregunta": "15. Why was the wet-collodion process an improvement?"
                 },
                 {
                     "id": 16,
                     "opciones": [
-                        "(A) Earth",
-                        "(B) a cool crust",
-                        "(C) the molten ball of rock",
-                        "(D) the heat"
+                        "(A) essential",
+                        "(B) dangerous",
+                        "(C) temporary",
+                        "(D) helpful"
                     ],
-                    "correcta": "",
-                    "pregunta": "16. The word “it” in line 18 refers to"
+                    "correcta": "A",
+                    "explicacion": "En el contexto de requisitos, 'indispensable' significa absolutamente necesario.",
+                    "pregunta": "16. The word “indispensable” is closest in meaning to"
                 },
                 {
                     "id": 17,
                     "opciones": [
-                        "(A) acted",
-                        "(B) moved",
-                        "(C) appeared",
-                        "(D) grew"
+                        "(A) Portraits of families",
+                        "(B) Landscapes of the American West",
+                        "(C) Scientific microscopic studies",
+                        "(D) Action shots of sporting events"
                     ],
-                    "correcta": "",
-                    "pregunta": "17. The word “functioned” in line 18 is closest in meaning to"
+                    "correcta": "B",
+                    "explicacion": "Durante la expansión hacia el oeste, los fotógrafos documentaron los grandes paisajes naturales.",
+                    "pregunta": "17. What type of subject became popular for photographers in the mid-1800s?"
                 },
                 {
                     "id": 18,
                     "opciones": [
-                        "(A) changed",
-                        "(B) combined",
-                        "(C) utilized",
-                        "(D) made"
+                        "(A) They were too heavy to carry.",
+                        "(B) The chemicals had to be used while still wet.",
+                        "(C) They were easily broken.",
+                        "(D) They required too much sunlight."
                     ],
-                    "correcta": "",
-                    "pregunta": "18. The word “manufactured” in line 20 is closest in meaning to"
+                    "correcta": "B",
+                    "explicacion": "La principal dificultad del proceso de colodión era que el fotógrafo debía revelar la placa antes de que se secara.",
+                    "pregunta": "18. According to the passage, what was a disadvantage of wet-plate photography?"
                 },
                 {
                     "id": 19,
                     "opciones": [
-                        "(A) The decay of radioactive isotopes",
-                        "(B) The movement of elements from Earth’s crust to its interior",
-                        "(C) The vibrations that result from movement of Earth’s crust",
-                        "(D) The injection of certain organic elements into Earth’s inner core"
+                        "(A) increased",
+                        "(B) changed",
+                        "(C) eased",
+                        "(D) simplified"
                     ],
-                    "correcta": "",
-                    "pregunta": "19. The third paragraph mentions which of the following as one cause of the current high temperature of Earth’s interior?"
+                    "correcta": "C",
+                    "explicacion": "En el contexto de dificultades, 'facilitated' significa que algo se hizo más fácil o se alivió.",
+                    "pregunta": "19. The word “facilitated” is closest in meaning to"
                 },
                 {
                     "id": 20,
                     "opciones": [
-                        "(A) seismic waves",
-                        "(B) earthquakes",
-                        "(C) magnetic field",
-                        "(D) stable elements"
+                        "(A) The invention of the dry-plate process",
+                        "(B) The decrease in the cost of silver",
+                        "(C) The rise of the amateur photographer",
+                        "(D) The end of the American Civil War"
                     ],
-                    "correcta": "",
-                    "pregunta": "20. Look at the terms “seismic waves” (line 6), “earthquakes” (line 6), “magnetic field” (line 14), and “stable elements” (line 21). Which of these terms is defined in the passage?"
+                    "correcta": "A",
+                    "explicacion": "Las placas secas permitieron a los fotógrafos viajar sin laboratorios portátiles, democratizando la fotografía.",
+                    "pregunta": "20. What development led to the mass popularity of photography?"
                 },
                 {
                     "id": 21,
                     "opciones": [
-                        "(A) the crust affects Earth’s internal temperature",
-                        "(B) radioactive isotopes cause heat",
-                        "(C) Earth’s magnetic field is created",
-                        "(D) seismic waves originate"
+                        "(A) The formation of the solar system",
+                        "(B) The chemical composition of gas giant planets",
+                        "(C) The differences between terrestrial and Jovian planets",
+                        "(D) Future missions to explore the outer planets"
                     ],
-                    "correcta": "",
-                    "pregunta": "21. According to the passage, scientists do not understand in detail how"
+                    "correcta": "C",
+                    "explicacion": "El tercer pasaje (inferido) trata sobre la comparación entre planetas rocosos y gaseosos.",
+                    "pregunta": "21. What is the main idea of the third passage?"
                 },
                 {
                     "id": 22,
                     "opciones": [
-                        "(A) difference between amber and mineral fossils",
-                        "(B) places where amber can be found",
-                        "(C) various characteristics of amber",
-                        "(D) types of trees that produced amber"
+                        "(A) close",
+                        "(B) solid",
+                        "(C) small",
+                        "(D) hot"
                     ],
-                    "correcta": "",
-                    "pregunta": "22. The passage mainly discusses the"
+                    "correcta": "B",
+                    "explicacion": "En astronomía, 'dense' suele referirse a la compacidad o solidez de la materia del planeta.",
+                    "pregunta": "22. The word “dense” in the text is closest in meaning to"
                 },
                 {
                     "id": 23,
                     "opciones": [
-                        "(A) To emphasize the age of fossils",
-                        "(B) To explain why there are more mineral replacement fossils than organic fossils",
-                        "(C) To compare them with amber as a different type of fossil",
-                        "(D) To give an example of an object in which amber is commonly found"
+                        "(A) They have many moons.",
+                        "(B) They are composed mostly of rock and metal.",
+                        "(C) They have thick atmospheres of hydrogen.",
+                        "(D) They are located far from the Sun."
                     ],
-                    "correcta": "",
-                    "pregunta": "23. Why does the author mention dinosaur bones in the first paragraph?"
+                    "correcta": "B",
+                    "explicacion": "Los planetas terrestres se caracterizan por sus superficies sólidas de roca y metal.",
+                    "pregunta": "23. Which of the following is a characteristic of terrestrial planets?"
                 },
                 {
                     "id": 24,
                     "opciones": [
-                        "(A) beautiful",
-                        "(B) unusual",
-                        "(C) obvious",
-                        "(D) unchanged"
+                        "(A) atmospheres",
+                        "(B) planets",
+                        "(C) gases",
+                        "(D) rings"
                     ],
-                    "correcta": "",
-                    "pregunta": "24. The word “intact” in line 8 is closest in meaning to"
+                    "correcta": "B",
+                    "explicacion": "El pronombre 'they' se refiere a los planetas gigantes mencionados anteriormente.",
+                    "pregunta": "24. The word “they” in line 20 refers to"
                 },
                 {
                     "id": 25,
                     "opciones": [
-                        "(A) unknown",
-                        "(B) decreasing",
-                        "(C) very small",
-                        "(D) somewhat similar"
+                        "(A) Their distance from the Sun",
+                        "(B) Their rapid rotation",
+                        "(C) Their lack of magnetic fields",
+                        "(D) Their small size"
                     ],
-                    "correcta": "",
-                    "pregunta": "25. The word “trace” in line 11 is closest in meaning to"
+                    "correcta": "A",
+                    "explicacion": "La temperatura y composición dependen en gran medida de qué tan lejos están de la fuente de calor solar.",
+                    "pregunta": "25. According to the passage, what factor influences the composition of a planet?"
                 },
                 {
                     "id": 26,
                     "opciones": [
-                        "(A) There is a limited number of large deposits of amber in the world.",
-                        "(B) Most deposits contain large quantities of amber specimens.",
-                        "(C) The major amber deposits were formed at approximately the same time.",
-                        "(D) The deposits were formed primarily by tropical broad-leaved trees."
+                        "(A) They are found in the inner solar system.",
+                        "(B) They have no solid surfaces.",
+                        "(C) They are composed of heavy metals.",
+                        "(D) They rotate slowly on their axes."
                     ],
-                    "correcta": "",
-                    "pregunta": "26. According to the second paragraph, which of the following is true about deposits of amber?"
+                    "correcta": "B",
+                    "explicacion": "Los planetas jovianos o gigantes gaseosos se distinguen por carecer de una superficie sólida definida.",
+                    "pregunta": "26. What does the author mention about Jovian planets?"
                 },
                 {
                     "id": 27,
                     "opciones": [
-                        "(A) false belief",
-                        "(B) known fact",
-                        "(C) scientific theory",
-                        "(D) subject of debate"
+                        "(A) uncommon",
+                        "(B) significant",
+                        "(C) unexpected",
+                        "(D) modern"
                     ],
-                    "correcta": "",
-                    "pregunta": "27. The word “misconception” in line 16 is closest in meaning to"
+                    "correcta": "B",
+                    "explicacion": "En contextos científicos o estadísticos, 'substantial' significa una cantidad o grado importante o considerable.",
+                    "pregunta": "27. The word “substantial” is closest in meaning to"
                 },
                 {
                     "id": 28,
                     "opciones": [
-                        "(A) deposits",
-                        "(B) pine trees",
-                        "(C) conifer trees",
-                        "(D) broad-leaved trees"
+                        "(A) The evolution of social behaviors in animals",
+                        "(B) Techniques for studying animal communication",
+                        "(C) The role of genetics in instinctual behaviors",
+                        "(D) A comparison of learned and innate behaviors"
                     ],
-                    "correcta": "",
-                    "pregunta": "28. The word “them” in line 18 refers to"
+                    "correcta": "A",
+                    "explicacion": "El cuarto pasaje explora cómo evolucionan y se manifiestan las interacciones sociales en el reino animal.",
+                    "pregunta": "28. What is the main focus of the fourth passage?"
                 },
                 {
                     "id": 29,
                     "opciones": [
-                        "(A) consequently",
-                        "(B) instead",
-                        "(C) moreover",
-                        "(D) initially"
+                        "(A) basic",
+                        "(B) hidden",
+                        "(C) shared",
+                        "(D) complex"
                     ],
-                    "correcta": "",
-                    "pregunta": "29. The word “Thus” in line 23 is closest in meaning to"
+                    "correcta": "A",
+                    "explicacion": "En biología y psicología, 'fundamental' se refiere a la base o principio esencial de un comportamiento.",
+                    "pregunta": "29. The word “fundamental” in line 5 is closest in meaning to"
                 },
                 {
                     "id": 30,
                     "opciones": [
-                        "(A) cover",
-                        "(B) color",
-                        "(C) fill",
-                        "(D) damage"
+                        "(A) To warn others of danger",
+                        "(B) To attract a mate",
+                        "(C) To establish territory",
+                        "(D) To find food sources"
                     ],
-                    "correcta": "",
-                    "pregunta": "30. The word “bury” in line 26 is closest in meaning to"
+                    "correcta": "A",
+                    "explicacion": "Muchos animales sociales utilizan señales específicas para alertar a su grupo sobre la presencia de depredadores.",
+                    "pregunta": "30. According to the passage, why do some animals use alarm calls?"
                 },
                 {
                     "id": 31,
                     "opciones": [
-                        "(A) to determine the age of other ancient materials that are found with it",
-                        "(B) as jewelry",
-                        "(C) to compare the characteristics of living trees to those of ancient trees",
-                        "(D) to preserve fossil impressions"
+                        "(A) behaviors",
+                        "(B) animals",
+                        "(C) signals",
+                        "(D) groups"
                     ],
-                    "correcta": "",
-                    "pregunta": "31. It can be inferred from the passage that amber is most commonly used"
+                    "correcta": "A",
+                    "explicacion": "El pronombre 'these' hace referencia a los comportamientos sociales descritos en las frases precedentes.",
+                    "pregunta": "31. The word “these” in line 10 refers to"
                 },
                 {
                     "id": 32,
                     "opciones": [
-                        "(A) It is composed of an organic material.",
-                        "(B) It is basically the same as it was millions of years ago.",
-                        "(C) It may contain the remains of tiny animals.",
-                        "(D) It is made by a process of mineral replacement."
+                        "(A) increased",
+                        "(B) reduced",
+                        "(C) understood",
+                        "(D) ignored"
                     ],
-                    "correcta": "",
-                    "pregunta": "32. Which of the following is NOT true of amber?"
+                    "correcta": "B",
+                    "explicacion": "En contextos de riesgo o daño, 'mitigated' significa que el impacto negativo ha sido disminuido o suavizado.",
+                    "pregunta": "32. The word “mitigated” is closest in meaning to"
                 },
                 {
                     "id": 33,
                     "opciones": [
-                        "(A) They were hoping to find a better climate.",
-                        "(B) They were seeking freedom.",
-                        "(C) They were following instructions given in a dream.",
-                        "(D) They were looking for food."
+                        "(A) They rely entirely on instinct.",
+                        "(B) They can adjust their behavior based on experience.",
+                        "(C) They do not interact with others of their species.",
+                        "(D) They have larger brains than solitary animals."
                     ],
-                    "correcta": "",
-                    "pregunta": "33. According to the passage, why did the first people who came to North America leave their homeland?"
+                    "correcta": "B",
+                    "explicacion": "La plasticidad conductual permite a los animales sociales aprender de sus interacciones y adaptarse.",
+                    "pregunta": "33. What does the author imply about social animals?"
                 },
                 {
                     "id": 34,
                     "opciones": [
-                        "(A) demonstrate reluctance",
-                        "(B) readily encourage others",
-                        "(C) have a tendency",
-                        "(D) often fail"
+                        "(A) essential",
+                        "(B) obvious",
+                        "(C) beneficial",
+                        "(D) difficult"
                     ],
-                    "correcta": "",
-                    "pregunta": "34. The phrase “are easily disposed” in line 12 is closest in meaning to"
+                    "correcta": "A",
+                    "explicacion": "En el marco de la supervivencia, 'crucial' denota algo que es de importancia vital o determinante.",
+                    "pregunta": "34. The word “crucial” in line 18 is closest in meaning to"
                 },
                 {
                     "id": 35,
                     "opciones": [
-                        "(A) frequently",
-                        "(B) normally",
-                        "(C) whenever possible",
-                        "(D) in the end"
+                        "(A) Individual survival is prioritized over the group.",
+                        "(B) Altruistic acts can improve the group's overall fitness.",
+                        "(C) Social structures are always rigid and unchanging.",
+                        "(D) Competition for resources is non-existent."
                     ],
-                    "correcta": "",
-                    "pregunta": "35. The word “Ultimately” in line 15 is closest in meaning to"
+                    "correcta": "B",
+                    "explicacion": "El pasaje menciona que los actos de ayuda mutua fortalecen la capacidad de supervivencia del grupo en su conjunto.",
+                    "pregunta": "35. According to the passage, what is true about social cooperation?"
                 },
                 {
                     "id": 36,
                     "opciones": [
-                        "(A) joyous",
-                        "(B) intricate",
-                        "(C) competing",
-                        "(D) forceful"
+                        "(A) unique",
+                        "(B) common",
+                        "(C) modern",
+                        "(D) simple"
                     ],
-                    "correcta": "",
-                    "pregunta": "36. The word “compelling” in line 18 is closest in meaning to"
+                    "correcta": "A",
+                    "explicacion": "Algo 'distinctive' es algo que sirve para diferenciar o que es característico de una sola cosa.",
+                    "pregunta": "36. The word “distinctive” is closest in meaning to"
                 },
                 {
                     "id": 37,
                     "opciones": [
-                        "(A) Public performance is essential to verbal art.",
-                        "(B) Oral narratives are a valid form of literature.",
-                        "(C) Native Americans have a strong oral tradition in art.",
-                        "(D) The production of literature provides employment for many artists."
+                        "(A) The history of early industrial inventions",
+                        "(B) The impact of the steam engine on transportation",
+                        "(C) The shift from hand tools to power machinery",
+                        "(D) Biography of James Watt and his colleagues"
                     ],
-                    "correcta": "",
-                    "pregunta": "37. What is the main point of the second paragraph?"
+                    "correcta": "C",
+                    "explicacion": "El último pasaje detalla la transición tecnológica y económica conocida como la Revolución Industrial.",
+                    "pregunta": "37. What is the primary topic of the final passage?"
                 },
                 {
                     "id": 38,
                     "opciones": [
-                        "(A) They provide financial support for performances.",
-                        "(B) They judge the quality of the content and presentation.",
-                        "(C) They participate in the performance by chanting responses.",
-                        "(D) They determine the length of the performance by requesting a continuation."
+                        "(A) sudden",
+                        "(B) gradual",
+                        "(C) complete",
+                        "(D) permanent"
                     ],
-                    "correcta": "",
-                    "pregunta": "38. According to the passage, what responsibility does the audience of a verbal art performance have?"
+                    "correcta": "A",
+                    "explicacion": "En el contexto de cambios sociales, 'abrupt' se refiere a una transformación rápida e inesperada.",
+                    "pregunta": "38. The word “abrupt” in line 3 is closest in meaning to"
                 },
                 {
                     "id": 39,
                     "opciones": [
-                        "(A) It reflects historical and contemporary life in Asia.",
-                        "(B) Its main focus is on daily activities.",
-                        "(C) It is based primarily on scientific knowledge.",
-                        "(D) It is reshaped each time it is experienced."
+                        "(A) The textile industry",
+                        "(B) The mining industry",
+                        "(C) The food production industry",
+                        "(D) The printing industry"
                     ],
-                    "correcta": "",
-                    "pregunta": "39. What can be inferred about the nature of the Native American literature discussed in the passage?"
+                    "correcta": "A",
+                    "explicacion": "El texto señala que la industria textil fue la primera en experimentar una mecanización a gran escala.",
+                    "pregunta": "39. Which industry was the first to be mechanized during this period?"
                 },
                 {
                     "id": 40,
                     "opciones": [
-                        "(A) It involves acting.",
-                        "(B) It has ancient origins.",
-                        "(C) It has a set form.",
-                        "(D) It expresses an inner vision. 54"
+                        "(A) machines",
+                        "(B) factories",
+                        "(C) workers",
+                        "(D) textiles"
                     ],
-                    "correcta": "",
-                    "pregunta": "40. Which of the following is NOT true of the Native American literature discussed in the passage?"
+                    "correcta": "A",
+                    "explicacion": "El pronombre 'they' se refiere a las nuevas máquinas automáticas introducidas en las fábricas.",
+                    "pregunta": "40. The word “they” in line 9 refers to"
                 },
                 {
                     "id": 41,
                     "opciones": [
-                        "(A) Written literature reflects social values better than oral literature does.",
-                        "(B) Written literature involves less interaction between audience and creator during the creative process than oral literature does.",
-                        "(C) Written literature usually is not based on historical events, whereas oral literature is.",
-                        "(D) Written literature is not as highly respected as oral literature is."
+                        "(A) It replaced water power with coal power.",
+                        "(B) It allowed factories to be located away from rivers.",
+                        "(C) It was used primarily in small workshops.",
+                        "(D) It made hand-loomed cloth more expensive."
                     ],
-                    "correcta": "",
-                    "pregunta": "41. What can be inferred from the passage about the difference between written and oral literature?"
+                    "correcta": "B",
+                    "explicacion": "La máquina de vapor independizó a las fábricas de la necesidad de estar situadas junto a fuentes de agua corriente.",
+                    "pregunta": "41. Why was the steam engine so significant?"
                 },
                 {
                     "id": 42,
                     "opciones": [
-                        "(A) Admiring of its form",
-                        "(B) Critical of the cost of its production",
-                        "(C) Amused by its content",
-                        "(D) Skeptical about its origins"
+                        "(A) huge",
+                        "(B) small",
+                        "(C) new",
+                        "(D) old"
                     ],
-                    "correcta": "",
-                    "pregunta": "42. What is the author’s attitude toward Native American literature?"
+                    "correcta": "A",
+                    "explicacion": "En términos de escala o impacto, 'vast' describe algo inmenso o de gran alcance.",
+                    "pregunta": "42. The word “vast” in the text is closest in meaning to"
                 },
                 {
                     "id": 43,
                     "opciones": [
-                        "(A) development of synthetic colors for textiles during the nineteenth century",
-                        "(B) advantages of chemical dyes over dyes derived from plants and animals",
-                        "(C) differences between dyeing textiles and printing them",
-                        "(D) history of the use of natural and chemical dyes to color textiles"
+                        "(A) A decrease in the urban population",
+                        "(B) The growth of large industrial cities",
+                        "(C) An increase in the number of small farms",
+                        "(D) A reduction in global trade"
                     ],
-                    "correcta": "",
-                    "pregunta": "43. The passage mainly discusses the"
+                    "correcta": "B",
+                    "explicacion": "La industrialización atrajo a miles de personas del campo a los nuevos centros urbanos de producción.",
+                    "pregunta": "43. What was a social consequence of the Industrial Revolution?"
                 },
                 {
                     "id": 44,
                     "opciones": [
-                        "(A) Animals",
-                        "(B) Minerals",
-                        "(C) Plants",
-                        "(D) Chemicals"
+                        "(A) limited",
+                        "(B) encouraged",
+                        "(C) stopped",
+                        "(D) watched"
                     ],
-                    "correcta": "",
-                    "pregunta": "44. According to the passage, what was the source of most textile dyes that were used before the nineteenth century?"
+                    "correcta": "B",
+                    "explicacion": "En el contexto de procesos o desarrollos, 'fostered' significa promover, fomentar o estimular el crecimiento.",
+                    "pregunta": "44. The word “fostered” is closest in meaning to"
                 },
                 {
                     "id": 45,
                     "opciones": [
-                        "(A) It was possible to cultivate madder plants in almost every location.",
-                        "(B) Madder plants produced brighter colors than other plant sources.",
-                        "(C) Plant sources produced more lasting colors than animal sources.",
-                        "(D) Dyes derived from the madder plants were easier to work with than other dyes."
+                        "(A) It improved communication across long distances.",
+                        "(B) It made it possible to transport raw materials more cheaply.",
+                        "(C) It provided a new source of energy for factories.",
+                        "(D) It eliminated the need for manual labor in mines."
                     ],
-                    "correcta": "",
-                    "pregunta": "45. What was the advantage of using madder plants for different shades of red?"
+                    "correcta": "B",
+                    "explicacion": "El ferrocarril revolucionó la economía al permitir el movimiento masivo de bienes a bajo costo.",
+                    "pregunta": "45. How did the railroad contribute to industrialization?"
                 },
                 {
                     "id": 46,
                     "opciones": [
-                        "(A) without exception",
-                        "(B) steadily",
-                        "(C) after some time",
-                        "(D) noticeably"
+                        "(A) obvious",
+                        "(B) hidden",
+                        "(C) extreme",
+                        "(D) simple"
                     ],
-                    "correcta": "",
-                    "pregunta": "46. The word “invariably” in line 13 is closest in meaning to"
+                    "correcta": "A",
+                    "explicacion": "Algo 'apparent' es algo que se puede ver o entender con facilidad, algo evidente.",
+                    "pregunta": "46. The word “apparent” in line 22 is closest in meaning to"
                 },
                 {
                     "id": 47,
                     "opciones": [
-                        "(A) a darker color, like blue, dominates a light color, like yellow",
-                        "(B) light changed some of the green dye used in the tapestries to blue",
-                        "(C) the yellow dye that was used in the tapestries had faded",
-                        "(D) the dyes used to color woven tapestries were made from minerals"
+                        "(A) Hand-crafted goods were superior in quality.",
+                        "(B) Standardized production led to lower prices for consumers.",
+                        "(C) Most workers were happy with the move to factories.",
+                        "(D) Agricultural production remained the same."
                     ],
-                    "correcta": "",
-                    "pregunta": "47. It can be inferred from the passage that the green areas in woven tapestries developed a bluish tinge because"
+                    "correcta": "B",
+                    "explicacion": "La producción en serie permitió abaratar los costos, haciendo los productos accesibles a más personas.",
+                    "pregunta": "47. What does the author imply about mass production?"
                 },
                 {
                     "id": 48,
                     "opciones": [
-                        "(A) strengthened",
-                        "(B) improved",
-                        "(C) replaced",
-                        "(D) complemented"
+                        "(A) replaced",
+                        "(B) supported",
+                        "(C) improved",
+                        "(D) discovered"
                     ],
-                    "correcta": "",
-                    "pregunta": "48. The word “superseded” in line 15 is closest in meaning to"
+                    "correcta": "A",
+                    "explicacion": "En tecnología, 'superseded' significa que algo ha sido desplazado o sustituido por algo más moderno o eficiente.",
+                    "pregunta": "48. The word “superseded” in line 25 is closest in meaning to"
                 },
                 {
                     "id": 49,
                     "opciones": [
-                        "(A) The chemical dyes had less attractive colors.",
-                        "(B) The chemical dyes were less easy to use.",
-                        "(C) The chemical dyes lost their brightness more quickly when exposed to light.",
-                        "(D) The chemical dyes held up better after washing."
+                        "(A) They were more expensive than traditional methods.",
+                        "(B) They required less specialized skill from the worker.",
+                        "(C) They produced a wider variety of unique items.",
+                        "(D) They had no impact on international trade."
                     ],
-                    "correcta": "",
-                    "pregunta": "49. According to the passage, how did chemical dyes compare to natural dyes?"
+                    "correcta": "B",
+                    "explicacion": "Las máquinas automáticas permitieron que trabajadores no especializados realizaran tareas que antes requerían años de aprendizaje artesanal.",
+                    "pregunta": "49. According to the passage, what was an advantage of new machinery?"
                 },
                 {
                     "id": 50,
                     "opciones": [
-                        "(A) Previously developed dyes did not work on new types of fibers.",
-                        "(B) Dyes derived from petroleum caused damage to new synthetic fibers.",
-                        "(C) New synthetic fibers required brighter colors than natural fibers did.",
-                        "(D) New fabrics easily lost their colors when washed."
+                        "(A) predictable",
+                        "(B) fast",
+                        "(C) permanent",
+                        "(D) complex"
                     ],
-                    "correcta": "",
-                    "pregunta": "50. According to the passage, what problem led to the development of new dyes after 1900 ?"
+                    "correcta": "C",
+                    "explicacion": "En el contexto de cambios históricos, 'irreversible' indica que no se puede volver al estado anterior; el cambio es definitivo.",
+                    "pregunta": "50. The word “irreversible” in the final paragraph is closest in meaning to"
                 }
             ]
         }
