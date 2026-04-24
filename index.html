@@ -28,6 +28,12 @@
             border-color: #334155;
         }
         
+        /* Estilos Modo Aprendizaje */
+        .option-correct { background-color: #dcfce7 !important; border-color: #22c55e !important; }
+        .option-wrong { background-color: #fee2e2 !important; border-color: #ef4444 !important; }
+        .text-correct { color: #15803d; font-weight: bold; }
+        .text-wrong { color: #b91c1c; font-weight: bold; }
+
         .hidden-section { display: none; }
         .tab-btn { transition: all 0.2s; }
         .tab-active { border-bottom: 4px solid #2563eb; color: #1d4ed8; font-weight: bold; background-color: #eff6ff;}
@@ -38,6 +44,8 @@
         .audio-disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
         .audio-card { transition: all 0.3s ease; }
         .audio-card:hover { transform: translateY(-2px); }
+
+        .mode-badge { px-3; py-1; rounded-full; text-xs; font-bold; uppercase; }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden">
@@ -50,11 +58,14 @@
             </div>
             <div>
                 <h1 class="text-xl font-bold uppercase tracking-wide">TOEFL ITP® Practice Test</h1>
-                <p class="text-xs text-gray-500">Level 1, Volume 3</p>
+                <div class="flex items-center gap-2">
+                    <p class="text-xs text-gray-500">Level 1, Volume 3</p>
+                    <span id="header-mode-badge" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">Modo Real</span>
+                </div>
             </div>
         </div>
         <div class="flex items-center gap-6">
-            <div id="section-indicator" class="font-semibold text-blue-800">Cargando...</div>
+            <div id="section-indicator" class="font-semibold text-blue-800 uppercase text-sm tracking-widest">Cargando...</div>
             <div class="bg-gray-800 text-white px-5 py-2 rounded font-mono text-xl shadow-inner flex items-center gap-2">
                 <i class="far fa-clock"></i>
                 <span id="timer">--:--</span>
@@ -91,6 +102,15 @@
                     <i class="fas fa-book-open w-6 text-center mr-2"></i> 3. Reading
                 </button>
             </nav>
+
+            <!-- Selector de Modo en Sidebar -->
+            <div class="p-4 border-t bg-gray-50">
+                <p class="text-[10px] font-bold text-gray-400 uppercase mb-2">Configuración</p>
+                <div class="flex flex-col gap-2">
+                    <button id="btn-mode-real" onclick="setAppMode('real')" class="text-xs font-bold py-2 px-3 rounded border-2 border-blue-600 bg-blue-600 text-white w-full transition-all">Modo Real Life</button>
+                    <button id="btn-mode-learning" onclick="setAppMode('learning')" class="text-xs font-bold py-2 px-3 rounded border-2 border-gray-300 text-gray-500 w-full hover:border-orange-400 transition-all">Modo Aprendizaje</button>
+                </div>
+            </div>
         </aside>
 
         <!-- MAIN CONTENT -->
@@ -100,22 +120,37 @@
                 <!-- VIEW: Instrucciones -->
                 <div id="view-instructions" class="p-10 space-y-6">
                     <h2 class="text-3xl font-bold text-center border-b pb-4">Instrucciones Generales</h2>
-                    <div class="text-lg leading-relaxed space-y-4 text-justify">
-                        <p>Este simulador está diseñado para entrenarte bajo las condiciones reales del examen TOEFL ITP.</p>
-                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-                            <p class="text-yellow-800 font-bold">Importante - Regla de Audio:</p>
-                            <p class="text-yellow-700 text-sm">Solo se permite reproducir el audio un máximo de <strong>2 veces</strong> por sección de Listening. Al terminar el segundo intento, el reproductor se bloqueará.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <h3 class="font-bold text-lg text-blue-900"><i class="fas fa-vial mr-2"></i>Modo Real Life</h3>
+                            <p class="text-sm text-gray-600">Simulación estricta. No sabrás tus resultados hasta terminar todo el examen. Ideal para medir tu tiempo y presión.</p>
+                            <ul class="text-xs text-gray-500 list-disc pl-4">
+                                <li>Cronómetro activo.</li>
+                                <li>Audio limitado a 2 veces.</li>
+                                <li>Resultados al final.</li>
+                            </ul>
                         </div>
-                        <ul class="list-disc pl-8 space-y-2 text-gray-600">
-                            <li><strong>Listening:</strong> 35 min. (Audio A o B según el test).</li>
-                            <li><strong>Structure:</strong> 25 min.</li>
-                            <li><strong>Reading:</strong> 55 min.</li>
-                        </ul>
+                        <div class="space-y-4 border-l pl-6">
+                            <h3 class="font-bold text-lg text-orange-600"><i class="fas fa-graduation-cap mr-2"></i>Modo Aprendizaje</h3>
+                            <p class="text-sm text-gray-600">Entrenamiento activo. Recibe retroalimentación inmediata después de cada respuesta elegida.</p>
+                            <ul class="text-xs text-gray-500 list-disc pl-4">
+                                <li>Corrección instantánea.</li>
+                                <li>Explicación de la respuesta correcta.</li>
+                                <li>Sin límite de audio (opcional).</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="text-center mt-12 pt-8 border-t">
-                        <button onclick="iniciarSeccion('listening')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow text-lg transition-transform transform hover:scale-105">
-                            Comenzar Listening
-                        </button>
+                    
+                    <div class="text-center mt-12 pt-8 border-t flex flex-col items-center gap-4">
+                        <p class="text-gray-500 italic">Selecciona el modo antes de comenzar:</p>
+                        <div class="flex gap-4">
+                            <button onclick="setAppMode('real'); iniciarSeccion('listening')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all transform hover:scale-105">
+                                Iniciar Modo Real Life
+                            </button>
+                            <button onclick="setAppMode('learning'); iniciarSeccion('listening')" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all transform hover:scale-105">
+                                Iniciar Modo Aprendizaje
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -125,7 +160,6 @@
                         <h2 class="text-2xl font-bold uppercase mb-2">Section 1: Listening Comprehension</h2>
                     </div>
 
-                    <!-- SELECCIÓN DE AUDIO -->
                     <div id="audio-selection-ui" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
                         <button onclick="cargarAudioDrive('1YfZ1zZCL-Zlie5f6w03VRpPh3DzCHMRU', 'A')" class="audio-card bg-white border-2 border-blue-100 p-4 rounded-xl flex items-center gap-4 hover:border-blue-500 shadow-sm text-left">
                             <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl shrink-0">
@@ -136,7 +170,6 @@
                                 <p class="text-xs text-gray-500">Practice Test 1 - Volume 3</p>
                             </div>
                         </button>
-
                         <button onclick="cargarAudioDrive('1uDKuutxP9uLTYm4rBtz1NMeOCRC2hMlc', 'B')" class="audio-card bg-white border-2 border-blue-100 p-4 rounded-xl flex items-center gap-4 hover:border-blue-500 shadow-sm text-left">
                             <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-xl shrink-0">
                                 <i class="fas fa-file-audio"></i>
@@ -148,7 +181,6 @@
                         </button>
                     </div>
 
-                    <!-- CONTROL DE AUDIO (SISTEMA DE SEGURIDAD) -->
                     <div id="master-audio-player" class="bg-gray-900 text-white p-6 rounded-2xl mb-10 shadow-xl hidden">
                         <div class="flex flex-col md:flex-row items-center justify-between gap-6">
                             <div class="flex-1">
@@ -162,32 +194,25 @@
                                     </span>
                                 </div>
                             </div>
-                            
-                            <!-- Reproductor Nativo -->
                             <div class="w-full md:w-auto text-right">
                                 <audio id="main-audio" controls class="w-full h-10 mb-2"></audio>
-                                <div class="flex flex-col items-end">
-                                    <p class="text-[10px] text-gray-400">Carga manual de respaldo (archivo ligero):</p>
-                                    <input type="file" id="local-audio-input" accept="audio/*" class="text-[10px] text-gray-400 mt-1 cursor-pointer"/>
-                                </div>
+                                <input type="file" id="local-audio-input" accept="audio/*" class="text-[10px] text-gray-400 mt-1 cursor-pointer"/>
                             </div>
                         </div>
-
                         <p id="audio-warning" class="text-red-400 text-sm font-bold mt-4 hidden text-center bg-red-400/10 py-2 rounded-lg border border-red-400/20">
-                            <i class="fas fa-lock mr-2"></i> Límite de 2 reproducciones alcanzado. El reproductor ha sido bloqueado.
+                            <i class="fas fa-lock mr-2"></i> Límite alcanzado (Solo en Modo Real).
                         </p>
                     </div>
 
                     <div id="listening-container" class="space-y-10"></div>
-
                     <div class="mt-12 text-right border-t pt-6">
                         <button onclick="iniciarSeccion('structure')" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded shadow transition-colors">
-                            Ir a Structure <i class="fas fa-arrow-right ml-2"></i>
+                            Siguiente Sección <i class="fas fa-arrow-right ml-2"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- SECCIÓN STRUCTURE Y READING -->
+                <!-- SECCIÓN STRUCTURE -->
                 <div id="view-structure" class="hidden-section p-10">
                     <div class="mb-8 border-b pb-4">
                         <h2 class="text-2xl font-bold uppercase mb-2">Section 2: Structure and Written Expression</h2>
@@ -195,11 +220,12 @@
                     <div id="structure-container" class="space-y-10"></div>
                     <div class="mt-12 text-right border-t pt-6">
                         <button onclick="iniciarSeccion('reading')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded shadow transition-colors">
-                            Ir a Reading <i class="fas fa-arrow-right ml-2"></i>
+                            Siguiente Sección <i class="fas fa-arrow-right ml-2"></i>
                         </button>
                     </div>
                 </div>
 
+                <!-- SECCIÓN READING -->
                 <div id="view-reading" class="hidden-section p-10">
                     <div class="mb-8 border-b pb-4">
                         <h2 class="text-2xl font-bold uppercase mb-2">Section 3: Reading Comprehension</h2>
@@ -207,7 +233,7 @@
                     <div id="reading-container" class="space-y-10"></div>
                     <div class="mt-12 text-center border-t pt-6">
                         <button onclick="terminarExamen()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded shadow text-lg transition-transform transform hover:scale-105">
-                            Finalizar y Calificar
+                            Finalizar Examen
                         </button>
                     </div>
                 </div>
@@ -220,28 +246,47 @@
         let timerInterval;
         let plays = 0;
         const maxPlays = 2;
+        let appMode = 'real'; // 'real' o 'learning'
+        let examenCompleto = null;
         
         const mainAudio = document.getElementById('main-audio');
         const audioWarning = document.getElementById('audio-warning');
         const currentPlaysDisplay = document.getElementById('current-plays');
         const localAudioInput = document.getElementById('local-audio-input');
 
-        // --- LÓGICA DE CARGA DE AUDIO ---
+        // --- GESTIÓN DE MODOS ---
+        function setAppMode(mode) {
+            appMode = mode;
+            const badge = document.getElementById('header-mode-badge');
+            const btnReal = document.getElementById('btn-mode-real');
+            const btnLearn = document.getElementById('btn-mode-learning');
+
+            if(mode === 'learning') {
+                badge.innerText = "Modo Aprendizaje";
+                badge.className = "bg-orange-100 text-orange-700 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase border border-orange-200";
+                btnLearn.className = "text-xs font-bold py-2 px-3 rounded border-2 border-orange-500 bg-orange-500 text-white w-full transition-all";
+                btnReal.className = "text-xs font-bold py-2 px-3 rounded border-2 border-gray-300 text-gray-500 w-full hover:border-blue-400 transition-all";
+            } else {
+                badge.innerText = "Modo Real Life";
+                badge.className = "bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase border border-blue-200";
+                btnReal.className = "text-xs font-bold py-2 px-3 rounded border-2 border-blue-600 bg-blue-600 text-white w-full transition-all";
+                btnLearn.className = "text-xs font-bold py-2 px-3 rounded border-2 border-gray-300 text-gray-500 w-full hover:border-orange-400 transition-all";
+            }
+            
+            // Si el examen ya está renderizado, volver a renderizar para limpiar estados si es necesario
+            if(examenCompleto) renderizarExamen(examenCompleto);
+        }
+
+        // --- LÓGICA DE AUDIO ---
         function cargarAudioDrive(id, label) {
-            // Reiniciar contador al cambiar de audio
             plays = 0;
             updateAudioUI();
-            
             document.getElementById('master-audio-player').classList.remove('hidden');
             document.getElementById('current-audio-label').innerText = "Audio " + label;
-            
-            // Usar el enlace de descarga directa de Drive para que el elemento <audio> lo lea automáticamente
             mainAudio.src = `https://drive.google.com/uc?export=download&id=${id}`;
             mainAudio.classList.remove('audio-disabled');
             audioWarning.classList.add('hidden');
-            
-            // Intentar reproducir automáticamente (algunos navegadores lo bloquean hasta interacción del usuario)
-            mainAudio.play().catch(e => console.log("Reproducción automática bloqueada, esperando clic."));
+            mainAudio.play().catch(e => console.log("Auto-play blocked."));
         }
 
         localAudioInput.addEventListener('change', function(e) {
@@ -257,15 +302,15 @@
             }
         });
 
-        // --- LÓGICA DE REPRODUCCIONES ---
-        // Contamos un intento cada vez que el audio termina
         mainAudio.addEventListener('ended', function() {
-            plays++;
-            updateAudioUI();
-            if (plays >= maxPlays) {
-                mainAudio.pause();
-                mainAudio.classList.add('audio-disabled');
-                audioWarning.classList.remove('hidden');
+            if(appMode === 'real') {
+                plays++;
+                updateAudioUI();
+                if (plays >= maxPlays) {
+                    mainAudio.pause();
+                    mainAudio.classList.add('audio-disabled');
+                    audioWarning.classList.remove('hidden');
+                }
             }
         });
 
@@ -273,67 +318,113 @@
             currentPlaysDisplay.innerText = plays;
         }
 
-        // --- CARGA DE DATOS DEL EXAMEN ---
+        // --- CARGA Y RENDERIZADO ---
         document.addEventListener('DOMContentLoaded', () => {
             fetch('examen_data.json', { cache: "no-store" })
                 .then(response => response.json())
                 .then(data => {
+                    examenCompleto = data;
                     renderizarExamen(data);
                     document.getElementById('loading-screen').style.display = 'none';
                     document.getElementById('section-indicator').innerText = 'Instrucciones';
                 })
                 .catch(err => {
                     console.error(err);
-                    document.getElementById('loading-screen').innerHTML = "<p class='text-red-500'>Error cargando examen_data.json</p>";
+                    document.getElementById('loading-screen').innerHTML = "<p class='text-red-500'>Error cargando examen_data.json. Verifica que el archivo esté en la misma carpeta.</p>";
                 });
         });
 
         function renderizarExamen(data) {
             const letras = ['A', 'B', 'C', 'D'];
             
-            // Render Listening
-            const lCont = document.getElementById('listening-container');
-            data.listening.forEach(q => {
-                let html = `<div class="flex items-start gap-4"><div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center font-bold text-gray-400 shrink-0 border">${q.id}</div><div class="space-y-2 w-full">`;
+            // Helper para renderizar cada pregunta
+            const crearHtmlPregunta = (q, sectionKey) => {
+                let html = `<div class="flex items-start gap-4" id="container-${sectionKey}-${q.id}">
+                                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center font-bold text-gray-400 shrink-0 border">${q.id}</div>
+                                <div class="space-y-2 w-full">`;
+                
                 if(q.pregunta && q.pregunta.length > 5) html += `<p class="font-medium text-gray-700">${q.pregunta}</p>`;
+                
                 q.opciones.forEach((op, i) => {
-                    html += `<label class="flex items-center group cursor-pointer py-1"><input type="radio" name="lis-${q.id}" value="${letras[i]}" class="toefl-radio"><span class="text-gray-700 group-hover:text-black">${op}</span></label>`;
+                    const letter = letras[i];
+                    html += `<label id="label-${sectionKey}-${q.id}-${letter}" class="flex items-center group cursor-pointer py-2 px-3 border border-transparent rounded-lg transition-all">
+                                <input type="radio" name="${sectionKey}-${q.id}" value="${letter}" 
+                                       onchange="checkAnswer('${sectionKey}', ${q.id}, '${letter}')" 
+                                       class="toefl-radio">
+                                <span class="text-gray-700 group-hover:text-black">${op}</span>
+                             </label>`;
                 });
-                lCont.innerHTML += html + `</div></div>`;
-            });
+                
+                // Div para explicaciones (Modo Aprendizaje)
+                html += `<div id="feedback-${sectionKey}-${q.id}" class="mt-3 p-4 rounded-lg hidden text-sm"></div>`;
+                html += `</div></div>`;
+                return html;
+            };
 
-            // Render Structure
-            const sCont = document.getElementById('structure-container');
-            data.structure.forEach(q => {
-                let html = `<div class="bg-white p-4 border rounded shadow-sm mb-4"><p class="font-bold mb-3">${q.pregunta}</p>`;
-                q.opciones.forEach((op, i) => {
-                    html += `<label class="flex items-center mb-2 cursor-pointer"><input type="radio" name="str-${q.id}" value="${letras[i]}" class="toefl-radio"><span>${op}</span></label>`;
-                });
-                sCont.innerHTML += html + `</div>`;
-            });
+            // Reset containers
+            document.getElementById('listening-container').innerHTML = '';
+            document.getElementById('structure-container').innerHTML = '';
+            document.getElementById('reading-container').innerHTML = '';
 
-            // Render Reading
-            const rCont = document.getElementById('reading-container');
-            data.reading.forEach(passage => {
-                passage.questions.forEach(q => {
-                    let html = `<div class="bg-white p-4 border rounded shadow-sm mb-4"><p class="font-bold mb-3">${q.pregunta}</p>`;
-                    q.opciones.forEach((op, i) => {
-                        html += `<label class="flex items-center mb-2 cursor-pointer"><input type="radio" name="rea-${q.id}" value="${letras[i]}" class="toefl-radio"><span>${op}</span></label>`;
-                    });
-                    rCont.innerHTML += html + `</div>`;
-                });
+            data.listening.forEach(q => document.getElementById('listening-container').innerHTML += crearHtmlPregunta(q, 'lis'));
+            data.structure.forEach(q => document.getElementById('structure-container').innerHTML += crearHtmlPregunta(q, 'str'));
+            data.reading.forEach(p => {
+                p.questions.forEach(q => document.getElementById('reading-container').innerHTML += crearHtmlPregunta(q, 'rea'));
             });
         }
 
-        // --- NAVEGACIÓN Y CRONÓMETRO ---
+        // --- LÓGICA DE VALIDACIÓN ---
+        function checkAnswer(section, id, selected) {
+            if (appMode !== 'learning') return;
+
+            // Buscar la pregunta en la data
+            let qData = null;
+            if (section === 'lis') qData = examenCompleto.listening.find(x => x.id === id);
+            else if (section === 'str') qData = examenCompleto.structure.find(x => x.id === id);
+            else {
+                examenCompleto.reading.forEach(p => {
+                    let found = p.questions.find(x => x.id === id);
+                    if(found) qData = found;
+                });
+            }
+
+            if(!qData) return;
+
+            const feedbackDiv = document.getElementById(`feedback-${section}-${id}`);
+            const correct = qData.correcta; // Debe estar en tu JSON como "A", "B", etc.
+            
+            // Limpiar clases previas de las etiquetas
+            ['A', 'B', 'C', 'D'].forEach(l => {
+                const lbl = document.getElementById(`label-${section}-${id}-${l}`);
+                lbl.classList.remove('option-correct', 'option-wrong', 'text-correct', 'text-wrong');
+                // Deshabilitar radios para que no cambie después de ver la respuesta
+                lbl.querySelector('input').disabled = true;
+            });
+
+            const isCorrect = (selected === correct);
+            const labelSelected = document.getElementById(`label-${section}-${id}-${selected}`);
+            const labelCorrect = document.getElementById(`label-${section}-${id}-${correct}`);
+
+            feedbackDiv.classList.remove('hidden', 'bg-green-50', 'bg-red-50', 'text-green-800', 'text-red-800');
+            
+            if (isCorrect) {
+                labelSelected.classList.add('option-correct', 'text-correct');
+                feedbackDiv.classList.add('bg-green-50', 'text-green-800', 'border', 'border-green-200');
+                feedbackDiv.innerHTML = `<strong>¡Correcto!</strong> ${qData.explicacion || 'Excelente razonamiento estructural.'}`;
+            } else {
+                labelSelected.classList.add('option-wrong', 'text-wrong');
+                if(labelCorrect) labelCorrect.classList.add('option-correct', 'text-correct');
+                feedbackDiv.classList.add('bg-red-50', 'text-red-800', 'border', 'border-red-200');
+                feedbackDiv.innerHTML = `<strong>Incorrecto.</strong> La respuesta correcta es la (${correct}). ${qData.explicacion || 'Revisa la regla gramatical o el sinónimo utilizado en el audio.'}`;
+            }
+        }
+
+        // --- NAVEGACIÓN ---
         function iniciarSeccion(seccion) {
             cambiarSeccion(seccion);
             let mins = seccion === 'listening' ? 35 : (seccion === 'structure' ? 25 : 55);
             iniciarTimer(mins * 60);
-
-            if (seccion !== 'listening') {
-                mainAudio.pause();
-            }
+            if (seccion !== 'listening') mainAudio.pause();
 
             document.getElementById('nav-listening').classList.remove('text-gray-500');
             document.getElementById('nav-structure').classList.remove('text-gray-500');
@@ -348,7 +439,6 @@
             document.getElementById('view-' + id).classList.remove('hidden-section');
             document.getElementById('nav-' + id).classList.add('tab-active');
             window.scrollTo(0,0);
-            
             const txt = {'instructions':'Instrucciones','listening':'Section 1: Listening','structure':'Section 2: Structure','reading':'Section 3: Reading'};
             document.getElementById('section-indicator').innerText = txt[id];
         }
@@ -368,7 +458,7 @@
         function terminarExamen() {
             clearInterval(timerInterval);
             mainAudio.pause();
-            alert("Examen finalizado. Revisa tus respuestas.");
+            alert("Examen finalizado. Revisa tus aciertos.");
         }
     </script>
 </body>
