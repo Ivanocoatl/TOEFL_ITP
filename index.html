@@ -99,9 +99,40 @@
             <div class="max-w-4xl mx-auto min-h-full">
 
                 <div id="view-setup" class="space-y-8 animate-in fade-in duration-500">
-                    <div class="text-center py-10">
-                        <h2 class="text-4xl font-black mb-4 text-slate-900">Entrenamiento TOEFL</h2>
-                        <p class="text-slate-500">Selecciona un modelo de examen para comenzar.</p>
+                    <div class="text-center py-6">
+                        <h2 class="text-4xl font-black mb-2 text-slate-900">Entrenamiento TOEFL</h2>
+                        <p class="text-slate-500">Configura tus audios y selecciona un examen.</p>
+                    </div>
+
+                    <!-- NUEVA SECCIÓN: GESTIÓN DE AUDIOS -->
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="bg-indigo-100 text-indigo-600 p-2 rounded-xl">
+                                <i class="fas fa-folder-open"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-800">Gestión de Audios Locales</h3>
+                                <p class="text-[11px] text-slate-500">Sube los archivos MP3 desde tu PC para que el simulador los recuerde siempre.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 rounded-2xl bg-slate-50 border border-dashed border-slate-300">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-bold text-slate-600">AUDIO TEST A</span>
+                                    <span id="status-audio-testA" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-600 uppercase">Pendiente ❌</span>
+                                </div>
+                                <input type="file" id="upload-audio-testA" accept="audio/*" class="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                            </div>
+
+                            <div class="p-4 rounded-2xl bg-slate-50 border border-dashed border-slate-300">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-bold text-slate-600">AUDIO TEST B</span>
+                                    <span id="status-audio-testB" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-600 uppercase">Pendiente ❌</span>
+                                </div>
+                                <input type="file" id="upload-audio-testB" accept="audio/*" class="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -147,9 +178,7 @@
                             </div>
                             <div id="audio-container" class="w-full md:w-auto flex flex-col items-end gap-3 hidden">
                                 <audio id="main-audio" controls class="w-full h-10"></audio>
-                                <label class="text-[9px] text-slate-500 uppercase tracking-widest cursor-pointer hover:text-blue-400">
-                                    Audio Local <input type="file" id="local-audio" accept="audio/*" class="hidden">
-                                </label>
+                                <p class="text-[9px] text-slate-500 uppercase font-bold">Audio activo: <span id="audio-source-name" class="text-blue-400 font-mono tracking-tighter">Cargando...</span></p>
                             </div>
                         </div>
                     </div>
@@ -171,7 +200,7 @@
     </div>
 
     <script>
-        let db = null;
+        let dbData = null; // Base de datos JSON de preguntas
         let currentTest = null;
         let currentSection = 'listening';
         let learningMode = false;
@@ -179,53 +208,122 @@
         let currentStep = 0;
         const questionsPerStep = 2; 
 
-        document.addEventListener('DOMContentLoaded', () => {
+        // Diccionario para Blobs de audio locales (IndexedDB)
+        const localAudios = { testA: null, testB: null };
+
+        // --- LÓGICA DE INDEXEDDB ---
+        const DB_NAME = "ToeflAudioDB";
+        const DB_VERSION = 1;
+        let indexedDBInstance;
+
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+                request.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains("audios")) {
+                        db.createObjectStore("audios");
+                    }
+                };
+                request.onsuccess = (e) => {
+                    indexedDBInstance = e.target.result;
+                    resolve();
+                };
+                request.onerror = (e) => reject(e.target.error);
+            });
+        }
+
+        async function saveAudio(key, file) {
+            const transaction = indexedDBInstance.transaction(["audios"], "readwrite");
+            const store = transaction.objectStore("audios");
+            store.put(file, key);
+            actualizarEstadoUI(key, true);
+        }
+
+        async function loadAudio(key) {
+            return new Promise((resolve) => {
+                const transaction = indexedDBInstance.transaction(["audios"], "readonly");
+                const store = transaction.objectStore("audios");
+                const request = store.get(key);
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => resolve(null);
+            });
+        }
+
+        function actualizarEstadoUI(key, isLoaded) {
+            const el = document.getElementById(`status-audio-${key}`);
+            if (el) {
+                if (isLoaded) {
+                    el.innerText = "Cargado ✅";
+                    el.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-600 uppercase";
+                } else {
+                    el.innerText = "Pendiente ❌";
+                    el.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-600 uppercase";
+                }
+            }
+        }
+
+        // --- INICIALIZACIÓN ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Iniciar Base de Datos Local de Audios
+            try {
+                await initDB();
+                const audioA = await loadAudio('testA');
+                const audioB = await loadAudio('testB');
+                if (audioA) { localAudios.testA = audioA; actualizarEstadoUI('testA', true); }
+                if (audioB) { localAudios.testB = audioB; actualizarEstadoUI('testB', true); }
+            } catch (e) {
+                console.warn("IndexedDB no disponible. Los audios no persistirán entre sesiones.");
+            }
+
+            // 2. Cargar Preguntas JSON
             fetch('examen_data.json')
                 .then(r => {
                     if (!r.ok) throw new Error(`HTTP Error ${r.status}`);
-                    return r.text(); // Leemos primero como texto para capturar errores de parsing
+                    return r.text();
                 })
                 .then(text => {
                     try {
-                        db = JSON.parse(text);
+                        dbData = JSON.parse(text);
                         document.getElementById('loading-screen').style.display = 'none';
                     } catch (e) {
-                        console.error("Error analizando JSON:", e);
-                        mostrarErrorCarga("Formato JSON Inválido. Revisa cierres de llaves en examen_data.json.");
+                        mostrarErrorCarga("Formato JSON Inválido en examen_data.json.");
                     }
                 })
                 .catch(e => {
-                    console.error("Error cargando archivo:", e);
                     mostrarErrorCarga(`No se pudo cargar 'examen_data.json'. (${e.message})`);
                 });
+
+            // 3. Listeners de Subida
+            document.getElementById('upload-audio-testA').addEventListener('change', (e) => {
+                if (e.target.files[0]) {
+                    localAudios.testA = e.target.files[0];
+                    saveAudio('testA', e.target.files[0]);
+                }
+            });
+            document.getElementById('upload-audio-testB').addEventListener('change', (e) => {
+                if (e.target.files[0]) {
+                    localAudios.testB = e.target.files[0];
+                    saveAudio('testB', e.target.files[0]);
+                }
+            });
         });
 
         function mostrarErrorCarga(msg) {
             const screen = document.getElementById('loading-screen');
             const spinner = document.getElementById('loading-spinner');
-            const text = document.getElementById('loading-text');
             spinner.style.display = 'none';
             screen.innerHTML = `
                 <div class="text-center p-8 bg-red-50 border border-red-200 rounded-3xl max-w-md">
                     <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
-                    <h2 class="text-xl font-bold text-red-800 mb-2">Fallo en Base de Datos</h2>
+                    <h2 class="text-xl font-bold text-red-800 mb-2">Error de Datos</h2>
                     <p class="text-red-600 text-sm mb-6">${msg}</p>
-                    <button onclick="window.location.reload()" class="bg-red-500 text-white px-8 py-2 rounded-full font-bold shadow-lg hover:bg-red-600 transition-all">Reintentar</button>
+                    <button onclick="window.location.reload()" class="bg-red-500 text-white px-8 py-2 rounded-full font-bold shadow-lg">Reintentar</button>
                 </div>
             `;
         }
 
-        function toggleLearning() {
-            learningMode = !learningMode;
-            const btn = document.getElementById('btn-toggle-learning');
-            const badge = document.getElementById('mode-indicator');
-            btn.innerText = learningMode ? "ACTIVADO" : "DESACTIVADO";
-            btn.className = learningMode ? "bg-orange-500 text-white px-6 py-2 rounded-full font-bold text-sm shadow-lg" : "bg-orange-200 text-orange-800 px-6 py-2 rounded-full font-bold text-sm hover:bg-orange-300 transition-all";
-            badge.innerText = learningMode ? "MODO APRENDIZAJE" : "MODO REAL LIFE";
-            badge.className = learningMode ? "bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-[10px] font-bold border border-orange-200" : "bg-slate-800 px-3 py-1 rounded-full text-[10px] font-bold border border-slate-700";
-            renderizarBloque();
-        }
-
+        // --- NAVEGACIÓN Y EXAMEN ---
         function seleccionarTest(testId) {
             currentTest = testId;
             currentStep = 0;
@@ -239,17 +337,21 @@
             document.querySelectorAll('#main-nav button').forEach(b => b.classList.remove('active-nav'));
             const activeBtn = document.getElementById('nav-' + id);
             if (activeBtn) activeBtn.classList.add('active-nav');
+
             if (id === 'setup') {
                 document.getElementById('view-setup').classList.remove('hidden-section');
                 document.getElementById('view-test').classList.add('hidden-section');
                 return;
             }
+
             currentSection = id;
             currentStep = 0;
             document.getElementById('view-setup').classList.add('hidden-section');
             document.getElementById('view-test').classList.remove('hidden-section');
+            
             configurarCabeceraSeccion();
             renderizarBloque();
+            
             const tiempos = { listening: 35, structure: 25, reading: 55 };
             iniciarCronometro(tiempos[id] || 30);
             window.scrollTo(0, 0);
@@ -260,45 +362,45 @@
             const meta = document.getElementById('section-meta');
             const audioBox = document.getElementById('audio-container');
             audioBox.classList.add('hidden');
-            switch(currentSection) {
-                case 'listening':
-                    title.innerText = "Section 1: Listening Comprehension";
-                    meta.innerHTML = `<span><i class="fas fa-volume-up"></i> AUDIO REQUERIDO</span><span><i class="fas fa-clock"></i> 35 MIN</span>`;
-                    audioBox.classList.remove('hidden');
-                    cargarAudioGoogleDrive();
-                    break;
-                case 'structure':
-                    title.innerText = "Section 2: Structure & Written Expression";
-                    meta.innerHTML = `<span><i class="fas fa-pen-nib"></i> GRAMMAR FOCUS</span><span><i class="fas fa-clock"></i> 25 MIN</span>`;
-                    break;
-                case 'reading':
-                    title.innerText = "Section 3: Reading Comprehension";
-                    meta.innerHTML = `<span><i class="fas fa-book-open"></i> TEXT ANALYSIS</span><span><i class="fas fa-clock"></i> 55 MIN</span>`;
-                    break;
+
+            if (currentSection === 'listening') {
+                title.innerText = "Section 1: Listening Comprehension";
+                meta.innerHTML = `<span><i class="fas fa-volume-up"></i> AUDIO REQUERIDO</span><span><i class="fas fa-clock"></i> 35 MIN</span>`;
+                audioBox.classList.remove('hidden');
+                gestionarAudioParaTest();
+            } else if (currentSection === 'structure') {
+                title.innerText = "Section 2: Structure & Written Expression";
+                meta.innerHTML = `<span><i class="fas fa-pen-nib"></i> GRAMMAR FOCUS</span><span><i class="fas fa-clock"></i> 25 MIN</span>`;
+            } else if (currentSection === 'reading') {
+                title.innerText = "Section 3: Reading Comprehension";
+                meta.innerHTML = `<span><i class="fas fa-book-open"></i> TEXT ANALYSIS</span><span><i class="fas fa-clock"></i> 55 MIN</span>`;
             }
         }
 
-        function cargarAudioGoogleDrive() {
+        function gestionarAudioParaTest() {
             const audio = document.getElementById('main-audio');
-            const ids = { testA: '1YfZ1zZCL-Zlie5f6w03VRpPh3DzCHMRU', testB: '1uDKuutxP9uLTYm4rBtz1NMeOCRC2hMlc' };
-            if (currentTest && ids[currentTest]) {
+            const nameLabel = document.getElementById('audio-source-name');
+            const localFile = localAudios[currentTest];
+
+            if (localFile) {
+                // Prioridad: Audio cargado por el usuario
+                audio.src = URL.createObjectURL(localFile);
+                nameLabel.innerText = "Archivo Local ✅";
+                nameLabel.className = "text-green-400 font-mono tracking-tighter";
+            } else {
+                // Fallback: Google Drive (con mensaje de advertencia)
+                const ids = { testA: '1YfZ1zZCL-Zlie5f6w03VRpPh3DzCHMRU', testB: '1uDKuutxP9uLTYm4rBtz1NMeOCRC2hMlc' };
                 audio.src = `https://drive.google.com/uc?export=download&id=${ids[currentTest]}`;
+                nameLabel.innerText = "Google Drive (Puede fallar) ⚠️";
+                nameLabel.className = "text-orange-400 font-mono tracking-tighter text-[8px]";
             }
         }
 
-        function cambiarBloque(delta) {
-            const data = db[currentTest][currentSection];
-            const totalSteps = Math.ceil(data.length / questionsPerStep);
-            currentStep += delta;
-            if (currentStep < 0) currentStep = 0;
-            if (currentStep >= totalSteps) currentStep = totalSteps - 1;
-            renderizarBloque();
-        }
-
+        // --- LÓGICA DE EXAMEN (PAGINACIÓN, FEEDBACK, TIMER) ---
         function renderizarBloque() {
             const container = document.getElementById('questions-container');
             container.innerHTML = '';
-            const data = db[currentTest][currentSection];
+            const data = dbData[currentTest][currentSection];
             if (!data || data.length === 0) {
                 container.innerHTML = `<div class="text-center py-20 text-slate-400 font-bold italic">No hay datos para esta sección.</div>`;
                 return;
@@ -307,11 +409,13 @@
             const start = currentStep * questionsPerStep;
             const end = start + questionsPerStep;
             const slice = data.slice(start, end);
+            
             document.getElementById('pagination-status').classList.remove('hidden');
             document.getElementById('current-step-display').innerText = currentStep + 1;
             document.getElementById('total-steps-display').innerText = Math.ceil(data.length / questionsPerStep);
             document.getElementById('prev-step').disabled = currentStep === 0;
             document.getElementById('next-step').disabled = currentStep >= (Math.ceil(data.length / questionsPerStep) - 1);
+
             slice.forEach(q => {
                 const card = document.createElement('div');
                 card.className = "bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4 mb-2 fade-step";
@@ -341,7 +445,7 @@
 
         function verificar(qId, selected) {
             if (!learningMode) return;
-            const qData = db[currentTest][currentSection].find(x => x.id === qId);
+            const qData = dbData[currentTest][currentSection].find(x => x.id === qId);
             const correct = qData.correcta;
             const feedback = document.getElementById(`feedback-${qId}`);
             if (!correct) return;
@@ -361,6 +465,15 @@
             }
         }
 
+        function cambiarBloque(delta) {
+            const data = dbData[currentTest][currentSection];
+            const totalSteps = Math.ceil(data.length / questionsPerStep);
+            currentStep += delta;
+            if (currentStep < 0) currentStep = 0;
+            if (currentStep >= totalSteps) currentStep = totalSteps - 1;
+            renderizarBloque();
+        }
+
         function iniciarCronometro(minutos) {
             clearInterval(timerInterval);
             let total = minutos * 60;
@@ -374,10 +487,16 @@
             }, 1000);
         }
 
-        document.getElementById('local-audio').addEventListener('change', (e) => {
-            const url = URL.createObjectURL(e.target.files[0]);
-            document.getElementById('main-audio').src = url;
-        });
+        function toggleLearning() {
+            learningMode = !learningMode;
+            const btn = document.getElementById('btn-toggle-learning');
+            const badge = document.getElementById('mode-indicator');
+            btn.innerText = learningMode ? "ACTIVADO" : "DESACTIVADO";
+            btn.className = learningMode ? "bg-orange-500 text-white px-6 py-2 rounded-full font-bold text-sm shadow-lg" : "bg-orange-200 text-orange-800 px-6 py-2 rounded-full font-bold text-sm hover:bg-orange-300 transition-all";
+            badge.innerText = learningMode ? "MODO APRENDIZAJE" : "MODO REAL LIFE";
+            badge.className = learningMode ? "bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-[10px] font-bold border border-orange-200" : "bg-slate-800 px-3 py-1 rounded-full text-[10px] font-bold border border-slate-700";
+            renderizarBloque();
+        }
     </script>
 </body>
 </html>
