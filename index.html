@@ -1,261 +1,295 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOEFL ITP Trainer - Método Híbrido</title>
+    <title>TOEFL ITP Simulator - Test 1</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
-        .tab-active { border-bottom: 4px solid #3b82f6; color: #1d4ed8; font-weight: 600; }
-        .tab-inactive { color: #6b7280; }
-        .tab-inactive:hover { color: #374151; }
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+        body { font-family: 'Roboto', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        
+        /* Estilos para los "circulitos" tipo examen real */
+        .toefl-radio {
+            appearance: none;
+            width: 24px;
+            height: 16px;
+            border: 2px solid #64748b;
+            border-radius: 50% / 50%;
+            position: relative;
+            cursor: pointer;
+            outline: none;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        .toefl-radio:checked {
+            background-color: #334155;
+            border-color: #334155;
+        }
+        
+        .hidden-section { display: none; }
+        .tab-btn { transition: all 0.2s; }
+        .tab-active { border-bottom: 4px solid #2563eb; color: #1d4ed8; font-weight: bold; background-color: #eff6ff;}
+        
+        /* Loader */
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3b82f6; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="h-screen flex flex-col">
+<body class="h-screen flex flex-col overflow-hidden">
 
-    <!-- Navbar & Timer -->
-    <header class="bg-white shadow-md p-4 flex justify-between items-center z-10">
-        <div class="flex items-center gap-3">
-            <i class="fas fa-graduation-cap text-blue-600 text-3xl"></i>
-            <h1 class="text-xl font-bold text-gray-800">TOEFL ITP <span class="text-blue-600">Trainer</span></h1>
-        </div>
+    <!-- HEADER: Timer y Título -->
+    <header class="bg-white border-b shadow-sm p-4 flex justify-between items-center shrink-0 z-10 relative">
         <div class="flex items-center gap-4">
-            <div class="bg-red-100 text-red-700 px-4 py-2 rounded-lg font-mono font-bold text-lg flex items-center gap-2 shadow-sm">
-                <i class="fas fa-stopwatch"></i>
-                <span id="timer">25:00</span>
+            <div class="bg-blue-900 text-white p-2 rounded">
+                <i class="fas fa-globe-americas text-2xl"></i>
             </div>
-            <!-- Botón del Hack Moderno (Estrategia C/D) -->
-            <button onclick="aplicarHack()" class="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-2 px-4 rounded-lg shadow transition-colors flex items-center gap-2 text-sm">
-                <i class="fas fa-bolt"></i> ¡Me quedo sin tiempo! (Hack C/D)
+            <div>
+                <h1 class="text-xl font-bold uppercase tracking-wide">TOEFL ITP® Practice Test</h1>
+                <p class="text-xs text-gray-500">Level 1, Volume 3</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-6">
+            <div id="section-indicator" class="font-semibold text-blue-800">Cargando Base de Datos...</div>
+            <div class="bg-gray-800 text-white px-5 py-2 rounded font-mono text-xl shadow-inner flex items-center gap-2">
+                <i class="far fa-clock"></i>
+                <span id="timer">--:--</span>
+            </div>
+            <button onclick="terminarExamen()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors text-sm">
+                End Test
             </button>
         </div>
     </header>
 
-    <!-- Tabs Navigation -->
-    <nav class="bg-white border-b px-6 flex gap-6 mt-1">
-        <button onclick="switchTab('listening')" id="tab-listening" class="tab-active pb-3 pt-4 text-lg">1. Listening</button>
-        <button onclick="switchTab('structure')" id="tab-structure" class="tab-inactive pb-3 pt-4 text-lg">2. Structure (Longman)</button>
-        <button onclick="switchTab('reading')" id="tab-reading" class="tab-inactive pb-3 pt-4 text-lg">3. Reading (Skimming)</button>
-        <button onclick="switchTab('pdfview')" id="tab-pdfview" class="tab-inactive pb-3 pt-4 text-lg">4. PDF (Libro Vol 3)</button>
-    </nav>
+    <!-- PANTALLA DE CARGA -->
+    <div id="loading-screen" class="absolute inset-0 bg-white z-50 flex flex-col items-center justify-center">
+        <div class="loader mb-4"></div>
+        <h2 class="text-xl font-bold text-gray-700">Cargando examen desde JSON...</h2>
+        <p class="text-sm text-gray-500 mt-2">Asegúrate de que 'examen_data.json' esté en la misma carpeta.</p>
+    </div>
 
-    <!-- Main Content Area -->
-    <main class="flex-1 overflow-y-auto p-6 max-w-5xl mx-auto w-full">
-        
-        <!-- SECTION 1: LISTENING -->
-        <div id="sec-listening" class="space-y-6">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                <h2 class="text-2xl font-bold mb-2 flex items-center gap-2"><i class="fas fa-headphones-alt text-blue-500"></i> Listening Comprehension</h2>
-                <p class="text-gray-600 mb-4 text-sm"><strong>Tip moderno:</strong> En la Parte A, la respuesta casi siempre está en lo que dice la segunda persona. Busca sinónimos, no las palabras exactas.</p>
+    <div class="flex flex-1 overflow-hidden">
+        <!-- SIDEBAR: Navegación de Secciones -->
+        <aside class="w-64 bg-white border-r flex flex-col shrink-0">
+            <div class="p-4 bg-gray-50 border-b">
+                <h2 class="font-bold text-gray-700 uppercase text-sm tracking-wider">Test Navigation</h2>
+            </div>
+            <nav class="flex-1 overflow-y-auto">
+                <button onclick="cambiarSeccion('instructions')" id="nav-instructions" class="tab-btn w-full text-left p-4 border-b hover:bg-gray-50 tab-active">
+                    <i class="fas fa-info-circle w-6 text-center mr-2 text-gray-400"></i> General Instructions
+                </button>
+                <button onclick="cambiarSeccion('listening')" id="nav-listening" class="tab-btn w-full text-left p-4 border-b hover:bg-gray-50">
+                    <i class="fas fa-headphones w-6 text-center mr-2 text-blue-500"></i> Section 1: Listening
+                </button>
+                <button onclick="cambiarSeccion('structure')" id="nav-structure" class="tab-btn w-full text-left p-4 border-b hover:bg-gray-50 text-gray-500" disabled>
+                    <i class="fas fa-pen-nib w-6 text-center mr-2"></i> Section 2: Structure
+                </button>
+                <button onclick="cambiarSeccion('reading')" id="nav-reading" class="tab-btn w-full text-left p-4 border-b hover:bg-gray-50 text-gray-500" disabled>
+                    <i class="fas fa-book-open w-6 text-center mr-2"></i> Section 3: Reading
+                </button>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT: Área de Examen -->
+        <main class="flex-1 bg-gray-100 overflow-y-auto relative p-8">
+            <div class="max-w-4xl mx-auto bg-white shadow-lg border border-gray-200 min-h-full">
                 
-                <!-- Audio Player Streaming from Google Drive -->
-                <div class="bg-blue-50 border border-blue-200 p-5 rounded-xl mb-6 shadow-sm">
-                    <p class="font-semibold text-blue-900 mb-2"><i class="fab fa-google-drive mr-2"></i>Audio desde Google Drive</p>
-                    <p class="text-sm text-blue-700 mb-4">Pega el enlace de Google Drive de tu audio (asegúrate de que tenga el permiso "Cualquier persona con el enlace"). El reproductor nativo soportará archivos de +25MB.</p>
-                    
-                    <div class="flex gap-2 mb-4">
-                        <input type="text" id="drive-link" placeholder="https://drive.google.com/file/d/TU_ID_AQUI/view" class="flex-1 border border-blue-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <button onclick="cargarAudioDrive()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg text-sm transition-colors">Cargar Reproductor</button>
-                    </div>
-                    
-                    <div id="audio-container" class="hidden w-full h-24 rounded-lg overflow-hidden border border-gray-300">
-                        <!-- El iframe del reproductor de Drive se inyectará aquí -->
-                    </div>
-                </div>
+                <!-- VIEW: General Instructions -->
+                <div id="view-instructions" class="p-10 space-y-6">
+                    <h2 class="text-3xl font-bold text-center border-b pb-4">General Directions</h2>
+                    <div class="text-lg leading-relaxed space-y-4 text-justify">
+                        <p>TOEFL ITP® tests are composed of multiple-choice questions, each with 4 possible answers. There are 3 sections, with each section measuring a critical skill in the use of English.</p>
+                        
+                        <div class="pl-4 border-l-4 border-blue-500 my-6">
+                            <h3 class="font-bold">Section 1 – Listening Comprehension</h3>
+                            <p class="text-base text-gray-600 mt-1">The Listening section contains recorded material that includes the vocabulary and idiomatic expressions typical of spoken English. The questions test your comprehension of both short and long conversations.</p>
+                        </div>
 
-                <!-- Preguntas de ejemplo -->
-                <div class="space-y-6">
-                    <div class="question-block" data-qnum="1">
-                        <p class="font-semibold text-lg mb-3">1. What does the woman imply?</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pl-4">
-                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-blue-50 cursor-pointer transition-colors"><input type="radio" name="q1" value="A"> (A) She doesn't have time to help.</label>
-                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-blue-50 cursor-pointer transition-colors"><input type="radio" name="q1" value="B"> (B) She wants to study together.</label>
-                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-blue-50 cursor-pointer transition-colors"><input type="radio" name="q1" value="C"> (C) The man should ask someone else.</label>
-                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-blue-50 cursor-pointer transition-colors"><input type="radio" name="q1" value="D"> (D) She has already finished the assignment.</label>
+                        <div class="pl-4 border-l-4 border-green-500 my-6">
+                            <h3 class="font-bold">Section 2 – Structure and Written Expression</h3>
+                            <p class="text-base text-gray-600 mt-1">This section consists of sentences that test your knowledge of structural and grammatical elements of standard written English.</p>
+                        </div>
+
+                        <div class="pl-4 border-l-4 border-purple-500 my-6">
+                            <h3 class="font-bold">Section 3 – Reading Comprehension</h3>
+                            <p class="text-base text-gray-600 mt-1">Section 3 contains reading passages and questions about the passages. The questions test your comprehension of the information that is stated or implied.</p>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SECTION 2: STRUCTURE -->
-        <div id="sec-structure" class="space-y-6 hidden">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                <h2 class="text-2xl font-bold mb-2 flex items-center gap-2"><i class="fas fa-code-branch text-green-500"></i> Structure and Written Expression</h2>
-                <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
-                    <p class="text-sm text-green-800"><strong>Regla Longman (Skills 1-5):</strong> Toda oración en inglés requiere un <u>Sujeto</u> y un <u>Verbo</u>. Cuidado con los apositivos (frases entre comas) que intentan engañarte fingiendo ser el sujeto principal.</p>
+                    <div class="text-center mt-12 pt-8 border-t">
+                        <button onclick="iniciarSeccion('listening')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow text-lg transition-transform transform hover:scale-105">
+                            Start Section 1 (Listening)
+                        </button>
+                    </div>
                 </div>
 
-                <div class="space-y-8">
-                    <!-- Pregunta Longman Ejercicio 1 -->
-                    <div class="question-block" data-qnum="2">
-                        <p class="font-semibold text-lg mb-3">2. _____, George, is attending the lecture.</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pl-4">
-                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-green-50 cursor-pointer transition-colors"><input type="radio" name="q2" value="A"> (A) Right now</label>
-                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-green-50 cursor-pointer transition-colors"><input type="radio" name="q2" value="B"> (B) Happily</label>
-                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-green-50 cursor-pointer transition-colors"><input type="radio" name="q2" value="C"> (C) Because of the time</label>
-                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-green-50 cursor-pointer transition-colors"><input type="radio" name="q2" value="D"> (D) My friend</label>
+                <!-- VIEW: Listening Section -->
+                <div id="view-listening" class="hidden-section p-10">
+                    <div class="mb-8 border-b pb-4">
+                        <h2 class="text-2xl font-bold uppercase mb-2">Section 1: Listening Comprehension</h2>
+                    </div>
+
+                    <!-- Reproductor de Audio desde Google Drive (Nuevo Enlace) -->
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-8 shadow-sm">
+                        <div class="flex items-center justify-between mb-2">
+                            <p class="font-semibold text-blue-900"><i class="fas fa-play-circle mr-2"></i>Audio Track - Oficial</p>
+                        </div>
+                        <div class="w-full h-16 overflow-hidden rounded">
+                             <iframe src="https://drive.google.com/file/d/1EOSh6eu3oNKq1G6qIghyTxr5BdU_x7He/preview" width="100%" height="100" allow="autoplay" class="border-none opacity-90 hover:opacity-100 transition-opacity"></iframe>
                         </div>
                     </div>
 
-                    <!-- Pregunta Longman Ejercicio 2 -->
-                    <div class="question-block" data-qnum="3">
-                        <p class="font-semibold text-lg mb-3">3. The boy _____ going to the movies with a friend.</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pl-4">
-                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-green-50 cursor-pointer transition-colors"><input type="radio" name="q3" value="A"> (A) he is</label>
-                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-green-50 cursor-pointer transition-colors"><input type="radio" name="q3" value="B"> (B) he always was</label>
-                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-green-50 cursor-pointer transition-colors"><input type="radio" name="q3" value="C"> (C) is</label>
-                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-green-50 cursor-pointer transition-colors"><input type="radio" name="q3" value="D"> (D) will be</label>
-                        </div>
+                    <div id="listening-container" class="space-y-10"></div>
+
+                    <div class="mt-12 text-right border-t pt-6">
+                        <button onclick="iniciarSeccion('structure')" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded shadow transition-colors">
+                            Finish Listening -> Go to Structure
+                        </button>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- SECTION 3: READING -->
-        <div id="sec-reading" class="space-y-6 hidden">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                <h2 class="text-2xl font-bold mb-2 flex items-center gap-2"><i class="fas fa-book-open text-purple-500"></i> Reading Comprehension</h2>
-                <div class="bg-purple-50 border-l-4 border-purple-500 p-4 mb-6">
-                    <p class="text-sm text-purple-800"><strong>Técnica de Skimming:</strong> NO leas todo el texto. Lee la primera línea de cada párrafo, luego ve directo a la pregunta, identifica palabras clave y escanéalas en el texto.</p>
-                </div>
-
-                <div class="p-5 bg-gray-50 border rounded-lg mb-6 text-gray-800 text-justify leading-relaxed">
-                    <p class="mb-3">The first commercially successful steam engine was built by Thomas Newcomen in 1712. It was a massive, inefficient machine that required enormous amounts of coal, but it revolutionized the pumping of water out of deep coal mines in England.</p>
-                    <p>Decades later, James Watt drastically improved the design. Watt's addition of a separate condenser prevented the loss of heat that plagued Newcomen's engine, making it far more powerful and fuel-efficient.</p>
-                </div>
-
-                <div class="space-y-6">
-                    <div class="question-block" data-qnum="4">
-                        <p class="font-semibold text-lg mb-3">4. The word "plagued" in paragraph 2 is closest in meaning to:</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pl-4">
-                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-purple-50 cursor-pointer transition-colors"><input type="radio" name="q4" value="A"> (A) assisted</label>
-                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-purple-50 cursor-pointer transition-colors"><input type="radio" name="q4" value="B"> (B) bothered</label>
-                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-purple-50 cursor-pointer transition-colors"><input type="radio" name="q4" value="C"> (C) destroyed</label>
-                            <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-purple-50 cursor-pointer transition-colors"><input type="radio" name="q4" value="D"> (D) created</label>
-                        </div>
+                <!-- VIEW: Structure Section -->
+                <div id="view-structure" class="hidden-section p-10">
+                    <div class="mb-8 border-b pb-4">
+                        <h2 class="text-2xl font-bold uppercase mb-2">Section 2: Structure and Written Expression</h2>
+                    </div>
+                    <div id="structure-container" class="space-y-10"></div>
+                    <div class="mt-12 text-right border-t pt-6">
+                        <button onclick="iniciarSeccion('reading')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded shadow transition-colors">
+                            Finish Structure -> Go to Reading
+                        </button>
                     </div>
                 </div>
+
+                <!-- VIEW: Reading Section -->
+                <div id="view-reading" class="hidden-section p-10">
+                    <div class="mb-8 border-b pb-4">
+                        <h2 class="text-2xl font-bold uppercase mb-2">Section 3: Reading Comprehension</h2>
+                        <div class="bg-purple-50 border-l-4 border-purple-500 p-4 text-sm text-purple-800">
+                            <strong>Nota:</strong> Los pasajes de lectura largos debes consultarlos en tu PDF original, aquí solo se muestran las preguntas extraídas.
+                        </div>
+                    </div>
+                    <div id="reading-container" class="space-y-10"></div>
+                    <div class="mt-12 text-center border-t pt-6">
+                        <button onclick="terminarExamen()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded shadow text-lg transition-transform transform hover:scale-105">
+                            Submit Final Answers
+                        </button>
+                    </div>
+                </div>
+
             </div>
-        </div>
-
-        <!-- SECTION 4: PDF VIEWER -->
-        <div id="sec-pdfview" class="space-y-6 hidden h-[800px]">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col">
-                <h2 class="text-2xl font-bold mb-2 flex items-center gap-2"><i class="fas fa-file-pdf text-red-500"></i> Libro PDF (Volumen 3)</h2>
-                <p class="text-gray-600 mb-4 text-sm">Tu libro precargado directamente desde tu Google Drive. Usa las herramientas del visor para hacer zoom o buscar (Ctrl+F).</p>
-                <!-- Se usa el ID exacto que extraje de tu Drive -->
-                <iframe src="https://drive.google.com/file/d/11enpKP-i0sKGE4Fcs78JUAOCLNM0yhB3/preview" class="w-full flex-1 border-2 border-gray-200 rounded-lg" allow="autoplay"></iframe>
-            </div>
-        </div>
-
-        <div class="mt-8 text-center pb-12">
-            <button onclick="calificarExamen()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 text-lg">
-                <i class="fas fa-check-double mr-2"></i> Calificar Simulación
-            </button>
-        </div>
-    </main>
-
-    <!-- Modal de Resultados -->
-    <div id="resultModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
-        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full text-center">
-            <i class="fas fa-trophy text-5xl text-yellow-500 mb-4"></i>
-            <h2 class="text-2xl font-bold mb-2">¡Simulación Terminada!</h2>
-            <p id="scoreText" class="text-gray-600 mb-6 text-lg">Puntaje estimado calculando...</p>
-            <button onclick="document.getElementById('resultModal').classList.add('hidden')" class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-6 rounded-lg">Cerrar y Revisar</button>
-        </div>
+        </main>
     </div>
 
     <script>
-        // --- STREAMING DESDE GOOGLE DRIVE ---
-        function cargarAudioDrive() {
-            const link = document.getElementById('drive-link').value;
-            const container = document.getElementById('audio-container');
-            
-            // Expresión regular para extraer el ID del enlace de Drive (funciona con links de view o sharing)
-            const regex = /\/d\/(.*?)\//;
-            const match = link.match(regex);
-            
-            if (match && match[1]) {
-                const fileId = match[1];
-                // Usamos el reproductor preview nativo para burlar el límite de 25MB
-                const iframeHtml = `<iframe src="https://drive.google.com/file/d/${fileId}/preview" width="100%" height="100" allow="autoplay" class="border-none"></iframe>`;
+        let timerInterval;
+
+        // --- 1. CARGA DINÁMICA DEL JSON ---
+        // Fetch se conectará automáticamente al archivo cuando lo subas a GitHub
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('examen_data.json')
+                .then(response => {
+                    if (!response.ok) throw new Error("No se pudo cargar el JSON");
+                    return response.json();
+                })
+                .then(data => {
+                    renderizarExamen(data);
+                    document.getElementById('loading-screen').style.display = 'none';
+                    document.getElementById('section-indicator').innerText = 'General Instructions';
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    document.getElementById('loading-screen').innerHTML = `
+                        <div class="text-red-500 text-5xl mb-4"><i class="fas fa-exclamation-triangle"></i></div>
+                        <h2 class="text-2xl font-bold text-gray-800">Error al cargar 'examen_data.json'</h2>
+                        <p class="text-gray-600 mt-2 text-center max-w-md">Si estás abriendo este archivo directamente desde tu computadora, los navegadores bloquean la carga de JSON por seguridad (CORS).</p>
+                        <p class="text-blue-600 font-bold mt-4">Solución: Sube los archivos a GitHub Pages y funcionará perfecto.</p>
+                    `;
+                });
+        });
+
+        // --- 2. RENDERIZADO DEL EXAMEN ---
+        function renderizarExamen(data) {
+            const letras = ['A', 'B', 'C', 'D'];
+
+            // Render Listening
+            const listContainer = document.getElementById('listening-container');
+            data.listening.forEach(q => {
+                let html = `<div class="flex items-start gap-4"><div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center font-bold text-gray-500 shrink-0 border border-gray-200">${q.id}.</div><div class="space-y-3 pt-2 w-full">`;
+                // Mostrar texto de la pregunta si existe (A veces en Listening Parte B o C sí hay texto)
+                if(q.pregunta && q.pregunta.length > 5) html += `<p class="font-medium text-gray-800 mb-2">${q.pregunta}</p>`;
                 
-                container.innerHTML = iframeHtml;
-                container.classList.remove('hidden');
-            } else {
-                alert("Por favor, introduce un enlace de compartir de Google Drive válido.");
-            }
-        }
-
-        // --- NAVEGACIÓN DE TABS ---
-        function switchTab(tabId) {
-            const sections = ['listening', 'structure', 'reading', 'pdfview'];
-            
-            sections.forEach(sec => {
-                document.getElementById('sec-' + sec).classList.add('hidden');
-                const btn = document.getElementById('tab-' + sec);
-                btn.className = 'tab-inactive pb-3 pt-4 text-lg';
+                q.opciones.forEach((opcion, index) => {
+                    html += `<label class="flex items-center hover:bg-gray-50 p-1 rounded cursor-pointer w-full group"><input type="radio" name="lis-${q.id}" value="${letras[index]}" class="toefl-radio"><span class="text-lg text-gray-800 group-hover:text-black">${opcion}</span></label>`;
+                });
+                listContainer.innerHTML += html + `</div></div>`;
             });
 
-            document.getElementById('sec-' + tabId).classList.remove('hidden');
-            const activeBtn = document.getElementById('tab-' + tabId);
-            activeBtn.className = 'tab-active pb-3 pt-4 text-lg transition-all';
-        }
-
-        // --- TEMPORIZADOR BÁSICO ---
-        let time = 25 * 60; // 25 minutos para structure
-        setInterval(() => {
-            const minutes = Math.floor(time / 60);
-            let seconds = time % 60;
-            seconds = seconds < 10 ? '0' + seconds : seconds;
-            document.getElementById('timer').innerText = `${minutes}:${seconds}`;
-            if(time > 0) time--;
-        }, 1000);
-
-        // --- EL HACK MODERNO (Llenar al azar C o D) ---
-        function aplicarHack() {
-            const questions = document.querySelectorAll('.question-block');
-            let filledCount = 0;
-            
-            questions.forEach(q => {
-                const radios = q.querySelectorAll('input[type="radio"]');
-                let isAnswered = false;
-                radios.forEach(r => { if(r.checked) isAnswered = true; });
-
-                if (!isAnswered) {
-                    const randomChoice = Math.random() < 0.5 ? 2 : 3;
-                    radios[randomChoice].checked = true;
-                    filledCount++;
-                }
+            // Render Structure
+            const structContainer = document.getElementById('structure-container');
+            data.structure.forEach(q => {
+                let html = `<div class="bg-white p-6 border rounded-lg shadow-sm"><p class="text-lg font-medium text-gray-800 mb-4">${q.pregunta}</p><div class="space-y-3 pl-4">`;
+                q.opciones.forEach((opcion, index) => {
+                    html += `<label class="flex items-center hover:bg-gray-50 p-2 border border-transparent hover:border-gray-200 rounded cursor-pointer"><input type="radio" name="str-${q.id}" value="${letras[index]}" class="toefl-radio"><span class="text-base text-gray-700">${opcion}</span></label>`;
+                });
+                structContainer.innerHTML += html + `</div></div>`;
             });
 
-            if(filledCount > 0) {
-                alert(`¡Hack aplicado! Se rellenaron ${filledCount} preguntas en blanco usando opciones C o D para maximizar probabilidad.`);
-            } else {
-                alert('Todas las preguntas ya están contestadas. ¡Buen ritmo!');
-            }
+            // Render Reading
+            const readContainer = document.getElementById('reading-container');
+            data.reading.forEach(passage => {
+                let html = `<div class="mb-12"><div class="space-y-8 pl-4">`;
+                passage.questions.forEach(q => {
+                    html += `<div class="bg-white p-5 border rounded-lg"><p class="text-lg font-medium text-gray-800 mb-4">${q.pregunta}</p><div class="space-y-2 pl-2">`;
+                    q.opciones.forEach((opcion, index) => {
+                        html += `<label class="flex items-center hover:bg-gray-50 p-2 rounded cursor-pointer"><input type="radio" name="rea-${q.id}" value="${letras[index]}" class="toefl-radio"><span class="text-base text-gray-700">${opcion}</span></label>`;
+                    });
+                    html += `</div></div>`;
+                });
+                readContainer.innerHTML += html + `</div></div>`;
+            });
         }
 
-        // --- CALIFICACIÓN SIMPLE ---
-        function calificarExamen() {
-            const answers = { q1: 'C', q2: 'D', q3: 'C', q4: 'B' };
-            let correctas = 0;
+        // --- 3. LÓGICA DE NAVEGACIÓN Y TIMER ---
+        function iniciarSeccion(seccion) {
+            cambiarSeccion(seccion);
+            let minutos = seccion === 'listening' ? 35 : (seccion === 'structure' ? 25 : 55);
+            iniciarTimer(minutos * 60);
 
-            for (const [qName, correctVal] of Object.entries(answers)) {
-                const selected = document.querySelector(`input[name="${qName}"]:checked`);
-                if (selected && selected.value === correctVal) {
-                    correctas++;
-                }
-            }
+            document.getElementById('nav-listening').classList.remove('text-gray-500');
+            document.getElementById('nav-structure').classList.remove('text-gray-500');
+            document.getElementById('nav-structure').disabled = false;
+            document.getElementById('nav-reading').classList.remove('text-gray-500');
+            document.getElementById('nav-reading').disabled = false;
+        }
 
-            const modal = document.getElementById('resultModal');
-            const scoreText = document.getElementById('scoreText');
-            scoreText.innerHTML = `Acertaste <strong>${correctas} de 4</strong> preguntas en esta demostración.<br><span class="text-sm mt-2 block text-gray-500">Recuerda: El objetivo es pasar de 436 a 500+.</span>`;
-            modal.classList.remove('hidden');
+        function cambiarSeccion(seccionId) {
+            document.querySelectorAll('main > div > div[id^="view-"]').forEach(el => el.classList.add('hidden-section'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('tab-active'));
+            document.getElementById('view-' + seccionId).classList.remove('hidden-section');
+            document.getElementById('nav-' + seccionId).classList.add('tab-active');
+            
+            const titles = { 'instructions': 'General Instructions', 'listening': 'Section 1: Listening', 'structure': 'Section 2: Structure', 'reading': 'Section 3: Reading' };
+            document.getElementById('section-indicator').innerText = titles[seccionId];
+            window.scrollTo(0,0);
+        }
+
+        function iniciarTimer(segundosTotales) {
+            clearInterval(timerInterval);
+            let time = segundosTotales;
+            timerInterval = setInterval(() => {
+                const minutes = Math.floor(time / 60);
+                let seconds = time % 60;
+                document.getElementById('timer').innerText = `${minutes}:${seconds < 10 ? '0'+seconds : seconds}`;
+                if(time <= 0) { clearInterval(timerInterval); alert("¡Tiempo terminado para esta sección!"); }
+                time--;
+            }, 1000);
+        }
+
+        function terminarExamen() {
+            clearInterval(timerInterval);
+            alert("¡Examen completado! Has terminado la simulación.");
         }
     </script>
 </body>
