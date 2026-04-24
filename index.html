@@ -3,184 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOEFL ITP Simulator - Pro Edition</title>
+    <title>TOEFL ITP Simulator - Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         
-        .toefl-radio {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #94a3b8;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .toefl-radio:checked {
-            background-color: #1e293b;
-            border-color: #1e293b;
-            box-shadow: inset 0 0 0 4px #fff;
-        }
+        /* Estilos UI Modernos */
+        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.5); }
+        .vibrant-gradient-a { background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); }
+        .vibrant-gradient-b { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
+        .vibrant-gradient-setup { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         
-        .option-correct { background-color: #f0fdf4 !important; border-color: #22c55e !important; }
-        .option-wrong { background-color: #fef2f2 !important; border-color: #ef4444 !important; }
+        .toefl-radio { appearance: none; width: 22px; height: 22px; border: 2px solid #cbd5e1; border-radius: 50%; cursor: pointer; transition: all 0.2s; position: relative; }
+        .toefl-radio:checked { background-color: #1e293b; border-color: #1e293b; box-shadow: inset 0 0 0 5px #fff; }
+        
+        .active-nav { background: white; border-left: 5px solid #6366f1; color: #4338ca; box-shadow: 0 4px 15px -5px rgba(99, 102, 241, 0.4); }
         
         .hidden-section { display: none; }
-        
-        .fade-step { animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .active-nav { background-color: #f8fafc; border-right: 4px solid #3b82f6; color: #1e293b; font-weight: bold; }
-
-        #audio-missing-modal { background-color: rgba(0,0,0,0.5); }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-slate-800">
 
-    <header class="bg-slate-900 text-white p-4 flex justify-between items-center shadow-lg shrink-0">
-        <div class="flex items-center gap-3">
-            <div class="bg-blue-600 p-2 rounded-lg">
-                <i class="fas fa-certificate text-xl"></i>
+    <!-- HEADER -->
+    <header class="bg-slate-900 text-white p-4 flex justify-between items-center shadow-2xl shrink-0 z-50">
+        <div class="flex items-center gap-4">
+            <div class="vibrant-gradient-setup p-2 rounded-2xl shadow-lg">
+                <i class="fas fa-bolt text-xl"></i>
             </div>
             <div>
-                <h1 class="text-lg font-extrabold tracking-tight">TOEFL ITP® SIMULATOR</h1>
-                <p id="current-test-label" class="text-[10px] text-blue-300 font-bold uppercase">Selecciona Examen</p>
+                <h1 class="text-lg font-black tracking-tighter leading-none">TOEFL PRO™</h1>
+                <p id="current-task" class="text-[10px] text-indigo-400 font-bold uppercase mt-1 tracking-widest">Preparación Elite</p>
             </div>
         </div>
         
-        <div class="flex items-center gap-4">
-            <div id="mode-indicator" class="bg-slate-800 px-3 py-1 rounded-full text-[10px] font-bold border border-slate-700 uppercase">MODO REAL LIFE</div>
-            <div class="bg-slate-700 px-4 py-2 rounded-lg font-mono text-xl text-blue-400 border border-slate-600">
+        <div class="flex items-center gap-6">
+            <div id="mode-status" class="bg-slate-800 px-4 py-1.5 rounded-full text-[10px] font-black border border-slate-700 text-indigo-300">MODO SIMULACRO</div>
+            <div class="bg-slate-800 px-5 py-2 rounded-2xl font-mono text-2xl text-blue-400 border border-slate-700 shadow-inner">
                 <span id="timer">00:00</span>
             </div>
-            <button onclick="window.location.reload()" class="hover:text-red-400 transition-colors">
-                <i class="fas fa-power-off"></i>
+            <button onclick="pausarYGuardar()" class="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white p-3 rounded-2xl transition-all">
+                <i class="fas fa-pause"></i>
             </button>
         </div>
     </header>
 
-    <div id="loading-screen" class="absolute inset-0 bg-white z-50 flex flex-col items-center justify-center">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600 mb-4"></div>
-        <h2 class="text-xl font-bold text-slate-700">Iniciando Entorno...</h2>
-    </div>
-
-    <div id="audio-missing-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl border-4 border-orange-400">
-            <div class="text-orange-500 text-4xl mb-4 text-center"><i class="fas fa-exclamation-triangle"></i></div>
-            <h3 class="text-xl font-black text-slate-900 text-center mb-2">¡Falta el Audio!</h3>
-            <p class="text-slate-500 text-sm text-center mb-6">Carga el MP3 en Configuración para este test.</p>
-            <button onclick="cambiarVista('setup'); cerrarModalAudio();" class="w-full bg-slate-900 text-white py-3 rounded-2xl font-bold hover:bg-slate-800">Ir a Configuración</button>
-        </div>
+    <!-- LOADING SCREEN -->
+    <div id="loading-screen" class="absolute inset-0 bg-white z-[300] flex flex-col items-center justify-center">
+        <div class="w-16 h-16 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin"></div>
+        <p class="mt-4 font-black text-slate-800 uppercase tracking-widest text-xs">Sincronizando experiencia...</p>
     </div>
 
     <div class="flex flex-1 overflow-hidden">
         
-        <aside class="w-64 bg-white border-r shadow-inner flex flex-col">
-            <div class="p-5 border-b bg-slate-50">
-                <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Navegación</h2>
+        <!-- SIDEBAR -->
+        <aside class="w-72 bg-white border-r shadow-inner flex flex-col z-40">
+            <div class="p-8 border-b bg-slate-50/50">
+                <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Contenido</h2>
             </div>
-            <nav class="flex-1" id="main-nav">
-                <button id="nav-setup" onclick="cambiarVista('setup')" class="w-full text-left p-4 border-b hover:bg-slate-50 flex items-center gap-3 transition-all active-nav">
-                    <i class="fas fa-cog text-slate-400"></i> Configuración
+            <nav class="flex-1 overflow-y-auto" id="main-nav">
+                <button id="nav-setup" onclick="cambiarVista('setup')" class="w-full text-left p-6 border-b hover:bg-slate-50 flex items-center gap-4 transition-all active-nav font-bold">
+                    <i class="fas fa-magic"></i> Configuración
                 </button>
-                <div id="test-nav" class="opacity-40 pointer-events-none">
-                    <button id="nav-listening" onclick="cambiarVista('listening')" class="w-full text-left p-4 border-b hover:bg-slate-50 flex items-center gap-3 transition-all">
-                        <i class="fas fa-headphones text-blue-500"></i> Listening Section
+                <div id="test-nav" class="opacity-30 pointer-events-none transition-all duration-500">
+                    <button id="nav-listening" onclick="cambiarVista('listening')" class="w-full text-left p-6 border-b hover:bg-slate-50 flex items-center gap-4 transition-all font-bold">
+                        <i class="fas fa-headphones text-blue-500"></i> Listening
                     </button>
-                    <button id="nav-structure" onclick="cambiarVista('structure')" class="w-full text-left p-4 border-b hover:bg-slate-50 flex items-center gap-3 transition-all">
-                        <i class="fas fa-pen-nib text-green-500"></i> Structure Section
+                    <button id="nav-structure" onclick="cambiarVista('structure')" class="w-full text-left p-6 border-b hover:bg-slate-50 flex items-center gap-4 transition-all font-bold">
+                        <i class="fas fa-pen-nib text-emerald-500"></i> Structure
                     </button>
-                    <button id="nav-reading" onclick="cambiarVista('reading')" class="w-full text-left p-4 border-b hover:bg-slate-50 flex items-center gap-3 transition-all">
-                        <i class="fas fa-book-open text-purple-500"></i> Reading Section
+                    <button id="nav-reading" onclick="cambiarVista('reading')" class="w-full text-left p-6 border-b hover:bg-slate-50 flex items-center gap-4 transition-all font-bold">
+                        <i class="fas fa-book-open text-purple-500"></i> Reading
                     </button>
                 </div>
             </nav>
+            <div id="progress-card" class="p-6 bg-indigo-600 text-white hidden m-4 rounded-3xl shadow-xl shadow-indigo-200">
+                <p class="text-[9px] font-black uppercase opacity-70 mb-2">Progreso del Test</p>
+                <div class="flex items-end gap-2">
+                    <span id="prog-curr" class="text-3xl font-black">0</span>
+                    <span class="text-sm opacity-50 mb-1">/</span>
+                    <span id="prog-total" class="text-sm opacity-50 mb-1">0</span>
+                </div>
+            </div>
         </aside>
 
-        <main class="flex-1 overflow-y-auto p-8 relative bg-slate-50">
-            <div class="max-w-4xl mx-auto min-h-full">
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 overflow-y-auto p-8 relative bg-[#f1f5f9]">
+            <div class="max-w-5xl mx-auto">
 
-                <div id="view-setup" class="space-y-8 animate-in fade-in duration-500">
-                    <div class="text-center py-6">
-                        <h2 class="text-4xl font-black mb-2 text-slate-900">Entrenamiento TOEFL</h2>
-                        <p class="text-slate-500">Sincroniza tus audios locales para una práctica fluida.</p>
+                <!-- CONFIGURACIÓN: ESTILO FRESH -->
+                <div id="view-setup" class="space-y-8 fade-in">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h2 class="text-5xl font-black text-slate-900 tracking-tighter">¡Hola de nuevo! 👋</h2>
+                            <p class="text-slate-500 mt-2 text-lg font-medium">Configura tus audios y vamos por ese score.</p>
+                        </div>
+                        <button id="btn-resume" onclick="continuarProgreso()" class="hidden vibrant-gradient-setup text-white px-8 py-4 rounded-3xl font-black shadow-2xl hover:scale-105 transition-all flex items-center gap-3">
+                            Continuar donde lo dejé 🚀
+                        </button>
                     </div>
 
-                    <div class="bg-white p-8 rounded-3xl shadow-sm border-2 border-indigo-100">
-                        <h3 class="font-black text-slate-800 text-lg mb-4">Biblioteca de Audios Local</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="p-4 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
-                                <span class="text-xs font-black text-slate-400 uppercase block mb-2">Test A (.mp3)</span>
-                                <div id="status-audio-testA" class="mb-2 text-[10px] font-bold text-red-500">Faltante ❌</div>
-                                <input type="file" id="upload-audio-testA" accept="audio/*" class="text-xs">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- TEST A CARD -->
+                        <div class="glass-card p-8 rounded-[3rem] shadow-xl border-2 border-white hover:border-indigo-400 transition-all">
+                            <div class="flex items-center justify-between mb-8">
+                                <div class="vibrant-gradient-a w-16 h-16 rounded-[1.5rem] flex items-center justify-center text-white text-3xl shadow-lg shadow-cyan-200">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div id="badge-a" class="bg-red-100 text-red-600 px-4 py-1 rounded-full text-[10px] font-black uppercase">Sin Audio 🎵</div>
                             </div>
-                            <div class="p-4 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
-                                <span class="text-xs font-black text-slate-400 uppercase block mb-2">Test B (.mp3)</span>
-                                <div id="status-audio-testB" class="mb-2 text-[10px] font-bold text-red-500">Faltante ❌</div>
-                                <input type="file" id="upload-audio-testB" accept="audio/*" class="text-xs">
+                            <h3 class="text-3xl font-black text-slate-900 mb-2">Practice Test A</h3>
+                            <p class="text-slate-500 text-sm mb-8 leading-relaxed">El estándar de oro. Ideal para medir tu nivel base hoy mismo.</p>
+                            <input type="file" id="up-a" accept="audio/*" class="text-xs block w-full mb-6 file:bg-slate-900 file:text-white file:border-0 file:px-6 file:py-3 file:rounded-2xl file:font-black cursor-pointer">
+                            <button onclick="seleccionarTest('testA')" class="w-full bg-slate-100 py-4 rounded-3xl font-black text-slate-400 hover:bg-slate-900 hover:text-white transition-all shadow-sm">SELECCIONAR TEST</button>
+                        </div>
+
+                        <!-- TEST B CARD -->
+                        <div class="glass-card p-8 rounded-[3rem] shadow-xl border-2 border-white hover:border-purple-400 transition-all">
+                            <div class="flex items-center justify-between mb-8">
+                                <div class="vibrant-gradient-b w-16 h-16 rounded-[1.5rem] flex items-center justify-center text-white text-3xl shadow-lg shadow-purple-200">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <div id="badge-b" class="bg-red-100 text-red-600 px-4 py-1 rounded-full text-[10px] font-black uppercase">Sin Audio 🎵</div>
                             </div>
+                            <h3 class="text-3xl font-black text-slate-900 mb-2">Practice Test B</h3>
+                            <p class="text-slate-500 text-sm mb-8 leading-relaxed">Nivel avanzado. Desafía tu comprensión con diálogos más complejos.</p>
+                            <input type="file" id="up-b" accept="audio/*" class="text-xs block w-full mb-6 file:bg-slate-900 file:text-white file:border-0 file:px-6 file:py-3 file:rounded-2xl file:font-black cursor-pointer">
+                            <button onclick="seleccionarTest('testB')" class="w-full bg-slate-100 py-4 rounded-3xl font-black text-slate-400 hover:bg-slate-900 hover:text-white transition-all shadow-sm">SELECCIONAR TEST</button>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <button onclick="seleccionarTest('testA')" class="bg-white p-8 rounded-3xl shadow-sm border-2 border-slate-100 hover:border-blue-500 text-left transition-all group">
-                            <i class="fas fa-font text-3xl text-blue-600 mb-4 group-hover:scale-110 transition-transform block"></i>
-                            <h3 class="text-2xl font-bold">Practice Test A</h3>
-                            <p class="text-sm text-slate-500 mt-2">Volume 3 Standard. 50 Listening items.</p>
-                        </button>
-                        <button onclick="seleccionarTest('testB')" class="bg-white p-8 rounded-3xl shadow-sm border-2 border-slate-100 hover:border-blue-500 text-left transition-all group">
-                            <i class="fas fa-bold text-3xl text-slate-600 mb-4 group-hover:scale-110 transition-transform block"></i>
-                            <h3 class="text-2xl font-bold">Practice Test B</h3>
-                            <p class="text-sm text-slate-500 mt-2">Volume 3 Supplementary. 50 Listening items.</p>
-                        </button>
+                    <div class="bg-emerald-50 p-8 rounded-[3rem] border border-emerald-100 flex items-center justify-between">
+                        <div class="flex items-center gap-6">
+                            <div class="bg-emerald-200 text-emerald-700 w-14 h-14 rounded-2xl flex items-center justify-center text-xl shadow-inner"><i class="fas fa-graduation-cap"></i></div>
+                            <div>
+                                <h4 class="font-black text-emerald-900">Modo Tutoría Activado 🎓</h4>
+                                <p class="text-xs text-emerald-700 font-bold opacity-70">Recibe retroalimentación inmediata en cada respuesta.</p>
+                            </div>
+                        </div>
+                        <button id="btn-tutor" onclick="toggleTutor()" class="bg-emerald-600 text-white px-8 py-3 rounded-2xl font-black text-[10px] hover:bg-emerald-700 shadow-xl shadow-emerald-200 transition-all uppercase">Activado</button>
                     </div>
                 </div>
 
-                <!-- VISTA DE INSTRUCCIONES (DIRECTIONS) -->
-                <div id="view-directions" class="hidden-section space-y-8 animate-in fade-in">
-                    <div class="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-200">
-                        <div class="flex items-center gap-4 mb-8">
-                            <div class="bg-blue-600 text-white p-4 rounded-3xl shadow-lg">
-                                <i class="fas fa-info-circle text-2xl"></i>
+                <!-- DIRECTIONS VIEW -->
+                <div id="view-directions" class="hidden-section space-y-8 fade-in">
+                    <div class="bg-white p-16 rounded-[4rem] shadow-2xl border border-slate-100 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-10 opacity-5">
+                            <i class="fas fa-file-invoice text-[15rem]"></i>
+                        </div>
+                        <div class="relative z-10">
+                            <h2 class="text-5xl font-black text-slate-900 mb-4 tracking-tighter">DIRECTIONS 📑</h2>
+                            <p class="text-blue-600 font-black text-sm uppercase tracking-[0.3em] mb-12">Instrucciones de la Sección</p>
+                            
+                            <div id="dir-content" class="text-slate-600 text-lg leading-relaxed space-y-10 mb-16">
+                                <!-- Dinámico -->
                             </div>
-                            <h2 class="text-3xl font-black text-slate-900 tracking-tight">Section Directions</h2>
-                        </div>
-                        
-                        <div id="directions-content" class="prose prose-slate max-w-none text-slate-600 leading-relaxed space-y-6">
-                            <!-- Se llena dinámicamente -->
-                        </div>
 
-                        <div class="mt-12 flex justify-end">
-                            <button onclick="comenzarSeccionReal()" class="bg-slate-900 text-white px-10 py-4 rounded-3xl font-black text-lg hover:bg-slate-800 shadow-xl shadow-slate-200 transition-all flex items-center gap-3">
-                                Comenzar Test <i class="fas fa-play text-xs"></i>
-                            </button>
+                            <div class="flex justify-between items-center bg-slate-50 p-6 rounded-[2.5rem]">
+                                <div class="flex items-center gap-4">
+                                    <div class="animate-pulse bg-blue-500 w-3 h-3 rounded-full"></div>
+                                    <span class="text-xs font-black text-slate-400 uppercase tracking-widest">Audio de instrucciones activo</span>
+                                </div>
+                                <button onclick="finalizarDirections()" class="bg-slate-900 text-white px-12 py-5 rounded-[2rem] font-black text-lg hover:scale-105 transition-all shadow-2xl shadow-slate-300">
+                                    COMENZAR EL TEST <i class="fas fa-arrow-right ml-3 text-xs"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div id="view-test" class="hidden-section space-y-8 pb-20">
-                    <div id="section-header" class="bg-slate-900 text-white p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
-                        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+                <!-- TEST VIEW -->
+                <div id="view-test" class="hidden-section space-y-8 pb-32 fade-in">
+                    <div class="bg-slate-900 text-white p-10 rounded-[3.5rem] shadow-2xl relative">
+                        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
                             <div class="flex-1">
-                                <h2 id="section-title" class="text-2xl font-black mb-2 tracking-tight uppercase">SECTION</h2>
-                                <div id="section-meta" class="flex items-center gap-4 text-xs font-bold text-blue-400"></div>
+                                <h2 id="section-title-live" class="text-4xl font-black mb-2 tracking-tighter uppercase">Section Name</h2>
+                                <div id="section-meta-live" class="flex items-center gap-8 text-[11px] font-black text-blue-400 tracking-widest uppercase"></div>
                             </div>
                             <div id="audio-container" class="w-full md:w-auto flex flex-col items-end gap-3 hidden">
-                                <audio id="main-audio" controls class="w-full h-10"></audio>
-                                <p id="audio-source-name" class="text-[10px] font-bold text-slate-500 uppercase">Archivo Local ✅</p>
+                                <audio id="audio-player" controls class="w-72 h-10"></audio>
+                                <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest">Sincronización Inteligente Activada ⚡</p>
                             </div>
                         </div>
                     </div>
-                    <div id="questions-container" class="grid grid-cols-1 gap-6 fade-step"></div>
-                    <div id="pagination-controls" class="flex justify-between items-center mt-10">
-                        <button id="prev-step" onclick="cambiarBloque(-1)" class="bg-white border text-slate-600 px-6 py-2 rounded-2xl font-bold text-sm hover:bg-slate-50 disabled:opacity-30">Anterior</button>
-                        <button id="next-step" onclick="cambiarBloque(1)" class="bg-slate-900 text-white px-6 py-2 rounded-2xl font-bold text-sm hover:bg-slate-800 disabled:opacity-30">Siguiente</button>
+
+                    <div id="q-container" class="grid grid-cols-1 gap-8"></div>
+
+                    <div class="flex justify-between items-center mt-12 bg-white p-6 rounded-[3rem] shadow-xl border border-slate-100">
+                        <button id="p-btn" onclick="goStep(-1)" class="text-slate-400 px-10 py-5 font-black uppercase text-xs tracking-widest hover:text-slate-900 transition-all disabled:opacity-20">Atrás</button>
+                        <div class="h-2 bg-slate-100 flex-1 mx-12 rounded-full overflow-hidden">
+                            <div id="progress-bar" class="h-full bg-blue-600 transition-all duration-700 ease-out" style="width: 0%"></div>
+                        </div>
+                        <button id="n-btn" onclick="goStep(1)" class="bg-slate-900 text-white px-14 py-5 rounded-[2rem] font-black uppercase text-xs tracking-widest hover:bg-indigo-600 transition-all">Siguiente</button>
                     </div>
                 </div>
 
@@ -188,266 +205,315 @@
         </main>
     </div>
 
-    <script>
-        let dbData = null;
-        let currentTest = null;
-        let currentSection = 'listening';
-        let learningMode = false;
-        let timerInterval;
-        let currentStep = 0;
-        const questionsPerStep = 2;
+    <!-- FIREBASE SETUP -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'toefl-simulator-pro';
+
+        let userData = null;
+        let examData = null;
+        let currentState = { test: null, section: 'listening', step: 0, tutor: true };
         const localAudios = { testA: null, testB: null };
-        let idb;
 
-        const DB_NAME = "ToeflAudioDB_V2";
-        const DB_VERSION = 1;
+        // --- INICIALIZACIÓN ---
+        window.onload = async () => {
+            const initAuth = async () => {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            };
+            await initAuth();
 
-        async function initDB() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(DB_NAME, DB_VERSION);
-                request.onupgradeneeded = (e) => {
-                    const db = e.target.result;
-                    if (!db.objectStoreNames.contains("audios")) db.createObjectStore("audios");
-                };
-                request.onsuccess = (e) => { idb = e.target.result; resolve(); };
-                request.onerror = (e) => reject(e.target.error);
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    userData = user;
+                    checkSavedProgress();
+                }
             });
-        }
 
-        async function saveAudio(key, file) {
-            const tx = idb.transaction("audios", "readwrite");
-            tx.objectStore("audios").put(file, key);
-            actualizarEstadoUI(key, true);
-        }
-
-        async function loadAudio(key) {
-            return new Promise((resolve) => {
-                if (!idb) return resolve(null);
-                const tx = idb.transaction("audios", "readonly");
-                const req = tx.objectStore("audios").get(key);
-                req.onsuccess = () => resolve(req.result);
-                req.onerror = () => resolve(null);
-            });
-        }
-
-        function actualizarEstadoUI(key, isLoaded) {
-            const el = document.getElementById(`status-audio-${key}`);
-            if (el) {
-                el.innerText = isLoaded ? "Cargado ✅" : "Faltante ❌";
-                el.className = isLoaded ? "mb-2 text-[10px] font-bold text-green-500" : "mb-2 text-[10px] font-bold text-red-500";
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                await initDB();
-                const a = await loadAudio('testA');
-                const b = await loadAudio('testB');
-                if (a) { localAudios.testA = a; actualizarEstadoUI('testA', true); }
-                if (b) { localAudios.testB = b; actualizarEstadoUI('testB', true); }
-            } catch (e) { console.warn("DB offline."); }
-
+            // Cargar DB
             fetch('examen_data.json')
                 .then(r => r.json())
-                .then(data => {
-                    dbData = data;
+                .then(d => {
+                    examData = d;
                     document.getElementById('loading-screen').style.display = 'none';
                 });
 
-            document.getElementById('upload-audio-testA').addEventListener('change', (e) => {
-                if (e.target.files[0]) { localAudios.testA = e.target.files[0]; saveAudio('testA', e.target.files[0]); }
-            });
-            document.getElementById('upload-audio-testB').addEventListener('change', (e) => {
-                if (e.target.files[0]) { localAudios.testB = e.target.files[0]; saveAudio('testB', e.target.files[0]); }
-            });
-        });
+            // IndexedDB para archivos pesados (Audios)
+            initAudioDB();
+        };
 
-        function seleccionarTest(testId) {
-            currentTest = testId;
-            document.getElementById('current-test-label').innerText = testId === 'testA' ? "Practice Test A" : "Practice Test B";
-            document.getElementById('test-nav').classList.remove('opacity-40', 'pointer-events-none');
-            cambiarVista('listening');
+        // --- GESTIÓN DE AUDIO (INDEXEDDB) ---
+        function initAudioDB() {
+            const request = indexedDB.open("ToeflAudiosV3", 1);
+            request.onupgradeneeded = e => e.target.result.createObjectStore("files");
+            request.onsuccess = e => {
+                const idb = e.target.result;
+                ['testA', 'testB'].forEach(async (k) => {
+                    const tx = idb.transaction("files", "readonly");
+                    const req = tx.objectStore("files").get(k);
+                    req.onsuccess = () => {
+                        if (req.result) {
+                            localAudios[k] = req.result;
+                            updateBadge(k, true);
+                        }
+                    };
+                });
+
+                document.getElementById('up-a').onchange = e => saveAudioFile(idb, 'testA', e.target.files[0]);
+                document.getElementById('up-b').onchange = e => saveAudioFile(idb, 'testB', e.target.files[0]);
+            };
         }
 
-        function cambiarVista(id) {
-            if (id === 'setup') {
-                document.querySelectorAll('.hidden-section').forEach(s => s.classList.add('hidden-section'));
+        function saveAudioFile(idb, key, file) {
+            if (!file) return;
+            const tx = idb.transaction("files", "readwrite");
+            tx.objectStore("files").put(file, key);
+            localAudios[key] = file;
+            updateBadge(key, true);
+        }
+
+        function updateBadge(k, ok) {
+            const el = document.getElementById(`badge-${k.slice(-1).toLowerCase()}`);
+            if (el) {
+                el.innerText = ok ? "Audio Cargado ✅" : "Sin Audio 🎵";
+                el.className = ok ? "bg-emerald-100 text-emerald-600 px-4 py-1 rounded-full text-[10px] font-black uppercase" : "bg-red-100 text-red-600 px-4 py-1 rounded-full text-[10px] font-black uppercase";
+            }
+        }
+
+        // --- FLUJO DEL TEST ---
+        window.seleccionarTest = (id) => {
+            if (!localAudios[id]) {
+                abrirModal();
+                return;
+            }
+            currentState.test = id;
+            currentState.section = 'listening';
+            currentState.step = 0;
+            
+            document.getElementById('test-nav').classList.remove('opacity-30', 'pointer-events-none');
+            cambiarVista('listening');
+        };
+
+        window.cambiarVista = (viewId) => {
+            document.querySelectorAll('#main-nav button').forEach(b => b.classList.remove('active-nav'));
+            const btn = document.getElementById('nav-' + viewId);
+            if (btn) btn.classList.add('active-nav');
+
+            if (viewId === 'setup') {
+                ocultarTodo();
                 document.getElementById('view-setup').classList.remove('hidden-section');
                 return;
             }
 
-            currentSection = id;
-            if (id === 'listening' && !localAudios[currentTest]) {
-                document.getElementById('audio-missing-modal').classList.remove('hidden');
-                return;
-            }
-
-            document.getElementById('view-setup').classList.add('hidden-section');
-            document.getElementById('view-test').classList.add('hidden-section');
+            currentState.section = viewId;
+            currentState.step = 0;
+            
+            // Siempre mostrar DIRECTIONS primero
+            ocultarTodo();
             document.getElementById('view-directions').classList.remove('hidden-section');
+            renderDirections();
+        };
+
+        function renderDirections() {
+            const content = document.getElementById('dir-content');
+            const player = document.getElementById('audio-player');
             
-            mostrarDirections();
-        }
-
-        function mostrarDirections() {
-            const content = document.getElementById('directions-content');
-            let html = "";
-
-            if (currentSection === 'listening') {
-                html = `
-                    <div class="bg-blue-50 p-6 rounded-3xl border border-blue-100 mb-6 flex items-center gap-4">
-                        <i class="fas fa-headphones text-blue-500 text-2xl"></i>
-                        <p class="text-sm font-bold text-blue-700">Audio Instructions are playing. Listen carefully to the example below.</p>
+            if (currentState.section === 'listening') {
+                content.innerHTML = `
+                    <div class="bg-indigo-50 p-10 rounded-[3rem] border-2 border-indigo-100 flex items-center gap-8 mb-10 shadow-inner">
+                        <i class="fas fa-play-circle text-indigo-500 text-6xl"></i>
+                        <p class="font-bold text-indigo-900 text-xl leading-snug">Las instrucciones oficiales están sonando. Escucha el ejemplo del cuadro (Painting) antes de comenzar.</p>
                     </div>
-                    <p class="font-bold text-slate-800">Part A Directions:</p>
-                    <p>In Part A, you will hear short conversations between two people. After each conversation, you will hear a question about the conversation. The conversations and questions will not be repeated.</p>
-                    <div class="bg-slate-50 p-8 rounded-[2rem] border border-slate-200 space-y-4">
-                        <p class="text-xs font-black text-slate-400 uppercase">Example:</p>
-                        <p class="italic text-slate-700">On the recording, you hear:</p>
-                        <p class="font-mono text-sm bg-white p-4 rounded-xl border">Woman: I don't like this painting very much.<br>Man: Neither do I.<br>Narrator: What does the man mean?</p>
-                        <p class="italic text-slate-700">In your test book, you read:</p>
-                        <div class="grid grid-cols-1 gap-2 text-sm font-bold">
-                            <div class="p-2 bg-blue-100 text-blue-800 rounded-lg">(A) He does not like the painting either.</div>
-                            <div class="p-2 bg-white border rounded-lg">(B) He does not know how to paint.</div>
-                            <div class="p-2 bg-white border rounded-lg">(C) He does not have any paintings.</div>
-                            <div class="p-2 bg-white border rounded-lg">(D) He does not know what to do.</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+                        <div class="space-y-6">
+                            <p class="font-black text-slate-800 text-2xl tracking-tighter">Part A Directions:</p>
+                            <p>In Part A, you will hear short conversations between two people. After each conversation, you will hear a question about the conversation. The conversations and questions will not be repeated.</p>
                         </div>
-                        <p class="text-xs text-slate-500">You learn from the conversation that neither the man nor the woman likes the painting. The best answer is (A).</p>
+                        <div class="bg-slate-100 p-8 rounded-[3rem] border border-slate-200">
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Example Case:</p>
+                            <div class="font-mono text-sm bg-white p-6 rounded-2xl border mb-4 italic">
+                                (Woman): I don't like this painting very much.<br>
+                                (Man): Neither do I.<br>
+                                (Narrator): What does the man mean?
+                            </div>
+                            <p class="text-xs font-bold text-slate-500">(A) He does not like the painting either.</p>
+                        </div>
                     </div>
                 `;
-                // Iniciar audio en 0 para instrucciones
-                const audio = document.getElementById('main-audio');
-                audio.src = URL.createObjectURL(localAudios[currentTest]);
-                audio.currentTime = 0;
-                audio.play();
-            } else if (currentSection === 'structure') {
-                html = `
-                    <p>This section is designed to measure your ability to recognize language that is appropriate for standard written English. There are two types of questions in this section, with special directions for each type.</p>
-                    <div class="bg-slate-50 p-8 rounded-[2rem] border border-slate-200">
-                        <p class="text-xs font-black text-slate-400 uppercase mb-4">Example I:</p>
-                        <p class="font-serif text-lg mb-4">Geysers have sometimes been compared to volcanoes ------- they both emit hot liquids from below the Earth's surface.</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm font-bold">
-                            <div class="p-3 bg-white border rounded-xl">(A) due to</div>
-                            <div class="p-3 bg-blue-100 text-blue-800 rounded-xl">(B) because</div>
-                            <div class="p-3 bg-white border rounded-xl">(C) in spite of</div>
-                            <div class="p-3 bg-white border rounded-xl">(D) regardless of</div>
-                        </div>
-                        <p class="text-xs text-slate-500 mt-4">The sentence should read, "Geysers have sometimes been compared to volcanoes because they both emit hot liquids from below the Earth's surface." Therefore, (B) is the correct answer.</p>
-                    </div>
-                `;
+                // AUDIO desde el segundo 0
+                player.src = URL.createObjectURL(localAudios[currentState.test]);
+                player.currentTime = 0;
+                player.play();
             } else {
-                html = `<p>In this section you will read several passages. Each one is followed by a number of questions about it. You are to choose the one best answer, (A), (B), (C), or (D), to each question.</p>`;
+                content.innerHTML = `
+                    <p class="text-2xl font-black text-slate-800 mb-6">Información General</p>
+                    <p>Esta sección mide tu habilidad para reconocer lenguaje gramatical apropiado o comprender pasajes escritos de nivel académico.</p>
+                    <div class="bg-emerald-50 p-10 rounded-[3rem] border border-emerald-100">
+                        <p class="font-serif text-3xl italic">"The purpose of this test is to challenge your limits..."</p>
+                    </div>
+                `;
+                player.pause();
             }
-
-            content.innerHTML = html;
         }
 
-        function comenzarSeccionReal() {
-            document.getElementById('view-directions').classList.add('hidden-section');
+        window.finalizarDirections = () => {
+            const player = document.getElementById('audio-player');
+            player.pause(); // Pausar al terminar instrucciones
+
+            ocultarTodo();
             document.getElementById('view-test').classList.remove('hidden-section');
+            document.getElementById('progress-card').classList.remove('hidden');
             
-            currentStep = 0;
-            configurarCabeceraSeccion();
-            renderizarBloque();
-            
-            if (currentSection === 'listening') {
-                const audio = document.getElementById('main-audio');
-                // Salto automático al minuto 02:18 para comenzar el test
-                audio.currentTime = 138; 
-                audio.play();
+            if (currentState.section === 'listening') {
+                document.getElementById('audio-container').classList.remove('hidden');
+                // SALTO MAESTRO AL TEST (2:18 = 138 seg)
+                player.currentTime = 138;
+                player.play();
+            } else {
+                document.getElementById('audio-container').classList.add('hidden');
             }
 
-            const tiempos = { listening: 35, structure: 25, reading: 55 };
-            iniciarCronometro(tiempos[currentSection]);
-        }
+            renderQuestions();
+            startTimer(currentState.section === 'listening' ? 35 : (currentState.section === 'structure' ? 25 : 55));
+        };
 
-        function configurarCabeceraSeccion() {
-            document.getElementById('section-title').innerText = currentSection.toUpperCase();
-            document.getElementById('audio-container').classList.toggle('hidden', currentSection !== 'listening');
-        }
-
-        function renderizarBloque() {
-            const container = document.getElementById('questions-container');
+        function renderQuestions() {
+            const container = document.getElementById('q-container');
             container.innerHTML = '';
-            const data = dbData[currentTest][currentSection];
-            const start = currentStep * questionsPerStep;
-            const slice = data.slice(start, start + questionsPerStep);
-            
+            const data = examData[currentState.test][currentState.section];
+            const pageSize = 2;
+            const start = currentState.step * pageSize;
+            const slice = data.slice(start, start + pageSize);
+
+            document.getElementById('prog-curr').innerText = start + slice.length;
+            document.getElementById('prog-total').innerText = data.length;
+            document.getElementById('progress-bar').style.width = ((start + slice.length) / data.length * 100) + "%";
+            document.getElementById('p-btn').disabled = currentState.step === 0;
+            document.getElementById('n-btn').disabled = (start + pageSize) >= data.length;
+
             slice.forEach(q => {
                 const card = document.createElement('div');
-                card.className = "bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm space-y-4 mb-2 fade-step";
+                card.className = "bg-white p-10 rounded-[3.5rem] border border-slate-100 shadow-xl space-y-6 fade-in";
                 card.innerHTML = `
-                    <div class="flex items-start justify-between border-b pb-4 gap-4">
-                        <div class="flex gap-4">
-                            <span class="shrink-0 w-10 h-10 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-black text-sm shadow-lg">${q.id}</span>
-                            <h4 class="font-bold text-slate-800 text-md leading-relaxed">${q.pregunta || 'Select the best answer:'}</h4>
+                    <div class="flex items-start justify-between border-b border-slate-50 pb-6 gap-6">
+                        <div class="flex gap-6">
+                            <span class="shrink-0 w-12 h-12 bg-slate-900 text-white rounded-[1.2rem] flex items-center justify-center font-black text-lg shadow-xl">${q.id}</span>
+                            <h4 class="font-black text-slate-800 text-lg leading-tight">${q.pregunta || 'Escoge la mejor respuesta:'}</h4>
                         </div>
-                        ${q.timestamp ? `<button onclick="document.getElementById('main-audio').currentTime=convertTime('${q.timestamp}')" class="text-[10px] font-black text-indigo-500 bg-indigo-50 px-3 py-2 rounded-xl border border-indigo-100 hover:bg-indigo-100 transition-all"><i class="fas fa-play mr-2"></i>${q.timestamp}</button>` : ''}
+                        ${q.timestamp ? `<button onclick="syncAudio('${q.timestamp}')" class="text-[10px] font-black text-indigo-500 bg-indigo-50 px-4 py-2 rounded-2xl border border-indigo-100 hover:bg-indigo-100 transition-all uppercase tracking-widest"><i class="fas fa-sync mr-2"></i>Sincronizar</button>` : ''}
                     </div>
-                    <div class="grid grid-cols-1 gap-3">
+                    <div class="grid grid-cols-1 gap-4">
                         ${q.opciones.map((op, idx) => `
-                            <label class="flex items-center p-4 rounded-2xl border-2 border-slate-50 hover:bg-slate-50 transition-all cursor-pointer group" id="label-${q.id}-${['A','B','C','D'][idx]}">
-                                <input type="radio" name="q-${q.id}" class="toefl-radio" onchange="verificar(${q.id}, '${['A','B','C','D'][idx]}')">
-                                <span class="ml-4 text-slate-600 font-medium group-hover:text-slate-900">${op}</span>
+                            <label class="flex items-center p-5 rounded-3xl border-2 border-slate-50 hover:bg-slate-50 transition-all cursor-pointer group" id="lab-${q.id}-${['A','B','C','D'][idx]}">
+                                <input type="radio" name="q-${q.id}" class="toefl-radio" onchange="verificarRespuesta(${q.id}, '${['A','B','C','D'][idx]}')">
+                                <span class="ml-4 text-slate-600 font-bold group-hover:text-slate-900 text-md">${op}</span>
                             </label>
                         `).join('')}
                     </div>
-                    <div id="feedback-${q.id}" class="mt-4 p-5 rounded-3xl hidden"></div>
+                    <div id="feed-${q.id}" class="mt-6 p-8 rounded-[2rem] hidden"></div>
                 `;
                 container.appendChild(card);
             });
         }
 
-        function verificar(qId, selected) {
-            if (!learningMode) return;
-            const qData = dbData[currentTest][currentSection].find(x => x.id === qId);
-            const correct = qData.correcta;
-            const feedback = document.getElementById(`feedback-${qId}`);
+        window.syncAudio = (ts) => {
+            const p = ts.split(':');
+            const player = document.getElementById('audio-player');
+            player.currentTime = parseInt(p[0]) * 60 + parseInt(p[1]);
+            player.play();
+        };
+
+        window.verificarRespuesta = (qId, sel) => {
+            if (!currentState.tutor) return;
+            const q = examData[currentState.test][currentState.section].find(x => x.id === qId);
+            const feed = document.getElementById(`feed-${qId}`);
             document.querySelectorAll(`input[name="q-${qId}"]`).forEach(i => i.disabled = true);
             
-            feedback.classList.remove('hidden');
-            if (selected === correct) {
-                document.getElementById(`label-${qId}-${selected}`).classList.add('option-correct');
-                feedback.className = "mt-4 p-5 rounded-3xl bg-green-50 text-green-800 border border-green-200 text-sm";
-                feedback.innerHTML = `<p class="font-black mb-1">¡EXCELENTE!</p><p>${qData.explicacion || ''}</p>`;
+            feed.classList.remove('hidden');
+            if (sel === q.correcta) {
+                document.getElementById(`lab-${qId}-${sel}`).classList.add('option-correct');
+                feed.className = "mt-6 p-8 rounded-[2rem] bg-emerald-50 text-emerald-800 border-2 border-emerald-100 text-sm italic font-bold animate-in zoom-in-95";
+                feed.innerHTML = `<i class="fas fa-check-circle mr-2"></i> ${q.explicacion}`;
             } else {
-                document.getElementById(`label-${qId}-${selected}`).classList.add('option-wrong');
-                document.getElementById(`label-${qId}-${correct}`).classList.add('option-correct');
-                feedback.className = "mt-4 p-5 rounded-3xl bg-red-50 text-red-800 border border-red-200 text-sm";
-                feedback.innerHTML = `<p class="font-black mb-1">INCORRECTO</p><p>La correcta es (${correct}). ${qData.explicacion || ''}</p>`;
+                document.getElementById(`lab-${qId}-${sel}`).classList.add('option-wrong');
+                document.getElementById(`lab-${qId}-${q.correcta}`).classList.add('option-correct');
+                feed.className = "mt-6 p-8 rounded-[2rem] bg-red-50 text-red-800 border-2 border-red-100 text-sm italic font-bold animate-in zoom-in-95";
+                feed.innerHTML = `<i class="fas fa-times-circle mr-2"></i> Incorrecto. La correcta era (${q.correcta}). ${q.explicacion}`;
+            }
+        };
+
+        window.goStep = (d) => {
+            currentState.step += d;
+            renderQuestions();
+            document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // --- PERSISTENCIA (FIRESTORE) ---
+        window.pausarYGuardar = async () => {
+            if (!userData) return;
+            const progressRef = doc(db, 'artifacts', appId, 'users', userData.uid, 'progress', 'current');
+            await setDoc(progressRef, {
+                ...currentState,
+                timestamp: Date.now()
+            });
+            alert("🚀 Progreso guardado. Puedes continuar después.");
+        };
+
+        async function checkSavedProgress() {
+            if (!userData) return;
+            const progressRef = doc(db, 'artifacts', appId, 'users', userData.uid, 'progress', 'current');
+            const snap = await getDoc(progressRef);
+            if (snap.exists()) {
+                document.getElementById('btn-resume').classList.remove('hidden');
+                document.getElementById('btn-resume').dataset.saved = JSON.stringify(snap.data());
             }
         }
 
-        function convertTime(t) {
-            const parts = t.split(':');
-            return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+        window.continuarProgreso = () => {
+            const data = JSON.parse(document.getElementById('btn-resume').dataset.saved);
+            currentState = data;
+            seleccionarTest(data.test);
+            cambiarVista(data.section);
+            currentState.step = data.step; // Restaurar el paso
+            finalizarDirections();
+        };
+
+        // --- UTILIDADES ---
+        function ocultarTodo() {
+            ['view-setup', 'view-directions', 'view-test'].forEach(id => document.getElementById(id).classList.add('hidden-section'));
         }
 
-        function cambiarBloque(delta) {
-            currentStep += delta;
-            renderizarBloque();
-        }
-
-        function iniciarCronometro(minutos) {
-            clearInterval(timerInterval);
-            let total = minutos * 60;
-            timerInterval = setInterval(() => {
-                let m = Math.floor(total / 60);
-                let s = total % 60;
-                document.getElementById('timer').innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
-                if (total-- <= 0) clearInterval(timerInterval);
+        function startTimer(m) {
+            clearInterval(tInterval);
+            let t = m * 60;
+            tInterval = setInterval(() => {
+                let mm = Math.floor(t / 60), ss = t % 60;
+                document.getElementById('timer').innerText = `${mm < 10 ? '0'+mm : mm}:${ss < 10 ? '0'+ss : ss}`;
+                if (t-- <= 0) { clearInterval(tInterval); alert("Fin del tiempo"); }
             }, 1000);
         }
+        let tInterval;
 
-        function toggleLearning() {
-            learningMode = !learningMode;
-            const btn = document.getElementById('btn-toggle-learning');
-            btn.innerText = learningMode ? "ACTIVADO" : "DESACTIVADO";
-            btn.className = learningMode ? "bg-orange-500 text-white px-6 py-2 rounded-2xl font-black text-xs" : "bg-orange-200 text-orange-800 px-6 py-2 rounded-2xl font-black text-xs";
-            renderizarBloque();
-        }
+        window.toggleTutor = () => {
+            currentState.tutor = !currentState.tutor;
+            const btn = document.getElementById('btn-tutor');
+            btn.innerText = currentState.tutor ? "Activado" : "Desactivado";
+            btn.className = currentState.tutor ? "bg-emerald-600 text-white px-8 py-3 rounded-2xl font-black text-[10px] hover:bg-emerald-700 shadow-xl shadow-emerald-200 transition-all uppercase" : "bg-slate-200 text-slate-500 px-8 py-3 rounded-2xl font-black text-[10px] uppercase";
+            renderQuestions();
+        };
 
-        function cerrarModalAudio() { document.getElementById('audio-missing-modal').classList.add('hidden'); }
+        function abrirModal() { document.getElementById('modal-overlay').classList.remove('hidden'); }
+        window.cerrarModal = () => document.getElementById('modal-overlay').classList.add('hidden');
     </script>
 </body>
 </html>
