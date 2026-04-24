@@ -10,7 +10,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
         body { font-family: 'Roboto', sans-serif; background-color: #f8fafc; color: #1e293b; }
         
-        /* Estilos para los "circulitos" tipo examen real */
         .toefl-radio {
             appearance: none;
             width: 24px;
@@ -33,14 +32,16 @@
         .tab-btn { transition: all 0.2s; }
         .tab-active { border-bottom: 4px solid #2563eb; color: #1d4ed8; font-weight: bold; background-color: #eff6ff;}
         
-        /* Loader */
         .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3b82f6; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Estilo para reproductor deshabilitado */
+        .audio-disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden">
 
-    <!-- HEADER: Timer y Título -->
+    <!-- HEADER -->
     <header class="bg-white border-b shadow-sm p-4 flex justify-between items-center shrink-0 z-10 relative">
         <div class="flex items-center gap-4">
             <div class="bg-blue-900 text-white p-2 rounded">
@@ -52,7 +53,7 @@
             </div>
         </div>
         <div class="flex items-center gap-6">
-            <div id="section-indicator" class="font-semibold text-blue-800">Cargando Base de Datos...</div>
+            <div id="section-indicator" class="font-semibold text-blue-800">Cargando...</div>
             <div class="bg-gray-800 text-white px-5 py-2 rounded font-mono text-xl shadow-inner flex items-center gap-2">
                 <i class="far fa-clock"></i>
                 <span id="timer">--:--</span>
@@ -66,60 +67,49 @@
     <!-- PANTALLA DE CARGA -->
     <div id="loading-screen" class="absolute inset-0 bg-white z-50 flex flex-col items-center justify-center">
         <div class="loader mb-4"></div>
-        <h2 class="text-xl font-bold text-gray-700">Cargando examen desde JSON...</h2>
-        <p class="text-sm text-gray-500 mt-2">Conectando con la base de datos...</p>
+        <h2 class="text-xl font-bold text-gray-700">Cargando base de datos...</h2>
     </div>
 
     <div class="flex flex-1 overflow-hidden">
-        <!-- SIDEBAR: Navegación de Secciones -->
+        <!-- SIDEBAR -->
         <aside class="w-64 bg-white border-r flex flex-col shrink-0">
             <div class="p-4 bg-gray-50 border-b">
-                <h2 class="font-bold text-gray-700 uppercase text-sm tracking-wider">Test Navigation</h2>
+                <h2 class="font-bold text-gray-700 uppercase text-sm tracking-wider">Navegación</h2>
             </div>
             <nav class="flex-1 overflow-y-auto">
                 <button onclick="cambiarSeccion('instructions')" id="nav-instructions" class="tab-btn w-full text-left p-4 border-b hover:bg-gray-50 tab-active">
-                    <i class="fas fa-info-circle w-6 text-center mr-2 text-gray-400"></i> General Instructions
+                    <i class="fas fa-info-circle w-6 text-center mr-2 text-gray-400"></i> Instrucciones
                 </button>
                 <button onclick="cambiarSeccion('listening')" id="nav-listening" class="tab-btn w-full text-left p-4 border-b hover:bg-gray-50">
-                    <i class="fas fa-headphones w-6 text-center mr-2 text-blue-500"></i> Section 1: Listening
+                    <i class="fas fa-headphones w-6 text-center mr-2 text-blue-500"></i> 1. Listening
                 </button>
                 <button onclick="cambiarSeccion('structure')" id="nav-structure" class="tab-btn w-full text-left p-4 border-b hover:bg-gray-50 text-gray-500" disabled>
-                    <i class="fas fa-pen-nib w-6 text-center mr-2"></i> Section 2: Structure
+                    <i class="fas fa-pen-nib w-6 text-center mr-2"></i> 2. Structure
                 </button>
                 <button onclick="cambiarSeccion('reading')" id="nav-reading" class="tab-btn w-full text-left p-4 border-b hover:bg-gray-50 text-gray-500" disabled>
-                    <i class="fas fa-book-open w-6 text-center mr-2"></i> Section 3: Reading
+                    <i class="fas fa-book-open w-6 text-center mr-2"></i> 3. Reading
                 </button>
             </nav>
         </aside>
 
-        <!-- MAIN CONTENT: Área de Examen -->
+        <!-- MAIN CONTENT -->
         <main class="flex-1 bg-gray-100 overflow-y-auto relative p-8">
             <div class="max-w-4xl mx-auto bg-white shadow-lg border border-gray-200 min-h-full">
                 
-                <!-- VIEW: General Instructions -->
+                <!-- VIEW: Instrucciones -->
                 <div id="view-instructions" class="p-10 space-y-6">
-                    <h2 class="text-3xl font-bold text-center border-b pb-4">General Directions</h2>
+                    <h2 class="text-3xl font-bold text-center border-b pb-4">Instrucciones Generales</h2>
                     <div class="text-lg leading-relaxed space-y-4 text-justify">
-                        <p>TOEFL ITP® tests are composed of multiple-choice questions, each with 4 possible answers. There are 3 sections, with each section measuring a critical skill in the use of English.</p>
-                        
-                        <div class="pl-4 border-l-4 border-blue-500 my-6">
-                            <h3 class="font-bold">Section 1 – Listening Comprehension</h3>
-                            <p class="text-base text-gray-600 mt-1">The Listening section contains recorded material that includes the vocabulary and idiomatic expressions typical of spoken English. The questions test your comprehension of both short and long conversations.</p>
-                        </div>
-
-                        <div class="pl-4 border-l-4 border-green-500 my-6">
-                            <h3 class="font-bold">Section 2 – Structure and Written Expression</h3>
-                            <p class="text-base text-gray-600 mt-1">This section consists of sentences that test your knowledge of structural and grammatical elements of standard written English.</p>
-                        </div>
-
-                        <div class="pl-4 border-l-4 border-purple-500 my-6">
-                            <h3 class="font-bold">Section 3 – Reading Comprehension</h3>
-                            <p class="text-base text-gray-600 mt-1">Section 3 contains reading passages and questions about the passages. The questions test your comprehension of the information that is stated or implied.</p>
-                        </div>
+                        <p>Este examen consta de 3 secciones. Cada sección tiene su propio tiempo límite.</p>
+                        <ul class="list-disc pl-8 space-y-2 text-gray-600">
+                            <li><strong>Listening:</strong> 35 minutos. El audio solo se puede reproducir un máximo de 2 veces para mantener el realismo del entrenamiento.</li>
+                            <li><strong>Structure:</strong> 25 minutos.</li>
+                            <li><strong>Reading:</strong> 55 minutos.</li>
+                        </ul>
                     </div>
                     <div class="text-center mt-12 pt-8 border-t">
                         <button onclick="iniciarSeccion('listening')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow text-lg transition-transform transform hover:scale-105">
-                            Start Section 1 (Listening)
+                            Comenzar Listening
                         </button>
                     </div>
                 </div>
@@ -130,30 +120,32 @@
                         <h2 class="text-2xl font-bold uppercase mb-2">Section 1: Listening Comprehension</h2>
                     </div>
 
-                    <!-- REPRODUCTOR DE AUDIO (SISTEMA DUAL) -->
-                    <div class="bg-blue-50 border border-blue-200 p-5 rounded-lg mb-8 shadow-sm">
-                        <div class="flex items-center justify-between mb-3">
-                            <p class="font-bold text-blue-900 text-lg"><i class="fas fa-play-circle mr-2"></i>Audio Track - Oficial</p>
-                        </div>
-                        
-                        <!-- Intento de Drive -->
-                        <div class="w-full h-14 overflow-hidden rounded bg-gray-800 flex items-center justify-center relative">
-                             <iframe src="https://drive.google.com/file/d/1EOSh6eu3oNKq1G6qIghyTxr5BdU_x7He/preview" width="100%" height="80" allow="autoplay" class="border-none opacity-90 hover:opacity-100 transition-opacity absolute -top-2"></iframe>
-                        </div>
-
-                        <!-- Fallback (Plan B) si falla Drive -->
-                        <div class="mt-4 pt-4 border-t border-blue-200">
-                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                                <div>
-                                    <p class="text-sm font-bold text-blue-800"><i class="fas fa-exclamation-triangle text-yellow-500 mr-1"></i> ¿El cuadro de arriba marca error?</p>
-                                    <p class="text-xs text-blue-600 mt-1">Google Drive bloquea audios pesados. Carga tu archivo local aquí para escucharlo sin interrupciones (no gasta internet).</p>
-                                </div>
-                                <div class="w-full sm:w-auto">
-                                    <input type="file" id="local-audio-upload" accept="audio/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer focus:outline-none transition-colors"/>
+                    <!-- CONTROL DE AUDIO REALISTA -->
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-xl mb-10 shadow-sm">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                            <div class="flex-1">
+                                <h3 class="font-bold text-blue-900 text-lg flex items-center gap-2">
+                                    <i class="fas fa-volume-up"></i> Control de Audio
+                                </h3>
+                                <p class="text-sm text-blue-700 mt-1">Carga el audio del Test 1 desde tu computadora para habilitar el contador de intentos.</p>
+                                <div class="mt-4 flex items-center gap-4">
+                                    <span id="play-counter-badge" class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+                                        Reproducciones: <span id="current-plays">0</span> / 2
+                                    </span>
                                 </div>
                             </div>
-                            <!-- Reproductor HTML5 Nativo (Se muestra al cargar archivo) -->
-                            <audio id="html5-player" controls class="w-full mt-4 hidden h-10 rounded-full shadow-md border border-blue-300"></audio>
+                            
+                            <div class="w-full md:w-auto">
+                                <input type="file" id="audio-input" accept="audio/*" class="text-xs file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-colors cursor-pointer"/>
+                            </div>
+                        </div>
+
+                        <!-- Reproductor HTML5 -->
+                        <div id="player-container" class="mt-6 hidden">
+                            <audio id="main-audio" controls class="w-full h-10"></audio>
+                            <p id="audio-warning" class="text-red-500 text-xs font-bold mt-2 hidden text-center italic">
+                                <i class="fas fa-lock"></i> Límite de reproducciones alcanzado para esta sesión.
+                            </p>
                         </div>
                     </div>
 
@@ -161,7 +153,7 @@
 
                     <div class="mt-12 text-right border-t pt-6">
                         <button onclick="iniciarSeccion('structure')" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded shadow transition-colors">
-                            Finish Listening -> Go to Structure
+                            Ir a Structure <i class="fas fa-arrow-right ml-2"></i>
                         </button>
                     </div>
                 </div>
@@ -174,7 +166,7 @@
                     <div id="structure-container" class="space-y-10"></div>
                     <div class="mt-12 text-right border-t pt-6">
                         <button onclick="iniciarSeccion('reading')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded shadow transition-colors">
-                            Finish Structure -> Go to Reading
+                            Ir a Reading <i class="fas fa-arrow-right ml-2"></i>
                         </button>
                     </div>
                 </div>
@@ -183,14 +175,11 @@
                 <div id="view-reading" class="hidden-section p-10">
                     <div class="mb-8 border-b pb-4">
                         <h2 class="text-2xl font-bold uppercase mb-2">Section 3: Reading Comprehension</h2>
-                        <div class="bg-purple-50 border-l-4 border-purple-500 p-4 text-sm text-purple-800">
-                            <strong>Nota:</strong> Los pasajes de lectura largos debes consultarlos en tu PDF original, aquí solo se muestran las preguntas extraídas.
-                        </div>
                     </div>
                     <div id="reading-container" class="space-y-10"></div>
                     <div class="mt-12 text-center border-t pt-6">
                         <button onclick="terminarExamen()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded shadow text-lg transition-transform transform hover:scale-105">
-                            Submit Final Answers
+                            Finalizar y Calificar
                         </button>
                     </div>
                 </div>
@@ -201,94 +190,108 @@
 
     <script>
         let timerInterval;
+        let plays = 0;
+        const maxPlays = 2;
+        const audioInput = document.getElementById('audio-input');
+        const mainAudio = document.getElementById('main-audio');
+        const playerContainer = document.getElementById('player-container');
+        const currentPlaysDisplay = document.getElementById('current-plays');
+        const audioWarning = document.getElementById('audio-warning');
 
-        // --- 1. LÓGICA DEL REPRODUCTOR NATIVO DE RESPALDO ---
-        document.getElementById('local-audio-upload').addEventListener('change', function(e) {
+        // --- LÓGICA DE AUDIO ---
+        audioInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
-                const audioUrl = URL.createObjectURL(file);
-                const player = document.getElementById('html5-player');
-                player.src = audioUrl;
-                player.classList.remove('hidden'); // Muestra el reproductor bonito
+                const url = URL.createObjectURL(file);
+                mainAudio.src = url;
+                playerContainer.classList.remove('hidden');
+                plays = 0; // Reiniciar contador al cargar nuevo archivo
+                updateAudioUI();
             }
         });
 
-        // --- 2. CARGA DINÁMICA DEL JSON ---
+        mainAudio.addEventListener('play', function() {
+            // Solo contamos cuando empieza desde el principio o tras una pausa
+            // pero para ser estrictos, contaremos cada vez que el usuario le de "play"
+            // si no estaba ya sonando.
+        });
+
+        mainAudio.addEventListener('ended', function() {
+            plays++;
+            updateAudioUI();
+            if (plays >= maxPlays) {
+                mainAudio.pause();
+                mainAudio.classList.add('audio-disabled');
+                audioWarning.classList.remove('hidden');
+            }
+        });
+
+        function updateAudioUI() {
+            currentPlaysDisplay.innerText = plays;
+        }
+
+        // --- CARGA DE DATOS ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Se usa cache: 'no-store' para que GitHub no te muestre una versión vieja del JSON
             fetch('examen_data.json', { cache: "no-store" })
-                .then(response => {
-                    if (!response.ok) throw new Error("No se pudo cargar el JSON");
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
                     renderizarExamen(data);
                     document.getElementById('loading-screen').style.display = 'none';
-                    document.getElementById('section-indicator').innerText = 'General Instructions';
+                    document.getElementById('section-indicator').innerText = 'Instrucciones';
                 })
-                .catch(error => {
-                    console.error("Error:", error);
-                    document.getElementById('loading-screen').innerHTML = `
-                        <div class="text-red-500 text-5xl mb-4"><i class="fas fa-exclamation-triangle"></i></div>
-                        <h2 class="text-2xl font-bold text-gray-800">Error al cargar 'examen_data.json'</h2>
-                        <p class="text-gray-600 mt-2 text-center max-w-md">Asegúrate de que el archivo 'examen_data.json' esté subido en GitHub exactamente al lado de este archivo HTML.</p>
-                    `;
+                .catch(err => {
+                    console.error(err);
+                    document.getElementById('loading-screen').innerHTML = "<p class='text-red-500'>Error cargando examen_data.json</p>";
                 });
         });
 
-        // --- 3. RENDERIZADO DEL EXAMEN ---
         function renderizarExamen(data) {
             const letras = ['A', 'B', 'C', 'D'];
+            
+            // Listening
+            const lCont = document.getElementById('listening-container');
+            data.listening.forEach(q => {
+                let html = `<div class="flex items-start gap-4"><div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center font-bold text-gray-400 shrink-0 border">${q.id}</div><div class="space-y-2 w-full">`;
+                if(q.pregunta && q.pregunta.length > 5) html += `<p class="font-medium text-gray-700">${q.pregunta}</p>`;
+                q.opciones.forEach((op, i) => {
+                    html += `<label class="flex items-center group cursor-pointer py-1"><input type="radio" name="lis-${q.id}" value="${letras[i]}" class="toefl-radio"><span class="text-gray-700 group-hover:text-black">${op}</span></label>`;
+                });
+                lCont.innerHTML += html + `</div></div>`;
+            });
 
-            // Render Listening
-            const listContainer = document.getElementById('listening-container');
-            if(data.listening) {
-                data.listening.forEach(q => {
-                    let html = `<div class="flex items-start gap-4"><div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center font-bold text-gray-500 shrink-0 border border-gray-200">${q.id}.</div><div class="space-y-3 pt-2 w-full">`;
-                    if(q.pregunta && q.pregunta.length > 5) html += `<p class="font-medium text-gray-800 mb-2">${q.pregunta}</p>`;
-                    q.opciones.forEach((opcion, index) => {
-                        html += `<label class="flex items-center hover:bg-gray-50 p-1 rounded cursor-pointer w-full group"><input type="radio" name="lis-${q.id}" value="${letras[index]}" class="toefl-radio"><span class="text-lg text-gray-800 group-hover:text-black">${opcion}</span></label>`;
+            // Structure
+            const sCont = document.getElementById('structure-container');
+            data.structure.forEach(q => {
+                let html = `<div class="bg-white p-4 border rounded shadow-sm mb-4"><p class="font-bold mb-3">${q.pregunta}</p>`;
+                q.opciones.forEach((op, i) => {
+                    html += `<label class="flex items-center mb-2 cursor-pointer"><input type="radio" name="str-${q.id}" value="${letras[i]}" class="toefl-radio"><span>${op}</span></label>`;
+                });
+                sCont.innerHTML += html + `</div>`;
+            });
+
+            // Reading
+            const rCont = document.getElementById('reading-container');
+            data.reading.forEach(passage => {
+                passage.questions.forEach(q => {
+                    let html = `<div class="bg-white p-4 border rounded shadow-sm mb-4"><p class="font-bold mb-3">${q.pregunta}</p>`;
+                    q.opciones.forEach((op, i) => {
+                        html += `<label class="flex items-center mb-2 cursor-pointer"><input type="radio" name="rea-${q.id}" value="${letras[i]}" class="toefl-radio"><span>${op}</span></label>`;
                     });
-                    listContainer.innerHTML += html + `</div></div>`;
+                    rCont.innerHTML += html + `</div>`;
                 });
-            }
-
-            // Render Structure
-            const structContainer = document.getElementById('structure-container');
-            if(data.structure) {
-                data.structure.forEach(q => {
-                    let html = `<div class="bg-white p-6 border rounded-lg shadow-sm"><p class="text-lg font-medium text-gray-800 mb-4">${q.pregunta}</p><div class="space-y-3 pl-4">`;
-                    q.opciones.forEach((opcion, index) => {
-                        html += `<label class="flex items-center hover:bg-gray-50 p-2 border border-transparent hover:border-gray-200 rounded cursor-pointer"><input type="radio" name="str-${q.id}" value="${letras[index]}" class="toefl-radio"><span class="text-base text-gray-700">${opcion}</span></label>`;
-                    });
-                    structContainer.innerHTML += html + `</div></div>`;
-                });
-            }
-
-            // Render Reading
-            const readContainer = document.getElementById('reading-container');
-            if(data.reading) {
-                data.reading.forEach(passage => {
-                    let html = `<div class="mb-12"><div class="space-y-8 pl-4">`;
-                    if(passage.questions) {
-                        passage.questions.forEach(q => {
-                            html += `<div class="bg-white p-5 border rounded-lg"><p class="text-lg font-medium text-gray-800 mb-4">${q.pregunta}</p><div class="space-y-2 pl-2">`;
-                            q.opciones.forEach((opcion, index) => {
-                                html += `<label class="flex items-center hover:bg-gray-50 p-2 rounded cursor-pointer"><input type="radio" name="rea-${q.id}" value="${letras[index]}" class="toefl-radio"><span class="text-base text-gray-700">${opcion}</span></label>`;
-                            });
-                            html += `</div></div>`;
-                        });
-                    }
-                    readContainer.innerHTML += html + `</div></div>`;
-                });
-            }
+            });
         }
 
-        // --- 4. LÓGICA DE NAVEGACIÓN Y TIMER ---
+        // --- NAVEGACIÓN ---
         function iniciarSeccion(seccion) {
             cambiarSeccion(seccion);
-            let minutos = seccion === 'listening' ? 35 : (seccion === 'structure' ? 25 : 55);
-            iniciarTimer(minutos * 60);
+            let mins = seccion === 'listening' ? 35 : (seccion === 'structure' ? 25 : 55);
+            iniciarTimer(mins * 60);
+
+            // Detener audio si se cambia de sección
+            if (seccion !== 'listening') {
+                mainAudio.pause();
+            }
 
             document.getElementById('nav-listening').classList.remove('text-gray-500');
             document.getElementById('nav-structure').classList.remove('text-gray-500');
@@ -297,32 +300,33 @@
             document.getElementById('nav-reading').disabled = false;
         }
 
-        function cambiarSeccion(seccionId) {
+        function cambiarSeccion(id) {
             document.querySelectorAll('main > div > div[id^="view-"]').forEach(el => el.classList.add('hidden-section'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('tab-active'));
-            document.getElementById('view-' + seccionId).classList.remove('hidden-section');
-            document.getElementById('nav-' + seccionId).classList.add('tab-active');
-            
-            const titles = { 'instructions': 'General Instructions', 'listening': 'Section 1: Listening', 'structure': 'Section 2: Structure', 'reading': 'Section 3: Reading' };
-            document.getElementById('section-indicator').innerText = titles[seccionId];
+            document.getElementById('view-' + id).classList.remove('hidden-section');
+            document.getElementById('nav-' + id).classList.add('tab-active');
             window.scrollTo(0,0);
+            
+            const txt = {'instructions':'Instrucciones','listening':'Section 1: Listening','structure':'Section 2: Structure','reading':'Section 3: Reading'};
+            document.getElementById('section-indicator').innerText = txt[id];
         }
 
-        function iniciarTimer(segundosTotales) {
+        function iniciarTimer(sec) {
             clearInterval(timerInterval);
-            let time = segundosTotales;
+            let t = sec;
             timerInterval = setInterval(() => {
-                const minutes = Math.floor(time / 60);
-                let seconds = time % 60;
-                document.getElementById('timer').innerText = `${minutes}:${seconds < 10 ? '0'+seconds : seconds}`;
-                if(time <= 0) { clearInterval(timerInterval); alert("¡Tiempo terminado para esta sección!"); }
-                time--;
+                const m = Math.floor(t / 60);
+                const s = t % 60;
+                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+                if(t <= 0) { clearInterval(timerInterval); alert("Tiempo agotado"); }
+                t--;
             }, 1000);
         }
 
         function terminarExamen() {
             clearInterval(timerInterval);
-            alert("¡Examen completado! Has terminado la simulación.");
+            mainAudio.pause();
+            alert("Examen finalizado. Revisa tus respuestas.");
         }
     </script>
 </body>
