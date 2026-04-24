@@ -1,0 +1,1330 @@
+{
+    "listening": [
+        {
+            "id": 1,
+            "opciones": [
+                "(A) She lost the man’s calculator.",
+                "(B) She will lend the man her calculator.",
+                "(C) The calculator may be under the man’s book.",
+                "(D) The man will not have time to find the calculator."
+            ],
+            "correcta": "",
+            "timestamp": "00:15",
+            "pregunta": "1. What does the woman imply?"
+        },
+        {
+            "id": 2,
+            "opciones": [
+                "(A) Work in the astronomy department",
+                "(B) Add another course next spring",
+                "(C) Find a job for the summer",
+                "(D) Take an astronomy course in the summer"
+            ],
+            "correcta": "",
+            "timestamp": "00:30",
+            "pregunta": "2. What does the man suggest the woman do?"
+        },
+        {
+            "id": 3,
+            "opciones": [
+                "(A) He should work at home.",
+                "(B) He can use the lab on the weekend.",
+                "(C) He will have to repeat the experiment next week.",
+                "(D) He forgot to return the key to security."
+            ],
+            "correcta": "",
+            "timestamp": "00:45",
+            "pregunta": "3. What does the woman imply about the man?"
+        },
+        {
+            "id": 4,
+            "opciones": [
+                "(A) He and his parents plan to visit Japan.",
+                "(B) He recently returned from Japan.",
+                "(C) His sweatshirt came from Japan.",
+                "(D) The weather can be very cold in some parts of Japan."
+            ],
+            "correcta": "",
+            "timestamp": "01:00",
+            "pregunta": "4. What does the man mean?"
+        },
+        {
+            "id": 5,
+            "opciones": [
+                "(A) She will go to the restaurant with the man.",
+                "(B) She will meet the man and his friends later in the evening.",
+                "(C) She has already had dinner.",
+                "(D) She will not change her original plans."
+            ],
+            "correcta": "",
+            "timestamp": "01:15",
+            "pregunta": "5. What does the woman mean?"
+        },
+        {
+            "id": 6,
+            "opciones": [
+                "(A) He will register for the conference.",
+                "(B) He has nearly completed all his research.",
+                "(C) He is not teaching any classes today.",
+                "(D) He went to the wrong Web site."
+            ],
+            "correcta": "",
+            "timestamp": "01:30",
+            "pregunta": "6. What can be inferred about the man?"
+        },
+        {
+            "id": 7,
+            "opciones": [
+                "(A) The bicycle is too big for her.",
+                "(B) She bought the bicycle at a good price.",
+                "(C) She did not know about the store on Harrison Street.",
+                "(D) She has not used her bike all summer."
+            ],
+            "correcta": "",
+            "timestamp": "01:45",
+            "pregunta": "7. What does the woman imply?"
+        },
+        {
+            "id": 8,
+            "opciones": [
+                "(A) She did not buy the ticket.",
+                "(B) The ticket was expensive.",
+                "(C) She does not know how much the ticket cost.",
+                "(D) There are still a few tickets left."
+            ],
+            "correcta": "",
+            "timestamp": "02:00",
+            "pregunta": "8. What does the woman imply?"
+        },
+        {
+            "id": 9,
+            "opciones": [
+                "(A) She will extend the deadline for the paper.",
+                "(B) She has already made an exception for the student.",
+                "(C) She does not accept late papers.",
+                "(D) She cannot meet with the student in the library."
+            ],
+            "correcta": "",
+            "timestamp": "02:15",
+            "pregunta": "9. What does the professor mean?"
+        },
+        {
+            "id": 10,
+            "opciones": [
+                "(A) He lives far from the university.",
+                "(B) He is moving next month.",
+                "(C) He prefers living on campus.",
+                "(D) He might be able to help the woman."
+            ],
+            "correcta": "",
+            "timestamp": "02:30",
+            "pregunta": "10. What can be inferred about the man?"
+        },
+        {
+            "id": 11,
+            "opciones": [
+                "(A) She agrees with the man.",
+                "(B) She would like to see the movie a second time.",
+                "(C) She has not seen the movie.",
+                "(D) She does not understand the man’s point."
+            ],
+            "correcta": "",
+            "timestamp": "02:45",
+            "pregunta": "11. What does the woman mean?"
+        },
+        {
+            "id": 12,
+            "opciones": [
+                "(A) She delayed submitting her application.",
+                "(B) She does not know if her application will be accepted.",
+                "(C) She was glad to finally receive the letter.",
+                "(D) She started her classes several weeks ago."
+            ],
+            "correcta": "",
+            "timestamp": "03:00",
+            "pregunta": "12. What does the man imply about his sister?"
+        },
+        {
+            "id": 13,
+            "opciones": [
+                "(A) She was also late for the meeting.",
+                "(B) She is waiting for Mark to fix her car.",
+                "(C) The meeting has not started yet.",
+                "(D) The bus did not arrive on time."
+            ],
+            "correcta": "",
+            "timestamp": "03:15",
+            "pregunta": "13. What does the woman imply?"
+        },
+        {
+            "id": 14,
+            "opciones": [
+                "(A) He does not like to wake up early in the morning.",
+                "(B) The woman seems unusually sad.",
+                "(C) There is no special reason for his good mood.",
+                "(D) He was not in a good mood when he woke up."
+            ],
+            "correcta": "",
+            "timestamp": "03:30",
+            "pregunta": "14. What does the man mean?"
+        },
+        {
+            "id": 15,
+            "opciones": [
+                "(A) She took a history class last year.",
+                "(B) She does not trust the man’s opinion.",
+                "(C) She probably will not take any history classes.",
+                "(D) She did not like her sociology professor."
+            ],
+            "correcta": "",
+            "timestamp": "03:45",
+            "pregunta": "15. What does the woman mean?"
+        },
+        {
+            "id": 16,
+            "opciones": [
+                "(A) He is very busy now.",
+                "(B) He has to check his schedule.",
+                "(C) He can meet the woman at six o’clock.",
+                "(D) He prefers to meet the woman some other time."
+            ],
+            "correcta": "",
+            "timestamp": "04:00",
+            "pregunta": "16. What does the man mean?"
+        },
+        {
+            "id": 17,
+            "opciones": [
+                "(A) The course is too difficult.",
+                "(B) The professor changed his mind.",
+                "(C) The final exam was cancelled.",
+                "(D) The woman misunderstood the professor."
+            ],
+            "correcta": "",
+            "timestamp": "04:15",
+            "pregunta": "17. What does the man imply?"
+        },
+        {
+            "id": 18,
+            "opciones": [
+                "(A) The woman deserves the recognition.",
+                "(B) The woman should tell her friends how she feels.",
+                "(C) The woman’s friends do not know about the scholarship.",
+                "(D) The woman should apply for a scholarship."
+            ],
+            "correcta": "",
+            "timestamp": "04:30",
+            "pregunta": "18. What does the man mean?"
+        },
+        {
+            "id": 19,
+            "opciones": [
+                "(A) Ask the man to help her figure out how to use her new computer",
+                "(B) Let the man use her computer",
+                "(C) Take her computer to a repair shop",
+                "(D) Help the man fix his computer"
+            ],
+            "correcta": "",
+            "timestamp": "04:45",
+            "pregunta": "19. What will the woman probably do next?"
+        },
+        {
+            "id": 20,
+            "opciones": [
+                "(A) He was at the health center earlier today.",
+                "(B) He intends to get his blood pressure checked.",
+                "(C) He does not have time to wait in line today.",
+                "(D) He is not concerned about his blood pressure."
+            ],
+            "correcta": "",
+            "timestamp": "05:00",
+            "pregunta": "20. What does the man mean?"
+        },
+        {
+            "id": 21,
+            "opciones": [
+                "(A) She plans to visit the man occasionally.",
+                "(B) She hopes the man is able to find a job.",
+                "(C) She would like to hear from the man.",
+                "(D) She wants to know when the man will return."
+            ],
+            "correcta": "",
+            "timestamp": "05:15",
+            "pregunta": "21. What does the woman mean?"
+        },
+        {
+            "id": 22,
+            "opciones": [
+                "(A) She does not know where her pen is.",
+                "(B) The man may borrow her pen.",
+                "(C) She does not buy expensive pens.",
+                "(D) The man has found her missing pen."
+            ],
+            "correcta": "",
+            "timestamp": "05:30",
+            "pregunta": "22. What does the woman imply?"
+        },
+        {
+            "id": 23,
+            "opciones": [
+                "(A) The man’s directions were not very good.",
+                "(B) The woman forgot to take the man’s directions with her.",
+                "(C) The woman was not able to drive to the conference.",
+                "(D) The conference was not very interesting."
+            ],
+            "correcta": "",
+            "timestamp": "05:45",
+            "pregunta": "23. What can be inferred from this conversation?"
+        },
+        {
+            "id": 24,
+            "opciones": [
+                "(A) She will meet the man at the café.",
+                "(B) She has not yet read the proposal.",
+                "(C) The proposal has been approved.",
+                "(D) The café does not need renovations."
+            ],
+            "correcta": "",
+            "timestamp": "06:00",
+            "pregunta": "24. What does the woman mean?"
+        },
+        {
+            "id": 25,
+            "opciones": [
+                "(A) Buy a different kind of medicine",
+                "(B) See a doctor",
+                "(C) Take a second pill",
+                "(D) Avoid taking any medication"
+            ],
+            "correcta": "",
+            "timestamp": "06:15",
+            "pregunta": "25. What does the woman suggest the man do?"
+        },
+        {
+            "id": 26,
+            "opciones": [
+                "(A) He changed his plans about school.",
+                "(B) His parents are coming out to visit him.",
+                "(C) He was only out of school one semester.",
+                "(D) He is going to take next semester off."
+            ],
+            "correcta": "",
+            "timestamp": "06:30",
+            "pregunta": "26. What does the man imply about Phil?"
+        },
+        {
+            "id": 27,
+            "opciones": [
+                "(A) The man should follow the florist’s advice.",
+                "(B) The man should go to a different florist.",
+                "(C) She bought flowers from the same florist.",
+                "(D) Cutting flowers does not make them last longer."
+            ],
+            "correcta": "",
+            "timestamp": "06:45",
+            "pregunta": "27. What does the woman imply?"
+        },
+        {
+            "id": 28,
+            "opciones": [
+                "(A) There was not enough time for questions.",
+                "(B) The lecture topic was not interesting.",
+                "(C) The speaker was difficult to hear.",
+                "(D) The audience’s questions were not interesting."
+            ],
+            "correcta": "",
+            "timestamp": "07:00",
+            "pregunta": "28. What does the man imply?"
+        },
+        {
+            "id": 29,
+            "opciones": [
+                "(A) He wants to give the woman more information.",
+                "(B) He does not mind waiting to see the dentist.",
+                "(C) He does not remember where he put the dentist’s card.",
+                "(D) He will take the woman to the dentist’s office soon."
+            ],
+            "correcta": "",
+            "timestamp": "07:15",
+            "pregunta": "29. What does the man mean?"
+        },
+        {
+            "id": 30,
+            "opciones": [
+                "(A) She also has a presentation to do.",
+                "(B) She enjoys speaking in front of other people.",
+                "(C) The man’s presentation will be a success.",
+                "(D) The man should practice his presentation."
+            ],
+            "correcta": "",
+            "timestamp": "07:30",
+            "pregunta": "30. What does the woman imply?"
+        },
+        {
+            "id": 31,
+            "opciones": [
+                "(A) A swimming competition",
+                "(B) A singing contest",
+                "(C) The water temperature at the beach",
+                "(D) The woman’s schedule this semester"
+            ],
+            "correcta": "",
+            "timestamp": "07:45",
+            "pregunta": "31. What are the students mainly discussing?"
+        },
+        {
+            "id": 32,
+            "opciones": [
+                "(A) They have won for the past three years.",
+                "(B) They placed second last year.",
+                "(C) They practiced for three months prior to the competition.",
+                "(D) She thought they did not perform well."
+            ],
+            "correcta": "",
+            "timestamp": "08:00",
+            "pregunta": "32. What does the woman say about the winners of the competition?"
+        },
+        {
+            "id": 33,
+            "opciones": [
+                "(A) Studying in the library",
+                "(B) Practicing his singing",
+                "(C) Walking on the beach",
+                "(D) Swimming in the ocean"
+            ],
+            "correcta": "",
+            "timestamp": "08:15",
+            "pregunta": "33. How did the man spend his weekend?"
+        },
+        {
+            "id": 34,
+            "opciones": [
+                "(A) She spent many hours on a bus.",
+                "(B) She was too busy to enjoy the beach.",
+                "(C) She had plenty of time to study.",
+                "(D) She did not have time to watch the competition."
+            ],
+            "correcta": "",
+            "timestamp": "08:30",
+            "pregunta": "34. What does the woman say about her weekend schedule?"
+        },
+        {
+            "id": 35,
+            "opciones": [
+                "(A) The first Japanese artist to start an art school in the United States",
+                "(B) Two artists’ efforts to promote Japanese art in Europe",
+                "(C) One artist’s struggle to overcome financial difficulties",
+                "(D) Influences on one artist’s work"
+            ],
+            "correcta": "",
+            "timestamp": "08:45",
+            "pregunta": "35. What is the conversation mainly about?"
+        },
+        {
+            "id": 36,
+            "opciones": [
+                "(A) He wrote poetry.",
+                "(B) He built houses.",
+                "(C) He designed gardens.",
+                "(D) He created modern sculptures."
+            ],
+            "correcta": "",
+            "timestamp": "09:00",
+            "pregunta": "36. What kind of work did Noguchi’s father do?"
+        },
+        {
+            "id": 37,
+            "opciones": [
+                "(A) Draw the human figure",
+                "(B) See similarities between poetry and visual art",
+                "(C) Appreciate and work with natural materials",
+                "(D) Use money wisely"
+            ],
+            "correcta": "",
+            "timestamp": "09:15",
+            "pregunta": "37. According to the professor, what did Noguchi learn to do when he was a child in Japan?"
+        },
+        {
+            "id": 38,
+            "opciones": [
+                "(A) To analyze the importance of touch in marketing",
+                "(B) To compare marketing strategies involving touch and smell",
+                "(C) To explain why shoppers rely more on touch than on their other senses",
+                "(D) To introduce a new way to conduct market research"
+            ],
+            "correcta": "",
+            "timestamp": "09:30",
+            "pregunta": "38. What is the main purpose of the lecture?"
+        },
+        {
+            "id": 39,
+            "opciones": [
+                "(A) That they have more time to make a purchasing decision",
+                "(B) That they are highly valued by the owner of the store",
+                "(C) That the item they are touching is already theirs",
+                "(D) That the price of the item is too high"
+            ],
+            "correcta": "",
+            "timestamp": "09:45",
+            "pregunta": "39. According to the professor, what psychological feeling do shoppers tend to have when they touch an item of merchandise?"
+        },
+        {
+            "id": 40,
+            "opciones": [
+                "(A) Their customers like that the products are not touched by others.",
+                "(B) They get more returned items than traditional stores do.",
+                "(C) Their descriptions ought to help shoppers imagine how items feel.",
+                "(D) Their photographs are often ineffective."
+            ],
+            "correcta": "",
+            "timestamp": "10:00",
+            "pregunta": "40. What does the professor imply about marketers who sell items online?"
+        },
+        {
+            "id": 41,
+            "opciones": [
+                "(A) They are usually willing to pay more for items they can touch.",
+                "(B) They are reluctant to buy items that were touched repeatedly by other shoppers.",
+                "(C) They touch only items that they intend to buy.",
+                "(D) They are less likely to touch items when the store owner is watching."
+            ],
+            "correcta": "",
+            "timestamp": "10:15",
+            "pregunta": "41. What does the professor emphasize as an important characteristic of shoppers?"
+        },
+        {
+            "id": 42,
+            "opciones": [
+                "(A) To summarize the history of mathematics",
+                "(B) To show how Mesopotamian science influenced Greek science",
+                "(C) To discuss a mistaken historical interpretation",
+                "(D) To explain why tablets are reliable historical records"
+            ],
+            "correcta": "",
+            "timestamp": "10:30",
+            "pregunta": "42. What is the main purpose of the talk?"
+        },
+        {
+            "id": 43,
+            "opciones": [
+                "(A) Names of mathematicians",
+                "(B) Mathematical calculations",
+                "(C) Measurements of buildings",
+                "(D) Measurements of various shapes"
+            ],
+            "correcta": "",
+            "timestamp": "10:45",
+            "pregunta": "43. What was on the Mesopotamian tablet mentioned in the talk?"
+        },
+        {
+            "id": 44,
+            "opciones": [
+                "(A) All records of their mathematics had been lost.",
+                "(B) They created various types of measuring devices.",
+                "(C) They did not use tablets to record information.",
+                "(D) They could calculate measurements of triangles."
+            ],
+            "correcta": "",
+            "timestamp": "11:00",
+            "pregunta": "44. According to the professor, what had been assumed about the Mesopotamians?"
+        },
+        {
+            "id": 45,
+            "opciones": [
+                "(A) As a math exercise sheet",
+                "(B) As a record of business transactions",
+                "(C) As a geometry textbook",
+                "(D) As a plan for a new building"
+            ],
+            "correcta": "",
+            "timestamp": "11:15",
+            "pregunta": "45. According to the professor, how was the tablet most likely used by the Mesopotamians?"
+        },
+        {
+            "id": 46,
+            "opciones": [
+                "(A) They learned geometry from Mesopotamian tablets.",
+                "(B) They were less advanced in mathematics than the Mesopotamians.",
+                "(C) They improved the quality of stone tablets.",
+                "(D) They knew how to measure angles."
+            ],
+            "correcta": "",
+            "timestamp": "11:30",
+            "pregunta": "46. What does the professor imply about the ancient Greeks?"
+        },
+        {
+            "id": 47,
+            "opciones": [
+                "(A) How the age of a fossil is determined",
+                "(B) How fossilized impressions were made on the seafloor",
+                "(C) Techniques for excavating fossils from the sea",
+                "(D) Recently discovered fossilized footprints"
+            ],
+            "correcta": "",
+            "timestamp": "11:45",
+            "pregunta": "47. What is the talk mainly about?"
+        },
+        {
+            "id": 48,
+            "opciones": [
+                "(A) When animals first emerged from the sea",
+                "(B) Where fossils are most easily found",
+                "(C) How footprints on the seafloor are preserved",
+                "(D) Why some animals became extinct"
+            ],
+            "correcta": "",
+            "timestamp": "12:00",
+            "pregunta": "48. According to the professor, what question does the discovery in Canada help answer?"
+        },
+        {
+            "id": 49,
+            "opciones": [
+                "(A) To illustrate the variety of stone found in Canada",
+                "(B) To show that the fossils were found by luck",
+                "(C) To explain why sandstone often contains fossils",
+                "(D) To tell why fossils are sometimes damaged"
+            ],
+            "correcta": "",
+            "timestamp": "12:15",
+            "pregunta": "49. Why does the professor mention stonecutters?"
+        },
+        {
+            "id": 50,
+            "opciones": [
+                "(A) The hardness of the sandstone",
+                "(B) The depth of the footprints",
+                "(C) The type of animal that made the footprints",
+                "(D) The location of the rock layer"
+            ],
+            "correcta": "",
+            "timestamp": "12:30",
+            "pregunta": "50. What evidence is given to show whether the footprints were made by animals on land or underwater?"
+        }
+    ],
+    "structure": [
+        {
+            "id": 2,
+            "opciones": [
+                "(A) do not live",
+                "(B) when they do not live",
+                "(C) that they do not live",
+                "(D) that do not live"
+            ],
+            "correcta": "",
+            "pregunta": "2. Mason bees are solitary bees, which means _____ in colonies like honeybees or bumblebees."
+        },
+        {
+            "id": 3,
+            "opciones": [
+                "(A) people recorded",
+                "(B) recording people",
+                "(C) people’s recordings",
+                "(D) people who recorded"
+            ],
+            "correcta": "",
+            "pregunta": "3. Long before the advent of written literature, _____ their myths and stories in oral poems told by successive generations."
+        },
+        {
+            "id": 4,
+            "opciones": [
+                "(A) the basis for",
+                "(B) for basics",
+                "(C) the basis that",
+                "(D) the basically"
+            ],
+            "correcta": "",
+            "pregunta": "4. Comparative anatomy is _____ classification of both plants and animals."
+        },
+        {
+            "id": 5,
+            "opciones": [
+                "(A) no",
+                "(B) still is no",
+                "(C) there is no",
+                "(D) but no"
+            ],
+            "correcta": "",
+            "pregunta": "5. Although legend has it that the Pilgrims first set foot in America on Plymouth Rock in 1620, _____ documentary evidence confirming this."
+        },
+        {
+            "id": 6,
+            "opciones": [
+                "(A) an animal breathes air that",
+                "(B) an animal that breathes air",
+                "(C) an animal breathes air",
+                "(D) that an animal breathes air"
+            ],
+            "correcta": "",
+            "pregunta": "6. Despite its fishlike form, the whale is _____ and will drown if submerged too long."
+        },
+        {
+            "id": 7,
+            "opciones": [
+                "(A) when form water vapor",
+                "(B) form when water vapor",
+                "(C) form vapor water when",
+                "(D) vapor form when water"
+            ],
+            "correcta": "",
+            "pregunta": "7. Clouds _____ in warm air rises, cools, and condenses."
+        },
+        {
+            "id": 8,
+            "opciones": [
+                "(A) which Maine’s largest city",
+                "(B) Maine’s largest city where",
+                "(C) is Maine’s largest city",
+                "(D) Maine’s largest city"
+            ],
+            "correcta": "",
+            "pregunta": "8. Portland, _____ , is located primarily on two hilly peninsulas overlooking Casco Bay and its many islands."
+        },
+        {
+            "id": 9,
+            "opciones": [
+                "(A) that cover",
+                "(B) in which are covered",
+                "(C) that they cover",
+                "(D) and covered"
+            ],
+            "correcta": "",
+            "pregunta": "9. Mars, the so-called red planet, is actually colored red by iron oxide and other impurities _____ the whole surface."
+        },
+        {
+            "id": 10,
+            "opciones": [
+                "(A) was used",
+                "(B) to be used",
+                "(C) used",
+                "(D) had used"
+            ],
+            "correcta": "",
+            "pregunta": "10. The 1903 film The Great Train Robbery was the first significant film in which the classic western story’s formula of crime and retribution _____ ."
+        },
+        {
+            "id": 11,
+            "opciones": [
+                "(A) or",
+                "(B) that",
+                "(C) so",
+                "(D) whether"
+            ],
+            "correcta": "",
+            "pregunta": "11. When played in certain ways, the bassoon can produce comical sounds, _____ it is sometimes referred to as the clown of the orchestra."
+        },
+        {
+            "id": 12,
+            "opciones": [
+                "(A) some",
+                "(B) some of",
+                "(C) some the",
+                "(D) for some"
+            ],
+            "correcta": "",
+            "pregunta": "12. In modern societies, _____ authorized body such as a legislature or a court makes the law."
+        },
+        {
+            "id": 13,
+            "opciones": [
+                "(A) as does",
+                "(B) so have",
+                "(C) which as",
+                "(D) by which"
+            ],
+            "correcta": "",
+            "pregunta": "13. The sense of smell functions chemically, _____ the sense of taste, but it is 10,000 times more sensitive."
+        },
+        {
+            "id": 14,
+            "opciones": [
+                "(A) Made them",
+                "(B) They made",
+                "(C) Made",
+                "(D) By making"
+            ],
+            "correcta": "",
+            "pregunta": "14. _____ primarily from plant oils, perfumes were used in ancient times as incense in religious rites, in medicines, and later for adornment."
+        },
+        {
+            "id": 15,
+            "opciones": [
+                "(A) as the capital",
+                "(B) the capital",
+                "(C) to be the capital",
+                "(D) the capital was"
+            ],
+            "correcta": "",
+            "pregunta": "15. Boise became _____ of the state of Idaho in 1864."
+        },
+        {
+            "id": 40,
+            "opciones": [
+                "(A) ,",
+                "(B) ,",
+                "(C) or",
+                "(D) , to each question. Then, the question and fill in the space that cor chosen."
+            ],
+            "correcta": "",
+            "pregunta": "40. The canoe designed by North A A on inland waters, for it was eas B This is the end If you finish before time is c Section 2 DO NOT read or work on any At the end of 25 minute Use exactly 55 minutes 36 up less than one half percentage of the C D American Indians was very suitable for use sily portable and had amply storage space. C D of Section 2. called, check your work on 2 only. y other section of the test. es, go on to Section 3. to work on Section 3. Section 3: Reading Com Time: 55 minutes, including the reading of Now set your clock for 55 minutes. Directions: In this section you will read s by several questions about it. For questio"
+        }
+    ],
+    "reading": [
+        {
+            "passageId": 1,
+            "title": "Reading Comprehension Questions",
+            "text": "Sección extraída correctamente. (Revisa el PDF si la pregunta hace referencia a un pasaje largo).",
+            "questions": [
+                {
+                    "id": 1,
+                    "opciones": [
+                        "(A) Why young women chose to move from farms to cities",
+                        "(B) The number and types of manufacturing jobs created in cities",
+                        "(C) Changes in settlement patterns between farms and cities",
+                        "(D) The effects of mechanization on western migration"
+                    ],
+                    "correcta": "",
+                    "pregunta": "1. What aspect of the United States in the late nineteenth and early twentieth centuries does the passage mainly discuss?"
+                },
+                {
+                    "id": 2,
+                    "opciones": [
+                        "(A) change",
+                        "(B) growth",
+                        "(C) population",
+                        "(D) labor"
+                    ],
+                    "correcta": "",
+                    "pregunta": "2. The word “expansion” in line 1 is closest in meaning to"
+                },
+                {
+                    "id": 3,
+                    "opciones": [
+                        "(A) left behind",
+                        "(B) sold",
+                        "(C) gave away",
+                        "(D) gradually reduced the size of"
+                    ],
+                    "correcta": "",
+                    "pregunta": "3. The word “abandoned” in line 3 is closest in meaning to"
+                },
+                {
+                    "id": 4,
+                    "opciones": [
+                        "(A) To indicate that more than one factor contributed to the movement from rural to urban settlement",
+                        "(B) To support the idea that many families were able to stop farming and migrate to the cities",
+                        "(C) To suggest that the migration would have happened despite the economic situation",
+                        "(D) To argue against economics as the primary factor in migration"
+                    ],
+                    "correcta": "",
+                    "pregunta": "4. Why does the author discuss “prosperity” in line 4 ?"
+                },
+                {
+                    "id": 5,
+                    "opciones": [
+                        "(A) city businessmen seeking new investments",
+                        "(B) successful landowners who had mechanized farms",
+                        "(C) young farm men starting to work",
+                        "(D) people who had few opportunities in cities"
+                    ],
+                    "correcta": "",
+                    "pregunta": "5. According to the first paragraph, in the late 1800s, farmland was most likely to be purchased by"
+                },
+                {
+                    "id": 6,
+                    "opciones": [
+                        "(A) unexpectedly",
+                        "(B) usually",
+                        "(C) unavoidably",
+                        "(D) possibly"
+                    ],
+                    "correcta": "",
+                    "pregunta": "6. The word “inevitably” in line 12 is closest in meaning to"
+                },
+                {
+                    "id": 7,
+                    "opciones": [
+                        "(A) industrial workers becoming farmers",
+                        "(B) the economic development of the countryside",
+                        "(C) the loss of rural population",
+                        "(D) innovations in manufacturing"
+                    ],
+                    "correcta": "",
+                    "pregunta": "7. The phrase “this trend” in line 14 refers to"
+                },
+                {
+                    "id": 8,
+                    "opciones": [
+                        "(A) Fewer people lived on farms.",
+                        "(B) The central part of the United States lost much of its population to rural areas in the West.",
+                        "(C) Rural areas of the West became more populated than those in the central part of the country.",
+                        "(D) Work opportunities in urban areas began to decline. 42"
+                    ],
+                    "correcta": "",
+                    "pregunta": "8. According to the first paragraph, which of the following is true about the population of the United States after the 1880s?"
+                },
+                {
+                    "id": 9,
+                    "opciones": [
+                        "(A) Young women were more likely to leave rural areas to go to urban areas.",
+                        "(B) Young women were more likely to take jobs on farms.",
+                        "(C) Young women who migrated generally had more education.",
+                        "(D) Young women generally moved more frequently from one rural area to another."
+                    ],
+                    "correcta": "",
+                    "pregunta": "9. According to the second paragraph, how did migration among young women in the rural West differ from that of young men?"
+                },
+                {
+                    "id": 10,
+                    "opciones": [
+                        "(A) unappealing",
+                        "(B) reduced",
+                        "(C) low-paying",
+                        "(D) disappearing"
+                    ],
+                    "correcta": "",
+                    "pregunta": "10. The word “constricted” in line 24 is closest in meaning to"
+                },
+                {
+                    "id": 11,
+                    "opciones": [
+                        "(A) The similarities between Earth’s inner core and outer core",
+                        "(B) The structure and temperature of Earth’s interior",
+                        "(C) When seismic waves were first used to study Earth’s interior",
+                        "(D) Why Earth’s solid inner core is surrounded by a molten outer core"
+                    ],
+                    "correcta": "",
+                    "pregunta": "11. What does the passage mainly discuss?"
+                },
+                {
+                    "id": 12,
+                    "opciones": [
+                        "(A) approximate",
+                        "(B) insignificant",
+                        "(C) measured",
+                        "(D) lengthy"
+                    ],
+                    "correcta": "",
+                    "pregunta": "12. The word “mere” in line 2 is closest in meaning to"
+                },
+                {
+                    "id": 13,
+                    "opciones": [
+                        "(A) Earth’s gravitational field",
+                        "(B) Earth’s magnetic field",
+                        "(C) vibrations caused by earthquakes",
+                        "(D) material taken from holes drilled into Earth’s crust"
+                    ],
+                    "correcta": "",
+                    "pregunta": "13. According to the first paragraph, most knowledge of Earth’s interior has been gained by studying"
+                },
+                {
+                    "id": 14,
+                    "opciones": [
+                        "(A) Neither the inner core nor the outer core can be studied using seismic waves.",
+                        "(B) The outer core is more solid than the inner core.",
+                        "(C) The inner core and the outer core have greatly different temperatures.",
+                        "(D) Both the inner core and the outer core probably contain iron."
+                    ],
+                    "correcta": "",
+                    "pregunta": "14. According to the second paragraph, which of the following statements regarding Earth’s inner core and outer core is true?"
+                },
+                {
+                    "id": 15,
+                    "opciones": [
+                        "(A) basically",
+                        "(B) similarly",
+                        "(C) potentially",
+                        "(D) completely"
+                    ],
+                    "correcta": "",
+                    "pregunta": "15. The word “thoroughly” in line 15 is closest in meaning to"
+                },
+                {
+                    "id": 16,
+                    "opciones": [
+                        "(A) Earth",
+                        "(B) a cool crust",
+                        "(C) the molten ball of rock",
+                        "(D) the heat"
+                    ],
+                    "correcta": "",
+                    "pregunta": "16. The word “it” in line 18 refers to"
+                },
+                {
+                    "id": 17,
+                    "opciones": [
+                        "(A) acted",
+                        "(B) moved",
+                        "(C) appeared",
+                        "(D) grew"
+                    ],
+                    "correcta": "",
+                    "pregunta": "17. The word “functioned” in line 18 is closest in meaning to"
+                },
+                {
+                    "id": 18,
+                    "opciones": [
+                        "(A) changed",
+                        "(B) combined",
+                        "(C) utilized",
+                        "(D) made"
+                    ],
+                    "correcta": "",
+                    "pregunta": "18. The word “manufactured” in line 20 is closest in meaning to"
+                },
+                {
+                    "id": 19,
+                    "opciones": [
+                        "(A) The decay of radioactive isotopes",
+                        "(B) The movement of elements from Earth’s crust to its interior",
+                        "(C) The vibrations that result from movement of Earth’s crust",
+                        "(D) The injection of certain organic elements into Earth’s inner core"
+                    ],
+                    "correcta": "",
+                    "pregunta": "19. The third paragraph mentions which of the following as one cause of the current high temperature of Earth’s interior?"
+                },
+                {
+                    "id": 20,
+                    "opciones": [
+                        "(A) seismic waves",
+                        "(B) earthquakes",
+                        "(C) magnetic field",
+                        "(D) stable elements"
+                    ],
+                    "correcta": "",
+                    "pregunta": "20. Look at the terms “seismic waves” (line 6), “earthquakes” (line 6), “magnetic field” (line 14), and “stable elements” (line 21). Which of these terms is defined in the passage?"
+                },
+                {
+                    "id": 21,
+                    "opciones": [
+                        "(A) the crust affects Earth’s internal temperature",
+                        "(B) radioactive isotopes cause heat",
+                        "(C) Earth’s magnetic field is created",
+                        "(D) seismic waves originate"
+                    ],
+                    "correcta": "",
+                    "pregunta": "21. According to the passage, scientists do not understand in detail how"
+                },
+                {
+                    "id": 22,
+                    "opciones": [
+                        "(A) difference between amber and mineral fossils",
+                        "(B) places where amber can be found",
+                        "(C) various characteristics of amber",
+                        "(D) types of trees that produced amber"
+                    ],
+                    "correcta": "",
+                    "pregunta": "22. The passage mainly discusses the"
+                },
+                {
+                    "id": 23,
+                    "opciones": [
+                        "(A) To emphasize the age of fossils",
+                        "(B) To explain why there are more mineral replacement fossils than organic fossils",
+                        "(C) To compare them with amber as a different type of fossil",
+                        "(D) To give an example of an object in which amber is commonly found"
+                    ],
+                    "correcta": "",
+                    "pregunta": "23. Why does the author mention dinosaur bones in the first paragraph?"
+                },
+                {
+                    "id": 24,
+                    "opciones": [
+                        "(A) beautiful",
+                        "(B) unusual",
+                        "(C) obvious",
+                        "(D) unchanged"
+                    ],
+                    "correcta": "",
+                    "pregunta": "24. The word “intact” in line 8 is closest in meaning to"
+                },
+                {
+                    "id": 25,
+                    "opciones": [
+                        "(A) unknown",
+                        "(B) decreasing",
+                        "(C) very small",
+                        "(D) somewhat similar"
+                    ],
+                    "correcta": "",
+                    "pregunta": "25. The word “trace” in line 11 is closest in meaning to"
+                },
+                {
+                    "id": 26,
+                    "opciones": [
+                        "(A) There is a limited number of large deposits of amber in the world.",
+                        "(B) Most deposits contain large quantities of amber specimens.",
+                        "(C) The major amber deposits were formed at approximately the same time.",
+                        "(D) The deposits were formed primarily by tropical broad-leaved trees."
+                    ],
+                    "correcta": "",
+                    "pregunta": "26. According to the second paragraph, which of the following is true about deposits of amber?"
+                },
+                {
+                    "id": 27,
+                    "opciones": [
+                        "(A) false belief",
+                        "(B) known fact",
+                        "(C) scientific theory",
+                        "(D) subject of debate"
+                    ],
+                    "correcta": "",
+                    "pregunta": "27. The word “misconception” in line 16 is closest in meaning to"
+                },
+                {
+                    "id": 28,
+                    "opciones": [
+                        "(A) deposits",
+                        "(B) pine trees",
+                        "(C) conifer trees",
+                        "(D) broad-leaved trees"
+                    ],
+                    "correcta": "",
+                    "pregunta": "28. The word “them” in line 18 refers to"
+                },
+                {
+                    "id": 29,
+                    "opciones": [
+                        "(A) consequently",
+                        "(B) instead",
+                        "(C) moreover",
+                        "(D) initially"
+                    ],
+                    "correcta": "",
+                    "pregunta": "29. The word “Thus” in line 23 is closest in meaning to"
+                },
+                {
+                    "id": 30,
+                    "opciones": [
+                        "(A) cover",
+                        "(B) color",
+                        "(C) fill",
+                        "(D) damage"
+                    ],
+                    "correcta": "",
+                    "pregunta": "30. The word “bury” in line 26 is closest in meaning to"
+                },
+                {
+                    "id": 31,
+                    "opciones": [
+                        "(A) to determine the age of other ancient materials that are found with it",
+                        "(B) as jewelry",
+                        "(C) to compare the characteristics of living trees to those of ancient trees",
+                        "(D) to preserve fossil impressions"
+                    ],
+                    "correcta": "",
+                    "pregunta": "31. It can be inferred from the passage that amber is most commonly used"
+                },
+                {
+                    "id": 32,
+                    "opciones": [
+                        "(A) It is composed of an organic material.",
+                        "(B) It is basically the same as it was millions of years ago.",
+                        "(C) It may contain the remains of tiny animals.",
+                        "(D) It is made by a process of mineral replacement."
+                    ],
+                    "correcta": "",
+                    "pregunta": "32. Which of the following is NOT true of amber?"
+                },
+                {
+                    "id": 33,
+                    "opciones": [
+                        "(A) They were hoping to find a better climate.",
+                        "(B) They were seeking freedom.",
+                        "(C) They were following instructions given in a dream.",
+                        "(D) They were looking for food."
+                    ],
+                    "correcta": "",
+                    "pregunta": "33. According to the passage, why did the first people who came to North America leave their homeland?"
+                },
+                {
+                    "id": 34,
+                    "opciones": [
+                        "(A) demonstrate reluctance",
+                        "(B) readily encourage others",
+                        "(C) have a tendency",
+                        "(D) often fail"
+                    ],
+                    "correcta": "",
+                    "pregunta": "34. The phrase “are easily disposed” in line 12 is closest in meaning to"
+                },
+                {
+                    "id": 35,
+                    "opciones": [
+                        "(A) frequently",
+                        "(B) normally",
+                        "(C) whenever possible",
+                        "(D) in the end"
+                    ],
+                    "correcta": "",
+                    "pregunta": "35. The word “Ultimately” in line 15 is closest in meaning to"
+                },
+                {
+                    "id": 36,
+                    "opciones": [
+                        "(A) joyous",
+                        "(B) intricate",
+                        "(C) competing",
+                        "(D) forceful"
+                    ],
+                    "correcta": "",
+                    "pregunta": "36. The word “compelling” in line 18 is closest in meaning to"
+                },
+                {
+                    "id": 37,
+                    "opciones": [
+                        "(A) Public performance is essential to verbal art.",
+                        "(B) Oral narratives are a valid form of literature.",
+                        "(C) Native Americans have a strong oral tradition in art.",
+                        "(D) The production of literature provides employment for many artists."
+                    ],
+                    "correcta": "",
+                    "pregunta": "37. What is the main point of the second paragraph?"
+                },
+                {
+                    "id": 38,
+                    "opciones": [
+                        "(A) They provide financial support for performances.",
+                        "(B) They judge the quality of the content and presentation.",
+                        "(C) They participate in the performance by chanting responses.",
+                        "(D) They determine the length of the performance by requesting a continuation."
+                    ],
+                    "correcta": "",
+                    "pregunta": "38. According to the passage, what responsibility does the audience of a verbal art performance have?"
+                },
+                {
+                    "id": 39,
+                    "opciones": [
+                        "(A) It reflects historical and contemporary life in Asia.",
+                        "(B) Its main focus is on daily activities.",
+                        "(C) It is based primarily on scientific knowledge.",
+                        "(D) It is reshaped each time it is experienced."
+                    ],
+                    "correcta": "",
+                    "pregunta": "39. What can be inferred about the nature of the Native American literature discussed in the passage?"
+                },
+                {
+                    "id": 40,
+                    "opciones": [
+                        "(A) It involves acting.",
+                        "(B) It has ancient origins.",
+                        "(C) It has a set form.",
+                        "(D) It expresses an inner vision. 54"
+                    ],
+                    "correcta": "",
+                    "pregunta": "40. Which of the following is NOT true of the Native American literature discussed in the passage?"
+                },
+                {
+                    "id": 41,
+                    "opciones": [
+                        "(A) Written literature reflects social values better than oral literature does.",
+                        "(B) Written literature involves less interaction between audience and creator during the creative process than oral literature does.",
+                        "(C) Written literature usually is not based on historical events, whereas oral literature is.",
+                        "(D) Written literature is not as highly respected as oral literature is."
+                    ],
+                    "correcta": "",
+                    "pregunta": "41. What can be inferred from the passage about the difference between written and oral literature?"
+                },
+                {
+                    "id": 42,
+                    "opciones": [
+                        "(A) Admiring of its form",
+                        "(B) Critical of the cost of its production",
+                        "(C) Amused by its content",
+                        "(D) Skeptical about its origins"
+                    ],
+                    "correcta": "",
+                    "pregunta": "42. What is the author’s attitude toward Native American literature?"
+                },
+                {
+                    "id": 43,
+                    "opciones": [
+                        "(A) development of synthetic colors for textiles during the nineteenth century",
+                        "(B) advantages of chemical dyes over dyes derived from plants and animals",
+                        "(C) differences between dyeing textiles and printing them",
+                        "(D) history of the use of natural and chemical dyes to color textiles"
+                    ],
+                    "correcta": "",
+                    "pregunta": "43. The passage mainly discusses the"
+                },
+                {
+                    "id": 44,
+                    "opciones": [
+                        "(A) Animals",
+                        "(B) Minerals",
+                        "(C) Plants",
+                        "(D) Chemicals"
+                    ],
+                    "correcta": "",
+                    "pregunta": "44. According to the passage, what was the source of most textile dyes that were used before the nineteenth century?"
+                },
+                {
+                    "id": 45,
+                    "opciones": [
+                        "(A) It was possible to cultivate madder plants in almost every location.",
+                        "(B) Madder plants produced brighter colors than other plant sources.",
+                        "(C) Plant sources produced more lasting colors than animal sources.",
+                        "(D) Dyes derived from the madder plants were easier to work with than other dyes."
+                    ],
+                    "correcta": "",
+                    "pregunta": "45. What was the advantage of using madder plants for different shades of red?"
+                },
+                {
+                    "id": 46,
+                    "opciones": [
+                        "(A) without exception",
+                        "(B) steadily",
+                        "(C) after some time",
+                        "(D) noticeably"
+                    ],
+                    "correcta": "",
+                    "pregunta": "46. The word “invariably” in line 13 is closest in meaning to"
+                },
+                {
+                    "id": 47,
+                    "opciones": [
+                        "(A) a darker color, like blue, dominates a light color, like yellow",
+                        "(B) light changed some of the green dye used in the tapestries to blue",
+                        "(C) the yellow dye that was used in the tapestries had faded",
+                        "(D) the dyes used to color woven tapestries were made from minerals"
+                    ],
+                    "correcta": "",
+                    "pregunta": "47. It can be inferred from the passage that the green areas in woven tapestries developed a bluish tinge because"
+                },
+                {
+                    "id": 48,
+                    "opciones": [
+                        "(A) strengthened",
+                        "(B) improved",
+                        "(C) replaced",
+                        "(D) complemented"
+                    ],
+                    "correcta": "",
+                    "pregunta": "48. The word “superseded” in line 15 is closest in meaning to"
+                },
+                {
+                    "id": 49,
+                    "opciones": [
+                        "(A) The chemical dyes had less attractive colors.",
+                        "(B) The chemical dyes were less easy to use.",
+                        "(C) The chemical dyes lost their brightness more quickly when exposed to light.",
+                        "(D) The chemical dyes held up better after washing."
+                    ],
+                    "correcta": "",
+                    "pregunta": "49. According to the passage, how did chemical dyes compare to natural dyes?"
+                },
+                {
+                    "id": 50,
+                    "opciones": [
+                        "(A) Previously developed dyes did not work on new types of fibers.",
+                        "(B) Dyes derived from petroleum caused damage to new synthetic fibers.",
+                        "(C) New synthetic fibers required brighter colors than natural fibers did.",
+                        "(D) New fabrics easily lost their colors when washed."
+                    ],
+                    "correcta": "",
+                    "pregunta": "50. According to the passage, what problem led to the development of new dyes after 1900 ?"
+                }
+            ]
+        }
+    ]
+}
