@@ -91,7 +91,7 @@
       { "id": 36, "pregunta": "36. It [A] has been [B] snowing [C] for [D] three days without stop.", "opciones": ["(A) has been", "(B) snowing", "(C) for", "(D) stop"], "correcta": "D", "explicacion": "Debe ser 'stopping'." },
       { "id": 37, "pregunta": "37. La persona [A] con [B] quien [C] yo [D] hablé fue de gran ayuda.", "opciones": ["(A) with", "(B) whom", "(C) I", "(D) spoke"], "correcta": "B", "explicacion": "Objeto 'whom' tras preposición." },
       { "id": 38, "pregunta": "38. [A] Even though [B] he practiced, he [C] couldn't [D] master the piece.", "opciones": ["(A) Even though", "(B) practiced", "(C) couldn't", "(D) master"], "correcta": "A", "explicacion": "Conector de contraste." },
-      { "id": 39, "pregunta": "39. The coffee was [A] so [B] hot [C] than [D] I burnt my tongue.", "opciones": ["(A) so", "(B) hot", "(C) than", "(D) I burnt"], "correcta": "C", "explicacion": "Pareja 'so... that'." },
+      { "id": 39, "pregunta": "39. El café estaba [A] tan [B] caliente [C] que [D] me quemé la lengua.", "opciones": ["(A) so", "(B) hot", "(C) than", "(D) I burnt"], "correcta": "C", "explicacion": "Pareja 'so... that'." },
       { "id": 40, "pregunta": "40. They are [A] considering [B] to stop [C] the [D] project.", "opciones": ["(A) considering", "(B) to stop", "(C) the", "(D) project"], "correcta": "B", "explicacion": "Debe ser 'stopping' tras 'consider'." }
     ],
     "reading": [
