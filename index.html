@@ -30,7 +30,6 @@
         
         .hidden-section { display: none; }
         
-        /* Animaciones para la transición de preguntas */
         .fade-step { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -42,7 +41,6 @@
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-slate-800">
 
-    <!-- HEADER SUPERIOR -->
     <header class="bg-slate-900 text-white p-4 flex justify-between items-center shadow-lg shrink-0">
         <div class="flex items-center gap-3">
             <div class="bg-blue-600 p-2 rounded-lg">
@@ -65,15 +63,13 @@
         </div>
     </header>
 
-    <!-- PANTALLA DE CARGA -->
     <div id="loading-screen" class="absolute inset-0 bg-white z-50 flex flex-col items-center justify-center">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600 mb-4"></div>
-        <h2 class="text-xl font-bold">Iniciando Entorno...</h2>
+        <div id="loading-spinner" class="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600 mb-4"></div>
+        <h2 id="loading-text" class="text-xl font-bold text-slate-700">Iniciando Entorno...</h2>
     </div>
 
     <div class="flex flex-1 overflow-hidden">
         
-        <!-- SIDEBAR DE NAVEGACIÓN -->
         <aside class="w-64 bg-white border-r shadow-inner flex flex-col">
             <div class="p-5 border-b bg-slate-50">
                 <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Navegación</h2>
@@ -99,14 +95,12 @@
             </div>
         </aside>
 
-        <!-- ÁREA PRINCIPAL -->
         <main class="flex-1 overflow-y-auto p-8 relative bg-slate-50">
             <div class="max-w-4xl mx-auto min-h-full">
 
-                <!-- VISTA: SETUP -->
                 <div id="view-setup" class="space-y-8 animate-in fade-in duration-500">
                     <div class="text-center py-10">
-                        <h2 class="text-4xl font-black mb-4">Entrenamiento TOEFL</h2>
+                        <h2 class="text-4xl font-black mb-4 text-slate-900">Entrenamiento TOEFL</h2>
                         <p class="text-slate-500">Selecciona un modelo de examen para comenzar.</p>
                     </div>
 
@@ -144,15 +138,12 @@
                     </div>
                 </div>
 
-                <!-- VISTA DINÁMICA DE SECCIÓN -->
                 <div id="view-test" class="hidden-section space-y-8 pb-20">
                     <div id="section-header" class="bg-slate-900 text-white p-8 rounded-3xl shadow-2xl relative overflow-hidden">
                         <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
                             <div class="flex-1">
                                 <h2 id="section-title" class="text-2xl font-black mb-2 tracking-tight uppercase">SECTION</h2>
-                                <div id="section-meta" class="flex items-center gap-4 text-xs font-bold text-blue-400">
-                                    <!-- Dinámico -->
-                                </div>
+                                <div id="section-meta" class="flex items-center gap-4 text-xs font-bold text-blue-400"></div>
                             </div>
                             <div id="audio-container" class="w-full md:w-auto flex flex-col items-end gap-3 hidden">
                                 <audio id="main-audio" controls class="w-full h-10"></audio>
@@ -163,10 +154,8 @@
                         </div>
                     </div>
 
-                    <!-- Contenedor de Preguntas -->
                     <div id="questions-container" class="grid grid-cols-1 gap-6 fade-step"></div>
 
-                    <!-- Navegación de Bloques -->
                     <div id="pagination-controls" class="flex justify-between items-center mt-10">
                         <button id="prev-step" onclick="cambiarBloque(-1)" class="bg-white border text-slate-600 px-6 py-2 rounded-xl font-bold text-sm hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed">
                             <i class="fas fa-arrow-left mr-2"></i> Anterior
@@ -187,26 +176,44 @@
         let currentSection = 'listening';
         let learningMode = false;
         let timerInterval;
-        
         let currentStep = 0;
         const questionsPerStep = 2; 
 
         document.addEventListener('DOMContentLoaded', () => {
             fetch('examen_data.json')
                 .then(r => {
-                    if (!r.ok) throw new Error("Error cargando JSON");
-                    return r.json();
+                    if (!r.ok) throw new Error(`HTTP Error ${r.status}`);
+                    return r.text(); // Leemos primero como texto para capturar errores de parsing
                 })
-                .then(data => {
-                    db = data;
-                    document.getElementById('loading-screen').style.display = 'none';
+                .then(text => {
+                    try {
+                        db = JSON.parse(text);
+                        document.getElementById('loading-screen').style.display = 'none';
+                    } catch (e) {
+                        console.error("Error analizando JSON:", e);
+                        mostrarErrorCarga("Formato JSON Inválido. Revisa cierres de llaves en examen_data.json.");
+                    }
                 })
                 .catch(e => {
-                    alert("Error crítico: No se pudo cargar el archivo 'examen_data.json'. Revisa la consola.");
-                    console.error(e);
-                    document.getElementById('loading-screen').innerHTML = `<p class='text-red-500 font-bold'>Error de Carga: JSON Inválido</p>`;
+                    console.error("Error cargando archivo:", e);
+                    mostrarErrorCarga(`No se pudo cargar 'examen_data.json'. (${e.message})`);
                 });
         });
+
+        function mostrarErrorCarga(msg) {
+            const screen = document.getElementById('loading-screen');
+            const spinner = document.getElementById('loading-spinner');
+            const text = document.getElementById('loading-text');
+            spinner.style.display = 'none';
+            screen.innerHTML = `
+                <div class="text-center p-8 bg-red-50 border border-red-200 rounded-3xl max-w-md">
+                    <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+                    <h2 class="text-xl font-bold text-red-800 mb-2">Fallo en Base de Datos</h2>
+                    <p class="text-red-600 text-sm mb-6">${msg}</p>
+                    <button onclick="window.location.reload()" class="bg-red-500 text-white px-8 py-2 rounded-full font-bold shadow-lg hover:bg-red-600 transition-all">Reintentar</button>
+                </div>
+            `;
+        }
 
         function toggleLearning() {
             learningMode = !learningMode;
@@ -216,8 +223,6 @@
             btn.className = learningMode ? "bg-orange-500 text-white px-6 py-2 rounded-full font-bold text-sm shadow-lg" : "bg-orange-200 text-orange-800 px-6 py-2 rounded-full font-bold text-sm hover:bg-orange-300 transition-all";
             badge.innerText = learningMode ? "MODO APRENDIZAJE" : "MODO REAL LIFE";
             badge.className = learningMode ? "bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-[10px] font-bold border border-orange-200" : "bg-slate-800 px-3 py-1 rounded-full text-[10px] font-bold border border-slate-700";
-            
-            // Re-render para aplicar o quitar feedback visual si ya hay selecciones
             renderizarBloque();
         }
 
@@ -225,38 +230,28 @@
             currentTest = testId;
             currentStep = 0;
             currentSection = 'listening';
-            
             document.getElementById('current-test-label').innerText = testId === 'testA' ? "Practice Test A" : "Practice Test B";
             document.getElementById('test-nav').classList.remove('opacity-40', 'pointer-events-none');
-            
             cambiarVista('listening');
         }
 
         function cambiarVista(id) {
-            // Manejo de UI de navegación
             document.querySelectorAll('#main-nav button').forEach(b => b.classList.remove('active-nav'));
             const activeBtn = document.getElementById('nav-' + id);
             if (activeBtn) activeBtn.classList.add('active-nav');
-
             if (id === 'setup') {
                 document.getElementById('view-setup').classList.remove('hidden-section');
                 document.getElementById('view-test').classList.add('hidden-section');
                 return;
             }
-
             currentSection = id;
             currentStep = 0;
-            
             document.getElementById('view-setup').classList.add('hidden-section');
             document.getElementById('view-test').classList.remove('hidden-section');
-            
             configurarCabeceraSeccion();
             renderizarBloque();
-            
-            // Iniciar cronómetro según sección
             const tiempos = { listening: 35, structure: 25, reading: 55 };
             iniciarCronometro(tiempos[id] || 30);
-            
             window.scrollTo(0, 0);
         }
 
@@ -264,9 +259,7 @@
             const title = document.getElementById('section-title');
             const meta = document.getElementById('section-meta');
             const audioBox = document.getElementById('audio-container');
-            
             audioBox.classList.add('hidden');
-
             switch(currentSection) {
                 case 'listening':
                     title.innerText = "Section 1: Listening Comprehension";
@@ -288,57 +281,50 @@
         function cargarAudioGoogleDrive() {
             const audio = document.getElementById('main-audio');
             const ids = { testA: '1YfZ1zZCL-Zlie5f6w03VRpPh3DzCHMRU', testB: '1uDKuutxP9uLTYm4rBtz1NMeOCRC2hMlc' };
-            audio.src = `https://drive.google.com/uc?export=download&id=${ids[currentTest]}`;
+            if (currentTest && ids[currentTest]) {
+                audio.src = `https://drive.google.com/uc?export=download&id=${ids[currentTest]}`;
+            }
         }
 
         function cambiarBloque(delta) {
             const data = db[currentTest][currentSection];
             const totalSteps = Math.ceil(data.length / questionsPerStep);
-            
             currentStep += delta;
             if (currentStep < 0) currentStep = 0;
             if (currentStep >= totalSteps) currentStep = totalSteps - 1;
-            
             renderizarBloque();
         }
 
         function renderizarBloque() {
             const container = document.getElementById('questions-container');
             container.innerHTML = '';
-            
             const data = db[currentTest][currentSection];
             if (!data || data.length === 0) {
-                container.innerHTML = `<div class="text-center py-20 text-slate-400 font-bold italic">No hay datos disponibles para esta sección en este test.</div>`;
+                container.innerHTML = `<div class="text-center py-20 text-slate-400 font-bold italic">No hay datos para esta sección.</div>`;
                 return;
             }
-
             const alphabet = ['A', 'B', 'C', 'D'];
             const start = currentStep * questionsPerStep;
             const end = start + questionsPerStep;
             const slice = data.slice(start, end);
-            
             document.getElementById('pagination-status').classList.remove('hidden');
             document.getElementById('current-step-display').innerText = currentStep + 1;
             document.getElementById('total-steps-display').innerText = Math.ceil(data.length / questionsPerStep);
-            
             document.getElementById('prev-step').disabled = currentStep === 0;
             document.getElementById('next-step').disabled = currentStep >= (Math.ceil(data.length / questionsPerStep) - 1);
-
             slice.forEach(q => {
                 const card = document.createElement('div');
                 card.className = "bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4 mb-2 fade-step";
-                
-                let timeTag = q.timestamp ? `<span class="text-[10px] font-mono font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded border tracking-widest"><i class="far fa-clock mr-1"></i>${q.timestamp}</span>` : '';
-
+                let timeTag = q.timestamp ? `<span class="text-[10px] font-mono font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded border"><i class="far fa-clock mr-1"></i>${q.timestamp}</span>` : '';
                 card.innerHTML = `
                     <div class="flex items-start justify-between border-b pb-4 gap-4">
                         <div class="flex gap-3">
                             <span class="shrink-0 w-8 h-8 bg-slate-900 text-white rounded-lg flex items-center justify-center font-black text-xs">${q.id}</span>
-                            <h4 class="font-bold text-slate-700 text-sm leading-relaxed">${q.pregunta || 'Selecciona la mejor respuesta:'}</h4>
+                            <h4 class="font-bold text-slate-700 text-sm leading-relaxed">${q.pregunta || 'Select the best answer:'}</h4>
                         </div>
                         ${timeTag}
                     </div>
-                    <div class="grid grid-cols-1 gap-2" id="q-${q.id}-options">
+                    <div class="grid grid-cols-1 gap-2">
                         ${q.opciones.map((op, idx) => `
                             <label class="flex items-center p-3 rounded-xl border-2 border-slate-50 hover:bg-slate-50 transition-all cursor-pointer group" id="label-${q.id}-${alphabet[idx]}">
                                 <input type="radio" name="q-${q.id}" value="${alphabet[idx]}" class="toefl-radio" onchange="verificar(${q.id}, '${alphabet[idx]}')">
@@ -350,36 +336,28 @@
                 `;
                 container.appendChild(card);
             });
-            
             document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function verificar(qId, selected) {
             if (!learningMode) return;
-            
-            const sectionData = db[currentTest][currentSection];
-            const qData = sectionData.find(x => x.id === qId);
+            const qData = db[currentTest][currentSection].find(x => x.id === qId);
             const correct = qData.correcta;
             const feedback = document.getElementById(`feedback-${qId}`);
-            
-            if (!correct) return; // No hay respuesta definida aún
-
-            // Deshabilitar opciones
+            if (!correct) return;
             document.querySelectorAll(`input[name="q-${qId}"]`).forEach(input => input.disabled = true);
-            
             const labelSelected = document.getElementById(`label-${qId}-${selected}`);
             const labelCorrect = document.getElementById(`label-${qId}-${correct}`);
-
             feedback.classList.remove('hidden');
             if (selected === correct) {
-                labelSelected.classList.add('option-correct');
-                feedback.className = "mt-4 p-4 rounded-2xl bg-green-50 text-green-800 text-xs border border-green-200 animate-in slide-in-from-top-2";
-                feedback.innerHTML = `<p class="font-bold mb-1"><i class="fas fa-check-circle mr-2"></i>¡CORRECTO!</p><p>${qData.explicacion || 'Respuesta correcta basada en las reglas gramaticales o el contexto del texto.'}</p>`;
+                if(labelSelected) labelSelected.classList.add('option-correct');
+                feedback.className = "mt-4 p-4 rounded-2xl bg-green-50 text-green-800 text-xs border border-green-200";
+                feedback.innerHTML = `<p class="font-bold"><i class="fas fa-check-circle mr-2"></i>CORRECTO</p><p class="mt-1">${qData.explicacion || ''}</p>`;
             } else {
-                if (labelSelected) labelSelected.classList.add('option-wrong');
-                if (labelCorrect) labelCorrect.classList.add('option-correct');
-                feedback.className = "mt-4 p-4 rounded-2xl bg-red-50 text-red-800 text-xs border border-red-200 animate-in slide-in-from-top-2";
-                feedback.innerHTML = `<p class="font-bold mb-1"><i class="fas fa-times-circle mr-2"></i>INCORRECTO</p><p class="mb-2">La respuesta correcta es la (${correct}).</p><p class="opacity-80">${qData.explicacion || ''}</p>`;
+                if(labelSelected) labelSelected.classList.add('option-wrong');
+                if(labelCorrect) labelCorrect.classList.add('option-correct');
+                feedback.className = "mt-4 p-4 rounded-2xl bg-red-50 text-red-800 text-xs border border-red-200";
+                feedback.innerHTML = `<p class="font-bold"><i class="fas fa-times-circle mr-2"></i>INCORRECTO</p><p class="mt-1">Correcta: (${correct}). ${qData.explicacion || ''}</p>`;
             }
         }
 
@@ -389,11 +367,9 @@
             timerInterval = setInterval(() => {
                 let m = Math.floor(total / 60);
                 let s = total % 60;
-                document.getElementById('timer').innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
-                if (total <= 0) {
-                    clearInterval(timerInterval);
-                    alert("¡Tiempo agotado para esta sección!");
-                }
+                const el = document.getElementById('timer');
+                if (el) el.innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
+                if (total <= 0) clearInterval(timerInterval);
                 total--;
             }, 1000);
         }
