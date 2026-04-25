@@ -56,6 +56,9 @@
             <div class="bg-slate-800 px-4 py-1.5 rounded-xl font-mono text-xl text-sky-400 border border-slate-700 shadow-inner">
                 <span id="timer">00:00</span>
             </div>
+            <button onclick="mostrarModalReinicio()" class="bg-sky-500/10 text-sky-500 hover:bg-sky-500 hover:text-white p-2.5 rounded-xl transition-all mr-1" title="Ir al Inicio">
+                <i class="fas fa-home"></i>
+            </button>
             <button onclick="pausarYSalir()" class="bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white p-2.5 rounded-xl transition-all" title="Guardar y Salir">
                 <i class="fas fa-save"></i>
             </button>
@@ -223,18 +226,31 @@
                             <p class="text-[10px] font-black uppercase opacity-60 tracking-[0.3em] mb-3">Puntaje Estimado</p>
                             <h3 id="final-score" class="text-7xl md:text-8xl font-black mb-5 tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-sky-300 to-white">---</h3>
                             <div id="final-level" class="vibrant-gradient-b text-white px-8 py-2.5 rounded-full inline-block font-black text-lg uppercase tracking-widest shadow-md">Nivel MCER: ---</div>
-                        </div>
-                        
-                        <button onclick="window.location.reload()" class="bg-slate-100 text-slate-800 px-10 py-4 rounded-2xl font-black text-base hover:bg-slate-200 transition-all">Finalizar y Salir</button>
                     </div>
+                    
+                    <button onclick="window.location.reload()" class="bg-slate-100 text-slate-800 px-10 py-4 rounded-2xl font-black text-base hover:bg-slate-200 transition-all">Finalizar y Salir</button>
                 </div>
-
             </div>
-        </main>
-    </div>
 
-    <!-- SCRIPT PRINCIPAL -->
-    <script type="module">
+        </div>
+    </main>
+</div>
+
+<!-- MODAL DE CONFIRMACIÓN DE REINICIO -->
+<div id="reinicio-modal" class="hidden fixed inset-0 z-[400] flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4 fade-in">
+    <div class="bg-white rounded-[2rem] p-8 max-w-sm w-full shadow-2xl text-center">
+        <div class="text-5xl mb-4 text-amber-500"><i class="fas fa-exclamation-triangle"></i></div>
+        <h2 class="text-2xl font-black text-slate-900 mb-2">¿Volver al inicio?</h2>
+        <p class="text-slate-500 mb-6 text-sm">Tu progreso actual <b>no se guardará</b> y se perderá. ¿Estás seguro de que deseas salir y comenzar de nuevo?</p>
+        <div class="flex gap-3 justify-center">
+            <button onclick="cerrarModalReinicio()" class="bg-slate-100 text-slate-600 px-6 py-3 rounded-xl font-bold hover:bg-slate-200 transition-all text-sm">Cancelar</button>
+            <button onclick="ejecutarReinicio()" class="bg-rose-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-rose-600 transition-all shadow-md text-sm">Sí, reiniciar</button>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPT PRINCIPAL -->
+<script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
@@ -295,14 +311,21 @@
         ];
 
         window.onload = async () => {
-            // Asignar Event Listeners de Audio DE INMEDIATO
-            document.getElementById('file-a').addEventListener('change', e => procesarAudioSubido(e, 'testA'));
-            document.getElementById('file-b').addEventListener('change', e => procesarAudioSubido(e, 'testB'));
+        // Asignar Event Listeners de Audio DE INMEDIATO
+        document.getElementById('file-a').addEventListener('change', e => procesarAudioSubido(e, 'testA'));
+        document.getElementById('file-b').addEventListener('change', e => procesarAudioSubido(e, 'testB'));
 
-            // Intentar conectar con Firebase
-            try {
-                if(typeof __firebase_config !== 'undefined') {
-                    const firebaseConfig = JSON.parse(__firebase_config);
+        // Verificar progreso guardado en LocalStorage (Por si Firebase no está disponible)
+        const localProgress = localStorage.getItem('toefl_progress');
+        if (localProgress) {
+            document.getElementById('welcome-hub').classList.remove('hidden');
+            document.getElementById('welcome-hub').dataset.progress = localProgress;
+        }
+
+        // Intentar conectar con Firebase
+        try {
+            if(typeof __firebase_config !== 'undefined') {
+                const firebaseConfig = JSON.parse(__firebase_config);
                     app = initializeApp(firebaseConfig);
                     auth = getAuth(app);
                     db = getFirestore(app);
@@ -688,30 +711,49 @@
         }
 
         window.continuarSesion = () => {
-            const d = JSON.parse(document.getElementById('welcome-hub').dataset.progress);
-            currentTest = d.test; session = d.session; 
-            document.getElementById('welcome-hub').classList.add('hidden');
-            cambiarVista(session.section); 
-            finalizarDirections();
-        };
+        const d = JSON.parse(document.getElementById('welcome-hub').dataset.progress);
+        currentTest = d.test; session = d.session; 
+        document.getElementById('welcome-hub').classList.add('hidden');
+        cambiarVista(session.section); 
+        finalizarDirections();
+    };
 
-        window.iniciarDesdeCero = () => { 
-            document.getElementById('welcome-hub').classList.add('hidden'); 
-            cambiarVista('setup'); 
-        };
+    window.iniciarDesdeCero = () => { 
+        localStorage.removeItem('toefl_progress');
+        document.getElementById('welcome-hub').classList.add('hidden'); 
+        cambiarVista('setup'); 
+    };
 
-        window.pausarYSalir = async () => {
-            if (user && db && currentTest) {
-                try {
-                    await setDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'progress', 'current'), { test: currentTest, session: session, timestamp: Date.now() });
-                    alert("Progreso guardado 💾. ¡Vuelve cuando quieras!");
-                } catch(e) { alert("Error guardando progreso."); }
-            }
-            window.location.reload();
-        };
+    window.pausarYSalir = async () => {
+        const progressData = { test: currentTest, session: session, timestamp: Date.now() };
+        // Guardar localmente como respaldo
+        localStorage.setItem('toefl_progress', JSON.stringify(progressData));
 
-        function ocultarTodo() { ['view-setup', 'view-directions', 'view-test', 'view-results'].forEach(v => document.getElementById(v).classList.add('hidden-section')); }
-        function iniciarRelojGeneral(m) { 
+        if (user && db && currentTest) {
+            try {
+                await setDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'progress', 'current'), progressData);
+            } catch(e) { console.warn("Error guardando progreso en la nube."); }
+        }
+        // Recarga para volver al inicio conservando el guardado
+        window.location.reload();
+    };
+
+    // --- FUNCIONES DEL MODAL DE REINICIO ---
+    window.mostrarModalReinicio = () => {
+        document.getElementById('reinicio-modal').classList.remove('hidden');
+    };
+    
+    window.cerrarModalReinicio = () => {
+        document.getElementById('reinicio-modal').classList.add('hidden');
+    };
+    
+    window.ejecutarReinicio = () => {
+        // Recargar sin llamar a pausarYSalir limpia el estado en memoria sin guardar los cambios recientes
+        window.location.reload();
+    };
+
+    function ocultarTodo() { ['view-setup', 'view-directions', 'view-test', 'view-results'].forEach(v => document.getElementById(v).classList.add('hidden-section')); }
+    function iniciarRelojGeneral(m) { 
             clearInterval(generalTimerInt); let t = m * 60; 
             generalTimerInt = setInterval(() => { 
                 let mm = Math.floor(t / 60), ss = t % 60; 
