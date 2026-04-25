@@ -3,358 +3,345 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOEFL ITP Simulator PRO</title>
+    <title>TOEFL ITP Simulator - Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
-        
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: radial-gradient(circle at top left, #1e293b, #0f172a); 
-            color: #f8fafc; 
-            overflow: hidden; 
-            height: 100vh;
-        }
-
-        .glass { 
-            background: rgba(255, 255, 255, 0.03); 
-            backdrop-filter: blur(15px); 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        }
-
-        .option-card {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .option-card:hover { 
-            background: rgba(59, 130, 246, 0.1); 
-            border-color: rgba(59, 130, 246, 0.5);
-            transform: translateX(5px);
-        }
-
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0a0f1d; color: #f8fafc; overflow: hidden; height: 100vh; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); }
+        .glass-btn:hover { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; }
+        .tab-active { background: #3b82f6 !important; color: white !important; box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
+        .option-card { transition: all 0.2s; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .option-card:hover { transform: translateX(8px); background: rgba(59, 130, 246, 0.1); border-color: #3b82f6; }
         .correct { background: rgba(16, 185, 129, 0.2) !important; border-color: #10b981 !important; }
         .wrong { background: rgba(239, 68, 68, 0.2) !important; border-color: #ef4444 !important; }
-
-        /* Audio Visualizer */
-        .visualizer-bar { animation: bounce 1s ease-in-out infinite; }
-        @keyframes bounce { 0%, 100% { height: 4px; } 50% { height: 16px; } }
-
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        #settings-modal { transition: opacity 0.3s ease; }
+        .audio-pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); } }
     </style>
 </head>
 <body class="flex flex-col">
 
-    <div class="w-full h-1 bg-slate-800 fixed top-0 z-[100]">
-        <div id="progress-bar" class="h-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.8)] transition-all duration-500" style="width: 0%"></div>
+    <div class="w-full h-1 bg-slate-800 fixed top-0 z-[60]">
+        <div id="main-progress" class="h-full bg-blue-500 transition-all duration-500" style="width: 0%"></div>
     </div>
 
-    <header class="p-5 flex justify-between items-center z-50 glass mb-1">
-        <div class="flex items-center gap-3">
-            <div class="bg-blue-600 p-2 rounded-lg"><i class="fas fa-headphones-alt text-white"></i></div>
+    <header class="p-4 flex justify-between items-center glass z-50">
+        <div class="flex items-center gap-4">
+            <div class="bg-blue-600 p-2 rounded-xl"><i class="fas fa-graduation-cap text-white text-xl"></i></div>
             <div>
-                <h1 class="text-sm font-black tracking-tighter uppercase">TOEFL Simulator <span id="test-id-display" class="text-blue-500">PRO</span></h1>
-                <p id="section-display" class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Configuración</p>
+                <h1 class="text-sm font-black tracking-tighter uppercase">TOEFL PRO <span class="text-blue-500" id="current-test-label">SIMULATOR</span></h1>
+                <p id="section-label" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Iniciando...</p>
             </div>
         </div>
 
-        <div class="flex items-center gap-6">
-            <div id="audio-ui" class="hidden flex items-center gap-3 bg-slate-900/50 px-4 py-2 rounded-full border border-blue-500/30">
-                <div class="flex gap-1 items-end h-4">
-                    <div class="w-1 bg-blue-400 visualizer-bar"></div>
-                    <div class="w-1 bg-blue-400 visualizer-bar" style="animation-delay: 0.2s"></div>
-                    <div class="w-1 bg-blue-400 visualizer-bar" style="animation-delay: 0.4s"></div>
-                </div>
-                <span id="audio-timer" class="text-xs font-mono text-blue-400">00:00</span>
-            </div>
-            <button onclick="saveAndExit()" class="text-xs font-bold text-red-400 hover:text-red-300 transition-colors">
-                <i class="fas fa-power-off mr-2"></i>SALIR
+        <div class="flex items-center gap-4">
+            <div id="timer" class="bg-slate-900/50 px-4 py-2 rounded-lg font-mono text-blue-400 border border-white/5">00:00</div>
+            <button onclick="toggleSettings()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10 transition-all">
+                <i class="fas fa-cog text-slate-400 text-xl"></i>
             </button>
         </div>
     </header>
 
-    <main class="flex-1 flex flex-col items-center justify-center p-6 overflow-y-auto relative">
+    <nav id="section-tabs" class="hidden flex justify-center gap-2 p-2 glass border-t-0">
+        <button onclick="changeSection('listening')" id="tab-listening" class="px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all glass-btn">1. Listening</button>
+        <button onclick="changeSection('structure')" id="tab-structure" class="px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all glass-btn">2. Structure</button>
+        <button onclick="changeSection('reading')" id="tab-reading" class="px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all glass-btn">3. Reading</button>
+    </nav>
+
+    <main class="flex-1 flex flex-col items-center justify-center p-6 overflow-y-auto">
         
-        <section id="setup-view" class="w-full max-w-4xl animate__animated animate__fadeIn">
-            <div class="text-center mb-10">
-                <h2 class="text-4xl font-extrabold tracking-tight mb-2">Bienvenido, Guido 🎯</h2>
-                <p class="text-slate-400">Selecciona tu examen y el modo de práctica.</p>
-            </div>
-
-            <div id="resume-card" class="hidden glass p-6 rounded-2xl mb-8 border-l-4 border-blue-500 flex justify-between items-center animate__animated animate__bounceIn">
-                <div>
-                    <p class="text-sm font-bold">Sesión detectada 🚀</p>
-                    <p class="text-xs text-slate-400">Te quedaste en <span id="resume-info" class="text-blue-400">Test A - Listening</span></p>
-                </div>
-                <button onclick="resumeSession()" class="bg-blue-600 px-6 py-2 rounded-xl text-xs font-black hover:bg-blue-700 transition-all">CONTINUAR DONDE LO DEJÉ</button>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="glass p-8 rounded-[2rem] hover:border-blue-500/50 transition-all group">
-                    <h3 class="text-2xl font-black mb-4">Practice Test A</h3>
-                    <div class="space-y-4 mb-8">
-                        <button onclick="initTest('testA', 'learning')" class="w-full py-3 rounded-xl bg-emerald-500/10 text-emerald-500 font-bold text-sm border border-emerald-500/20 hover:bg-emerald-500 hover:text-white transition-all">MODO APRENDIZAJE 🧠</button>
-                        <button onclick="initTest('testA', 'real')" class="w-full py-3 rounded-xl bg-blue-500/10 text-blue-500 font-bold text-sm border border-blue-500/20 hover:bg-blue-500 hover:text-white transition-all">MODO REAL ⏱️</button>
-                    </div>
-                </div>
-                <div class="glass p-8 rounded-[2rem] hover:border-purple-500/50 transition-all group">
-                    <h3 class="text-2xl font-black mb-4">Practice Test B</h3>
-                    <div class="space-y-4 mb-8">
-                        <button onclick="initTest('testB', 'learning')" class="w-full py-3 rounded-xl bg-emerald-500/10 text-emerald-500 font-bold text-sm border border-emerald-500/20 hover:bg-emerald-500 hover:text-white transition-all">MODO APRENDIZAJE 🧠</button>
-                        <button onclick="initTest('testB', 'real')" class="w-full py-3 rounded-xl bg-blue-500/10 text-blue-500 font-bold text-sm border border-blue-500/20 hover:bg-blue-500 hover:text-white transition-all">MODO REAL ⏱️</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="exam-view" class="hidden w-full max-w-3xl animate__animated animate__fadeInUp">
-            
-            <div id="content-card" class="glass p-10 rounded-[3rem] relative min-h-[400px] flex flex-col">
+        <section id="view-setup" class="w-full max-w-2xl animate__animated animate__fadeIn">
+            <div class="glass p-12 rounded-[3rem] text-center">
+                <h2 class="text-4xl font-extrabold mb-8 tracking-tight">¡Bienvenido, Guido! 🚀</h2>
+                <p class="text-slate-400 mb-10">Configura tus archivos en el engrane superior o selecciona un test para comenzar.</p>
                 
-                <div id="q-header" class="flex justify-between items-start mb-8">
-                    <div id="badge-type" class="bg-blue-500/20 text-blue-400 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Question</div>
-                    <div id="q-number" class="text-4xl font-black text-slate-800">01</div>
+                <div id="resume-card" class="hidden mb-10 p-5 bg-blue-500/10 border border-blue-500/30 rounded-2xl flex items-center justify-between">
+                    <span class="text-sm font-semibold">Tienes progreso guardado en <span id="resume-text" class="text-blue-400"></span></span>
+                    <button onclick="resumeSession()" class="bg-blue-600 px-6 py-2 rounded-xl text-xs font-black">CONTINUAR</button>
                 </div>
 
-                <div id="q-body" class="flex-1">
-                    <h2 id="q-text" class="text-2xl font-bold leading-relaxed mb-8"></h2>
-                    <div id="options-list" class="grid grid-cols-1 gap-4"></div>
-                </div>
-
-                <div id="explanation-panel" class="hidden mt-8 p-6 bg-blue-500/10 border-l-4 border-blue-500 rounded-2xl animate__animated animate__fadeIn">
-                    <p class="text-[10px] font-black text-blue-400 uppercase mb-2">Technical Explanation 🎯</p>
-                    <p id="explanation-text" class="text-sm text-slate-300"></p>
-                </div>
-
-                <div class="mt-12 flex justify-between items-center border-t border-white/5 pt-8">
-                    <div class="flex gap-4">
-                        <button id="btn-audio-play" onclick="toggleAudio()" class="hidden w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center hover:scale-110 transition-all shadow-lg shadow-blue-600/40">
-                            <i id="audio-icon" class="fas fa-play text-white"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="flex gap-3">
-                        <button onclick="navigate(-1)" class="px-6 py-4 rounded-2xl font-bold text-xs text-slate-500 hover:text-white transition-colors">ATRÁS</button>
-                        <button onclick="navigate(1)" class="bg-white text-slate-900 px-10 py-4 rounded-2xl font-black text-xs hover:bg-blue-500 hover:text-white transition-all">SIGUIENTE</button>
-                    </div>
+                <div class="grid grid-cols-2 gap-6">
+                    <button onclick="selectTest('testA')" class="glass p-8 rounded-3xl hover:border-blue-500 transition-all group">
+                        <i class="fas fa-star text-blue-500 text-3xl mb-4 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="font-black text-xl">Test A</h3>
+                    </button>
+                    <button onclick="selectTest('testB')" class="glass p-8 rounded-3xl hover:border-purple-500 transition-all group">
+                        <i class="fas fa-bolt text-purple-500 text-3xl mb-4 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="font-black text-xl">Test B</h3>
+                    </button>
                 </div>
             </div>
         </section>
 
+        <section id="view-exam" class="hidden w-full max-w-4xl animate__animated animate__fadeInUp">
+            <div class="glass p-8 md:p-12 rounded-[3.5rem] relative">
+                <div id="question-header" class="flex justify-between items-start mb-10">
+                    <span id="q-category" class="bg-blue-500/20 text-blue-400 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Listening</span>
+                    <span id="q-counter" class="text-4xl font-black text-slate-800">01</span>
+                </div>
+
+                <div id="q-content" class="min-h-[250px]">
+                    <h3 id="q-text" class="text-2xl font-bold leading-snug mb-8 text-slate-200"></h3>
+                    <div id="options-container" class="grid grid-cols-1 gap-4"></div>
+                </div>
+
+                <div id="explanation-box" class="hidden mt-8 p-6 bg-slate-800/50 border-l-4 border-blue-500 rounded-2xl">
+                    <p class="text-[10px] font-black text-blue-400 uppercase mb-2">Explicación 🎯</p>
+                    <p id="explanation-text" class="text-sm text-slate-400 italic"></p>
+                </div>
+
+                <div class="mt-12 flex justify-between items-center pt-8 border-t border-white/5">
+                    <button id="btn-audio" onclick="playAudioFromItem()" class="hidden w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-600/30 hover:scale-105 active:scale-95 transition-all">
+                        <i class="fas fa-play text-white text-xl"></i>
+                    </button>
+                    <div class="flex gap-4 ml-auto">
+                        <button onclick="prevItem()" class="px-8 py-4 rounded-2xl font-bold text-xs text-slate-500 hover:text-white transition-colors">ATRÁS</button>
+                        <button onclick="nextItem()" class="bg-white text-slate-900 px-10 py-4 rounded-2xl font-black text-xs hover:bg-blue-500 hover:text-white transition-all">SIGUIENTE</button>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <audio id="audio-player"></audio>
+    <div id="settings-modal" class="hidden fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-6">
+        <div class="glass w-full max-w-lg p-10 rounded-[3rem] animate__animated animate__zoomIn">
+            <div class="flex justify-between items-center mb-10">
+                <h2 class="text-2xl font-black">Configuración ⚙️</h2>
+                <button onclick="toggleSettings()" class="text-slate-500 hover:text-white"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div class="space-y-8">
+                <div>
+                    <label class="block text-xs font-black text-blue-400 uppercase tracking-widest mb-4">Archivos de Audio MP3</label>
+                    <div class="space-y-4">
+                        <div class="flex flex-col gap-2">
+                            <span class="text-[10px] font-bold text-slate-500">Audio Test A:</span>
+                            <input type="file" id="upload-a" accept="audio/*" class="text-xs bg-white/5 p-3 rounded-xl block w-full">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <span class="text-[10px] font-bold text-slate-500">Audio Test B:</span>
+                            <input type="file" id="upload-b" accept="audio/*" class="text-xs bg-white/5 p-3 rounded-xl block w-full">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-black text-blue-400 uppercase tracking-widest mb-4">Modo de Entrenamiento</label>
+                    <div class="flex bg-white/5 p-1 rounded-2xl">
+                        <button onclick="setMode('learning')" id="mode-learning" class="flex-1 py-3 rounded-xl text-[10px] font-black uppercase transition-all tab-active">Aprendizaje</button>
+                        <button onclick="setMode('real')" id="mode-real" class="flex-1 py-3 rounded-xl text-[10px] font-black uppercase transition-all">Modo Real</button>
+                    </div>
+                </div>
+
+                <button onclick="toggleSettings()" class="w-full bg-blue-600 py-4 rounded-2xl font-black text-sm shadow-xl shadow-blue-600/20">GUARDAR CAMBIOS</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="global-player"></audio>
 
     <script>
-        // --- ESTADO GLOBAL ---
         let db = null;
-        let currentTest = 'testA';
-        let currentSection = 'listening';
-        let currentIndex = 0;
-        let mode = 'learning'; // 'learning' | 'real'
-        const audioPlayer = document.getElementById('audio-player');
-
-        // --- INICIALIZACIÓN ---
-        window.onload = async () => {
-            await loadData();
-            checkPersistence();
+        let state = {
+            test: 'testA',
+            section: 'listening',
+            index: 0,
+            mode: 'learning',
+            audios: { testA: null, testB: null }
         };
 
-        async function loadData() {
+        const player = document.getElementById('global-player');
+
+        // --- Carga Inicial ---
+        window.onload = async () => {
             try {
-                const response = await fetch('examen_data.json');
-                db = await response.json();
-                console.log("Datos cargados correctamente");
-            } catch (error) {
-                alert("Error: No se pudo cargar examen_data.json. Verifica el nombre del archivo.");
+                const res = await fetch('examen_data.json');
+                db = await res.json();
+                document.getElementById('view-setup').classList.remove('opacity-0');
+                checkPersistence();
+            } catch (e) {
+                alert("Error cargando examen_data.json. Asegúrate de que el archivo existe.");
             }
+        };
+
+        // --- Manejo de Audios ---
+        document.getElementById('upload-a').onchange = (e) => state.audios.testA = URL.createObjectURL(e.target.files[0]);
+        document.getElementById('upload-b').onchange = (e) => state.audios.testB = URL.createObjectURL(e.target.files[0]);
+
+        function toggleSettings() {
+            document.getElementById('settings-modal').classList.toggle('hidden');
+        }
+
+        function setMode(m) {
+            state.mode = m;
+            document.getElementById('mode-learning').classList.toggle('tab-active', m === 'learning');
+            document.getElementById('mode-real').classList.toggle('tab-active', m === 'real');
         }
 
         function checkPersistence() {
-            const saved = localStorage.getItem('toefl_guido_session');
+            const saved = localStorage.getItem('toefl_v3_guido');
             if (saved) {
                 const data = JSON.parse(saved);
                 document.getElementById('resume-card').classList.remove('hidden');
-                document.getElementById('resume-info').innerText = `${data.test} - ${data.section} (Q: ${data.index + 1})`;
+                document.getElementById('resume-text').innerText = `${data.test} - ${data.section}`;
             }
         }
 
-        // --- FLUJO DE NAVEGACIÓN ---
-        function initTest(testId, selectedMode) {
-            currentTest = testId;
-            mode = selectedMode;
-            currentIndex = 0;
-            currentSection = 'listening';
-            
-            document.getElementById('setup-view').classList.add('hidden');
-            document.getElementById('exam-view').classList.remove('hidden');
-            document.getElementById('test-id-display').innerText = testId.toUpperCase();
-            
-            renderContent();
+        // --- Lógica del Test ---
+        function selectTest(t) {
+            state.test = t;
+            state.section = 'listening';
+            state.index = 0;
+            startSession();
         }
 
-        function resumeSession() {
-            const saved = JSON.parse(localStorage.getItem('toefl_guido_session'));
-            currentTest = saved.test;
-            currentSection = saved.section;
-            currentIndex = saved.index;
-            mode = saved.mode;
-            
-            document.getElementById('setup-view').classList.add('hidden');
-            document.getElementById('exam-view').classList.remove('hidden');
-            renderContent();
+        function startSession() {
+            document.getElementById('view-setup').classList.add('hidden');
+            document.getElementById('view-exam').classList.remove('hidden');
+            document.getElementById('section-tabs').classList.remove('hidden');
+            document.getElementById('current-test-label').innerText = state.test.toUpperCase();
+            renderItem();
         }
 
-        function renderContent() {
-            const sectionData = db[currentTest][currentSection];
-            const item = sectionData[currentIndex];
-            
-            // Persistencia
-            localStorage.setItem('toefl_guido_session', JSON.stringify({
-                test: currentTest, section: currentSection, index: currentIndex, mode: mode
-            }));
-
-            // UI Reset
-            document.getElementById('section-display').innerText = currentSection;
-            document.getElementById('explanation-panel').classList.add('hidden');
-            document.getElementById('btn-audio-play').classList.add('hidden');
-            document.getElementById('audio-ui').classList.add('hidden');
-            
-            // Lógica de "Directions" vs "Questions"
-            if (item.type === 'directions') {
-                renderDirections(item);
-            } else {
-                renderQuestion(item);
-            }
-
-            // Barra de progreso
-            const total = sectionData.length;
-            const progress = ((currentIndex + 1) / total) * 100;
-            document.getElementById('progress-bar').style.width = `${progress}%`;
+        function changeSection(s) {
+            state.section = s;
+            state.index = 0;
+            player.pause();
+            renderItem();
         }
 
-        function renderDirections(item) {
-            document.getElementById('badge-type').innerText = "DIRECTIONS";
-            document.getElementById('badge-type').className = "bg-amber-500/20 text-amber-400 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest";
-            document.getElementById('q-number').innerText = "📖";
-            document.getElementById('q-text').innerText = item.title;
-            document.getElementById('options-list').innerHTML = `<p class="text-slate-400 leading-relaxed italic">${item.texto}</p>`;
-            
-            if (item.timestamp) setupAudio(item.timestamp);
-        }
+        function renderItem() {
+            const data = db[state.test][state.section];
+            const item = data[state.index];
 
-        function renderQuestion(item) {
-            document.getElementById('badge-type').innerText = "QUESTION";
-            document.getElementById('badge-type').className = "bg-blue-500/20 text-blue-400 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest";
-            document.getElementById('q-number').innerText = item.id.toString().padStart(2, '0');
-            document.getElementById('q-text').innerText = item.pregunta;
-            
-            const list = document.getElementById('options-list');
-            list.innerHTML = '';
-            
-            item.opciones.forEach((opt) => {
-                const char = opt.substring(1, 2); // Extrae A, B, C o D de "(A)"
-                const btn = document.createElement('div');
-                btn.className = "option-card glass p-5 rounded-2xl flex items-center gap-4 animate__animated animate__fadeInUp";
-                btn.innerHTML = `
-                    <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center font-bold text-xs">${char}</div>
-                    <span class="text-sm font-semibold text-slate-200">${opt}</span>
-                `;
-                btn.onclick = () => checkAnswer(char, item.correcta, item.explicacion, btn);
-                list.appendChild(btn);
+            // Actualizar Tabs
+            ['listening', 'structure', 'reading'].forEach(s => {
+                document.getElementById(`tab-${s}`).classList.toggle('tab-active', state.section === s);
             });
 
-            if (item.timestamp) setupAudio(item.timestamp);
+            // Persistencia
+            localStorage.setItem('toefl_v3_guido', JSON.stringify({ 
+                test: state.test, section: state.section, index: state.index, mode: state.mode 
+            }));
+
+            // UI
+            document.getElementById('section-label').innerText = state.section;
+            document.getElementById('q-counter').innerText = (state.index + 1).toString().padStart(2, '0');
+            document.getElementById('explanation-box').classList.add('hidden');
+            document.getElementById('btn-audio').classList.add('hidden');
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            if (item.type === 'directions') {
+                document.getElementById('q-text').innerText = item.title;
+                container.innerHTML = `<p class="text-slate-400 italic leading-relaxed animate__animated animate__fadeIn">${item.texto}</p>`;
+                document.getElementById('q-category').innerText = "Directions";
+            } else {
+                document.getElementById('q-text').innerText = item.pregunta;
+                document.getElementById('q-category').innerText = state.section;
+                item.opciones.forEach((opt, i) => {
+                    const btn = document.createElement('div');
+                    btn.className = 'option-card glass p-5 rounded-2xl flex items-center gap-4 animate__animated animate__fadeInUp';
+                    btn.style.animationDelay = `${i * 0.1}s`;
+                    btn.innerHTML = `<div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center font-bold text-xs">${String.fromCharCode(65 + i)}</div><span class="text-sm font-medium">${opt}</span>`;
+                    btn.onclick = () => checkAnswer(i, item.correcta, item.explicacion, btn);
+                    container.appendChild(btn);
+                });
+            }
+
+            if (item.timestamp && state.section === 'listening') {
+                document.getElementById('btn-audio').classList.remove('hidden');
+            }
+
+            // Barra progreso
+            document.getElementById('main-progress').style.width = `${((state.index + 1) / data.length) * 100}%`;
         }
 
-        // --- LÓGICA DE AUDIO ---
-        function setupAudio(timestamp) {
-            document.getElementById('btn-audio-play').classList.remove('hidden');
-            document.getElementById('audio-ui').classList.remove('hidden');
+        function checkAnswer(idx, correct, exp, el) {
+            if (state.mode !== 'learning') {
+                document.querySelectorAll('.option-card').forEach(c => c.style.borderColor = 'rgba(255,255,255,0.05)');
+                el.style.borderColor = '#3b82f6';
+                return;
+            }
+
+            // Normalizar correcta (A -> 0, B -> 1, etc)
+            const correctIdx = typeof correct === 'string' ? correct.charCodeAt(0) - 65 : correct;
+            const cards = document.querySelectorAll('.option-card');
             
-            // Convertir MM:SS a segundos
-            const parts = timestamp.split(':');
-            const seconds = parseInt(parts[0]) * 60 + parseInt(parts[1]);
+            cards.forEach(c => c.onclick = null);
+            if (idx === correctIdx) {
+                el.classList.add('correct');
+            } else {
+                el.classList.add('wrong');
+                cards[correctIdx].classList.add('correct');
+            }
+            document.getElementById('explanation-text').innerText = exp || "Sin explicación disponible.";
+            document.getElementById('explanation-box').classList.remove('hidden');
+        }
+
+        function playAudioFromItem() {
+            const item = db[state.test][state.section][state.index];
+            const audioSrc = state.audios[state.test];
             
-            audioPlayer.src = "audio.mp3"; // Cambiar por la ruta real de tu mp3
-            audioPlayer.currentTime = seconds;
+            if (!audioSrc) {
+                alert("Primero sube el archivo MP3 en el menú de configuración (engrane).");
+                toggleSettings();
+                return;
+            }
+
+            const timeParts = item.timestamp.split(':');
+            const seconds = parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]);
+
+            player.src = audioSrc;
+            player.currentTime = seconds;
+            player.play();
             
-            audioPlayer.ontimeupdate = () => {
-                const m = Math.floor(audioPlayer.currentTime / 60);
-                const s = Math.floor(audioPlayer.currentTime % 60);
-                document.getElementById('audio-timer').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+            const btn = document.getElementById('btn-audio');
+            btn.classList.add('audio-pulse');
+            btn.innerHTML = `<i class="fas fa-pause text-white"></i>`;
+            btn.onclick = () => {
+                player.pause();
+                btn.classList.remove('audio-pulse');
+                btn.innerHTML = `<i class="fas fa-play text-white"></i>`;
+                btn.onclick = playAudioFromItem;
             };
         }
 
-        function toggleAudio() {
-            const icon = document.getElementById('audio-icon');
-            if (audioPlayer.paused) {
-                audioPlayer.play();
-                icon.className = "fas fa-pause text-white";
+        function nextItem() {
+            const data = db[state.test][state.section];
+            if (state.index < data.length - 1) {
+                state.index++;
+                player.pause();
+                renderItem();
             } else {
-                audioPlayer.pause();
-                icon.className = "fas fa-play text-white";
+                alert("¡Sección terminada!");
             }
         }
 
-        // --- MECÁNICAS DEL TEST ---
-        function checkAnswer(selected, correct, explanation, element) {
-            if (mode === 'learning') {
-                const allOptions = document.querySelectorAll('.option-card');
-                allOptions.forEach(card => card.onclick = null); // Deshabilitar clics
-
-                if (selected === correct) {
-                    element.classList.add('correct');
-                } else {
-                    element.classList.add('wrong');
-                    // Mostrar la correcta
-                    allOptions.forEach(card => {
-                        if (card.innerText.includes(`(${correct})`)) card.classList.add('correct');
-                    });
-                }
-                
-                document.getElementById('explanation-text').innerText = explanation;
-                document.getElementById('explanation-panel').classList.remove('hidden');
-            } else {
-                // Modo Real: Solo selección visual básica
-                document.querySelectorAll('.option-card').forEach(c => c.style.background = "");
-                element.style.background = "rgba(59, 130, 246, 0.2)";
+        function prevItem() {
+            if (state.index > 0) {
+                state.index--;
+                player.pause();
+                renderItem();
             }
         }
 
-        function navigate(step) {
-            const sectionData = db[currentTest][currentSection];
-            currentIndex += step;
-
-            if (currentIndex < 0) {
-                currentIndex = 0;
-            } else if (currentIndex >= sectionData.length) {
-                // Cambio de sección
-                if (currentSection === 'listening') {
-                    currentSection = 'structure';
-                    currentIndex = 0;
-                } else if (currentSection === 'structure') {
-                    currentSection = 'reading';
-                    currentIndex = 0;
-                } else {
-                    alert("¡Has terminado el examen!");
-                    saveAndExit();
-                    return;
-                }
-            }
-            
-            audioPlayer.pause();
-            renderContent();
+        function resumeSession() {
+            const saved = JSON.parse(localStorage.getItem('toefl_v3_guido'));
+            state.test = saved.test;
+            state.section = saved.section;
+            state.index = saved.index;
+            state.mode = saved.mode;
+            startSession();
         }
 
         function saveAndExit() {
-            if (confirm("¿Deseas guardar el progreso y salir?")) {
-                location.reload();
-            }
+            if(confirm("¿Guardar y salir?")) location.reload();
         }
     </script>
 </body>
