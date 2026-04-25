@@ -11,14 +11,11 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0a0f1d; color: #f8fafc; overflow: hidden; height: 100vh; }
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .glass-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); }
-        .glass-btn:hover { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; }
         .tab-active { background: #3b82f6 !important; color: white !important; box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
         .option-card { transition: all 0.2s; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.05); }
         .option-card:hover { transform: translateX(8px); background: rgba(59, 130, 246, 0.1); border-color: #3b82f6; }
         .correct { background: rgba(16, 185, 129, 0.2) !important; border-color: #10b981 !important; }
         .wrong { background: rgba(239, 68, 68, 0.2) !important; border-color: #ef4444 !important; }
-        #settings-modal { transition: opacity 0.3s ease; }
         .audio-pulse { animation: pulse 2s infinite; }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); } }
     </style>
@@ -34,12 +31,14 @@
             <div class="bg-blue-600 p-2 rounded-xl"><i class="fas fa-graduation-cap text-white text-xl"></i></div>
             <div>
                 <h1 class="text-sm font-black tracking-tighter uppercase">TOEFL PRO <span class="text-blue-500" id="current-test-label">SIMULATOR</span></h1>
-                <p id="section-label" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Iniciando...</p>
+                <p id="section-label" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Listo para comenzar</p>
             </div>
         </div>
 
         <div class="flex items-center gap-4">
-            <div id="timer" class="bg-slate-900/50 px-4 py-2 rounded-lg font-mono text-blue-400 border border-white/5">00:00</div>
+            <div id="audio-status" class="text-[10px] font-black px-3 py-1 rounded-full bg-slate-800 border border-white/5 text-slate-500">
+                AUDIOS: DESCONECTADOS
+            </div>
             <button onclick="toggleSettings()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10 transition-all">
                 <i class="fas fa-cog text-slate-400 text-xl"></i>
             </button>
@@ -47,31 +46,48 @@
     </header>
 
     <nav id="section-tabs" class="hidden flex justify-center gap-2 p-2 glass border-t-0">
-        <button onclick="changeSection('listening')" id="tab-listening" class="px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all glass-btn">1. Listening</button>
-        <button onclick="changeSection('structure')" id="tab-structure" class="px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all glass-btn">2. Structure</button>
-        <button onclick="changeSection('reading')" id="tab-reading" class="px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all glass-btn">3. Reading</button>
+        <button onclick="changeSection('listening')" id="tab-listening" class="px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all glass hover:bg-white/5">1. Listening</button>
+        <button onclick="changeSection('structure')" id="tab-structure" class="px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all glass hover:bg-white/5">2. Structure</button>
+        <button onclick="changeSection('reading')" id="tab-reading" class="px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all glass hover:bg-white/5">3. Reading</button>
     </nav>
 
     <main class="flex-1 flex flex-col items-center justify-center p-6 overflow-y-auto">
         
-        <section id="view-setup" class="w-full max-w-2xl animate__animated animate__fadeIn">
-            <div class="glass p-12 rounded-[3rem] text-center">
-                <h2 class="text-4xl font-extrabold mb-8 tracking-tight">¡Bienvenido, Guido! 🚀</h2>
-                <p class="text-slate-400 mb-10">Configura tus archivos en el engrane superior o selecciona un test para comenzar.</p>
-                
-                <div id="resume-card" class="hidden mb-10 p-5 bg-blue-500/10 border border-blue-500/30 rounded-2xl flex items-center justify-between">
-                    <span class="text-sm font-semibold">Tienes progreso guardado en <span id="resume-text" class="text-blue-400"></span></span>
-                    <button onclick="resumeSession()" class="bg-blue-600 px-6 py-2 rounded-xl text-xs font-black">CONTINUAR</button>
+        <section id="view-setup" class="w-full max-w-3xl animate__animated animate__fadeIn">
+            <div class="glass p-10 rounded-[3rem]">
+                <div class="text-center mb-10">
+                    <h2 class="text-4xl font-extrabold mb-4 tracking-tight">Preparación Elite 🎯</h2>
+                    <div class="bg-blue-500/10 border border-blue-500/20 p-6 rounded-3xl text-left inline-block w-full">
+                        <h4 class="text-blue-400 text-xs font-black uppercase tracking-[0.2em] mb-3">Instrucciones de Audio</h4>
+                        <ul class="text-sm text-slate-400 space-y-2">
+                            <li class="flex items-start gap-2"><i class="fas fa-cloud text-blue-500 mt-1"></i> El sistema intentará cargar los audios desde la nube automáticamente.</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-save text-blue-500 mt-1"></i> Si prefieres usar archivos locales, súbelos en el <b>engrane (ajustes)</b>.</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-memory text-blue-500 mt-1"></i> El navegador recordará tus archivos locales para futuras sesiones.</li>
+                        </ul>
+                    </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-6">
-                    <button onclick="selectTest('testA')" class="glass p-8 rounded-3xl hover:border-blue-500 transition-all group">
-                        <i class="fas fa-star text-blue-500 text-3xl mb-4 group-hover:scale-110 transition-transform"></i>
-                        <h3 class="font-black text-xl">Test A</h3>
+                <div id="resume-card" class="hidden mb-8 p-5 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl flex items-center justify-between animate__animated animate__pulse animate__infinite">
+                    <span class="text-sm font-semibold text-emerald-400">Sesión pausada encontrada</span>
+                    <button onclick="resumeSession()" class="bg-emerald-600 px-6 py-2 rounded-xl text-xs font-black hover:bg-emerald-700">REANUDAR</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <button onclick="selectTest('testA')" class="glass p-8 rounded-3xl hover:border-blue-500 transition-all text-left">
+                        <div class="flex justify-between items-start mb-4">
+                            <i class="fas fa-file-audio text-blue-500 text-3xl"></i>
+                            <span id="status-a" class="text-[9px] font-bold text-slate-600">SIN AUDIO</span>
+                        </div>
+                        <h3 class="font-black text-xl">Practice Test A</h3>
+                        <p class="text-[10px] text-slate-500 mt-1 font-bold uppercase">Nivel 1 Vol. 3</p>
                     </button>
-                    <button onclick="selectTest('testB')" class="glass p-8 rounded-3xl hover:border-purple-500 transition-all group">
-                        <i class="fas fa-bolt text-purple-500 text-3xl mb-4 group-hover:scale-110 transition-transform"></i>
-                        <h3 class="font-black text-xl">Test B</h3>
+                    <button onclick="selectTest('testB')" class="glass p-8 rounded-3xl hover:border-purple-500 transition-all text-left">
+                        <div class="flex justify-between items-start mb-4">
+                            <i class="fas fa-file-audio text-purple-500 text-3xl"></i>
+                            <span id="status-b" class="text-[9px] font-bold text-slate-600">SIN AUDIO</span>
+                        </div>
+                        <h3 class="font-black text-xl">Practice Test B</h3>
+                        <p class="text-[10px] text-slate-500 mt-1 font-bold uppercase">Nivel 1 Vol. 3</p>
                     </button>
                 </div>
             </div>
@@ -79,157 +95,157 @@
 
         <section id="view-exam" class="hidden w-full max-w-4xl animate__animated animate__fadeInUp">
             <div class="glass p-8 md:p-12 rounded-[3.5rem] relative">
-                <div id="question-header" class="flex justify-between items-start mb-10">
+                <div class="flex justify-between items-start mb-10">
                     <span id="q-category" class="bg-blue-500/20 text-blue-400 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Listening</span>
                     <span id="q-counter" class="text-4xl font-black text-slate-800">01</span>
                 </div>
 
-                <div id="q-content" class="min-h-[250px]">
-                    <h3 id="q-text" class="text-2xl font-bold leading-snug mb-8 text-slate-200"></h3>
+                <div id="q-content" class="min-h-[300px]">
+                    <h3 id="q-text" class="text-2xl font-bold leading-relaxed mb-8 text-slate-200"></h3>
                     <div id="options-container" class="grid grid-cols-1 gap-4"></div>
                 </div>
 
-                <div id="explanation-box" class="hidden mt-8 p-6 bg-slate-800/50 border-l-4 border-blue-500 rounded-2xl">
-                    <p class="text-[10px] font-black text-blue-400 uppercase mb-2">Explicación 🎯</p>
+                <div id="explanation-box" class="hidden mt-8 p-6 bg-slate-800/40 border-l-4 border-blue-500 rounded-2xl">
+                    <p class="text-[10px] font-black text-blue-400 uppercase mb-2">Technical Insight 🎯</p>
                     <p id="explanation-text" class="text-sm text-slate-400 italic"></p>
                 </div>
 
                 <div class="mt-12 flex justify-between items-center pt-8 border-t border-white/5">
-                    <button id="btn-audio" onclick="playAudioFromItem()" class="hidden w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-600/30 hover:scale-105 active:scale-95 transition-all">
-                        <i class="fas fa-play text-white text-xl"></i>
+                    <button id="btn-audio" onclick="playAudio()" class="hidden w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-600/30 hover:scale-110 active:scale-95 transition-all">
+                        <i id="audio-icon" class="fas fa-play text-white text-xl"></i>
                     </button>
                     <div class="flex gap-4 ml-auto">
-                        <button onclick="prevItem()" class="px-8 py-4 rounded-2xl font-bold text-xs text-slate-500 hover:text-white transition-colors">ATRÁS</button>
-                        <button onclick="nextItem()" class="bg-white text-slate-900 px-10 py-4 rounded-2xl font-black text-xs hover:bg-blue-500 hover:text-white transition-all">SIGUIENTE</button>
+                        <button onclick="navigate(-1)" class="px-8 py-4 rounded-2xl font-bold text-xs text-slate-500 hover:text-white transition-colors">ATRÁS</button>
+                        <button onclick="navigate(1)" class="bg-white text-slate-900 px-10 py-4 rounded-2xl font-black text-xs hover:bg-blue-500 hover:text-white transition-all">SIGUIENTE</button>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <div id="settings-modal" class="hidden fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-6">
+    <div id="settings-modal" class="hidden fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-6 backdrop-blur-sm">
         <div class="glass w-full max-w-lg p-10 rounded-[3rem] animate__animated animate__zoomIn">
             <div class="flex justify-between items-center mb-10">
                 <h2 class="text-2xl font-black">Configuración ⚙️</h2>
-                <button onclick="toggleSettings()" class="text-slate-500 hover:text-white"><i class="fas fa-times"></i></button>
+                <button onclick="toggleSettings()" class="text-slate-500 hover:text-white"><i class="fas fa-times text-xl"></i></button>
             </div>
 
             <div class="space-y-8">
                 <div>
-                    <label class="block text-xs font-black text-blue-400 uppercase tracking-widest mb-4">Archivos de Audio MP3</label>
+                    <label class="block text-[10px] font-black text-blue-400 uppercase tracking-widest mb-4">Cargar Audios Locales (Persistentes)</label>
                     <div class="space-y-4">
-                        <div class="flex flex-col gap-2">
-                            <span class="text-[10px] font-bold text-slate-500">Audio Test A:</span>
-                            <input type="file" id="upload-a" accept="audio/*" class="text-xs bg-white/5 p-3 rounded-xl block w-full">
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
+                            <span class="text-[10px] font-bold text-slate-500 block mb-2 uppercase">Test A (.mp3)</span>
+                            <input type="file" id="file-a" accept="audio/*" class="text-xs w-full">
                         </div>
-                        <div class="flex flex-col gap-2">
-                            <span class="text-[10px] font-bold text-slate-500">Audio Test B:</span>
-                            <input type="file" id="upload-b" accept="audio/*" class="text-xs bg-white/5 p-3 rounded-xl block w-full">
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
+                            <span class="text-[10px] font-bold text-slate-500 block mb-2 uppercase">Test B (.mp3)</span>
+                            <input type="file" id="file-b" accept="audio/*" class="text-xs w-full">
                         </div>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-black text-blue-400 uppercase tracking-widest mb-4">Modo de Entrenamiento</label>
-                    <div class="flex bg-white/5 p-1 rounded-2xl">
-                        <button onclick="setMode('learning')" id="mode-learning" class="flex-1 py-3 rounded-xl text-[10px] font-black uppercase transition-all tab-active">Aprendizaje</button>
-                        <button onclick="setMode('real')" id="mode-real" class="flex-1 py-3 rounded-xl text-[10px] font-black uppercase transition-all">Modo Real</button>
+                    <label class="block text-[10px] font-black text-blue-400 uppercase tracking-widest mb-4">Modo de Práctica</label>
+                    <div class="flex bg-white/5 p-1 rounded-2xl border border-white/5">
+                        <button onclick="setMode('learning')" id="m-learning" class="flex-1 py-3 rounded-xl text-[10px] font-black uppercase transition-all tab-active">Tutoría</button>
+                        <button onclick="setMode('real')" id="m-real" class="flex-1 py-3 rounded-xl text-[10px] font-black uppercase transition-all">Real</button>
                     </div>
                 </div>
 
-                <button onclick="toggleSettings()" class="w-full bg-blue-600 py-4 rounded-2xl font-black text-sm shadow-xl shadow-blue-600/20">GUARDAR CAMBIOS</button>
+                <button onclick="toggleSettings()" class="w-full bg-blue-600 py-4 rounded-2xl font-black text-sm shadow-xl shadow-blue-600/30">CERRAR Y GUARDAR</button>
             </div>
         </div>
     </div>
 
-    <audio id="global-player"></audio>
+    <audio id="player"></audio>
 
     <script>
         let db = null;
         let state = {
-            test: 'testA',
-            section: 'listening',
-            index: 0,
-            mode: 'learning',
+            test: 'testA', section: 'listening', index: 0, mode: 'learning',
             audios: { testA: null, testB: null }
         };
 
-        const player = document.getElementById('global-player');
+        const driveAudios = {
+            testA: 'https://docs.google.com/uc?export=download&id=1d-fNNPkfIghlUXqovp-1r1e8Qs8dwHe8',
+            testB: 'https://docs.google.com/uc?export=download&id=1LRdRe56a4JvL_tRwc_Bhb_kKaOuEM2az'
+        };
 
-        // --- Carga Inicial ---
+        const player = document.getElementById('player');
+
+        // --- IndexedDB: Persistencia de archivos reales ---
+        const initDB = () => {
+            return new Promise((resolve) => {
+                const request = indexedDB.open("ToeflAudioStorage", 1);
+                request.onupgradeneeded = (e) => e.target.result.createObjectStore("files");
+                request.onsuccess = (e) => resolve(e.target.result);
+            });
+        };
+
+        const saveAudio = async (key, file) => {
+            const idb = await initDB();
+            const tx = idb.transaction("files", "readwrite");
+            tx.objectStore("files").put(file, key);
+            state.audios[key] = URL.createObjectURL(file);
+            updateStatus();
+        };
+
+        const loadSavedAudios = async () => {
+            const idb = await initDB();
+            const tx = idb.transaction("files", "readonly");
+            const store = tx.objectStore("files");
+            
+            ['testA', 'testB'].forEach(key => {
+                const req = store.get(key);
+                req.onsuccess = () => {
+                    if (req.result) {
+                        state.audios[key] = URL.createObjectURL(req.result);
+                        updateStatus();
+                    }
+                };
+            });
+        };
+
+        // --- Core ---
         window.onload = async () => {
             try {
                 const res = await fetch('examen_data.json');
                 db = await res.json();
-                document.getElementById('view-setup').classList.remove('opacity-0');
+                await loadSavedAudios();
                 checkPersistence();
-            } catch (e) {
-                alert("Error cargando examen_data.json. Asegúrate de que el archivo existe.");
-            }
+                updateStatus();
+            } catch (e) { console.error("Error al iniciar:", e); }
         };
 
-        // --- Manejo de Audios ---
-        document.getElementById('upload-a').onchange = (e) => state.audios.testA = URL.createObjectURL(e.target.files[0]);
-        document.getElementById('upload-b').onchange = (e) => state.audios.testB = URL.createObjectURL(e.target.files[0]);
+        function updateStatus() {
+            const statusA = document.getElementById('status-a');
+            const statusB = document.getElementById('status-b');
+            const mainStatus = document.getElementById('audio-status');
 
-        function toggleSettings() {
-            document.getElementById('settings-modal').classList.toggle('hidden');
+            statusA.innerText = state.audios.testA ? "LOCAL ✅" : "NUBE ☁️";
+            statusB.innerText = state.audios.testB ? "LOCAL ✅" : "NUBE ☁️";
+            mainStatus.innerText = (state.audios.testA || state.audios.testB) ? "AUDIOS: LISTOS" : "AUDIOS: NUBE";
+            mainStatus.classList.replace('text-slate-500', 'text-blue-400');
         }
 
-        function setMode(m) {
-            state.mode = m;
-            document.getElementById('mode-learning').classList.toggle('tab-active', m === 'learning');
-            document.getElementById('mode-real').classList.toggle('tab-active', m === 'real');
-        }
+        document.getElementById('file-a').onchange = e => saveAudio('testA', e.target.files[0]);
+        document.getElementById('file-b').onchange = e => saveAudio('testB', e.target.files[0]);
 
-        function checkPersistence() {
-            const saved = localStorage.getItem('toefl_v3_guido');
-            if (saved) {
-                const data = JSON.parse(saved);
-                document.getElementById('resume-card').classList.remove('hidden');
-                document.getElementById('resume-text').innerText = `${data.test} - ${data.section}`;
-            }
-        }
-
-        // --- Lógica del Test ---
         function selectTest(t) {
             state.test = t;
-            state.section = 'listening';
             state.index = 0;
-            startSession();
-        }
-
-        function startSession() {
+            state.section = 'listening';
             document.getElementById('view-setup').classList.add('hidden');
             document.getElementById('view-exam').classList.remove('hidden');
             document.getElementById('section-tabs').classList.remove('hidden');
-            document.getElementById('current-test-label').innerText = state.test.toUpperCase();
-            renderItem();
-        }
-
-        function changeSection(s) {
-            state.section = s;
-            state.index = 0;
-            player.pause();
             renderItem();
         }
 
         function renderItem() {
             const data = db[state.test][state.section];
             const item = data[state.index];
-
-            // Actualizar Tabs
-            ['listening', 'structure', 'reading'].forEach(s => {
-                document.getElementById(`tab-${s}`).classList.toggle('tab-active', state.section === s);
-            });
-
-            // Persistencia
-            localStorage.setItem('toefl_v3_guido', JSON.stringify({ 
-                test: state.test, section: state.section, index: state.index, mode: state.mode 
-            }));
-
-            // UI
-            document.getElementById('section-label').innerText = state.section;
+            
             document.getElementById('q-counter').innerText = (state.index + 1).toString().padStart(2, '0');
             document.getElementById('explanation-box').classList.add('hidden');
             document.getElementById('btn-audio').classList.add('hidden');
@@ -239,7 +255,7 @@
 
             if (item.type === 'directions') {
                 document.getElementById('q-text').innerText = item.title;
-                container.innerHTML = `<p class="text-slate-400 italic leading-relaxed animate__animated animate__fadeIn">${item.texto}</p>`;
+                container.innerHTML = `<p class="text-slate-500 italic leading-relaxed animate__animated animate__fadeIn">${item.texto}</p>`;
                 document.getElementById('q-category').innerText = "Directions";
             } else {
                 document.getElementById('q-text').innerText = item.pregunta;
@@ -247,7 +263,6 @@
                 item.opciones.forEach((opt, i) => {
                     const btn = document.createElement('div');
                     btn.className = 'option-card glass p-5 rounded-2xl flex items-center gap-4 animate__animated animate__fadeInUp';
-                    btn.style.animationDelay = `${i * 0.1}s`;
                     btn.innerHTML = `<div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center font-bold text-xs">${String.fromCharCode(65 + i)}</div><span class="text-sm font-medium">${opt}</span>`;
                     btn.onclick = () => checkAnswer(i, item.correcta, item.explicacion, btn);
                     container.appendChild(btn);
@@ -258,90 +273,76 @@
                 document.getElementById('btn-audio').classList.remove('hidden');
             }
 
-            // Barra progreso
             document.getElementById('main-progress').style.width = `${((state.index + 1) / data.length) * 100}%`;
+            localStorage.setItem('toefl_v3_guido', JSON.stringify(state));
         }
 
         function checkAnswer(idx, correct, exp, el) {
-            if (state.mode !== 'learning') {
-                document.querySelectorAll('.option-card').forEach(c => c.style.borderColor = 'rgba(255,255,255,0.05)');
-                el.style.borderColor = '#3b82f6';
-                return;
-            }
-
-            // Normalizar correcta (A -> 0, B -> 1, etc)
+            if (state.mode !== 'learning') return;
             const correctIdx = typeof correct === 'string' ? correct.charCodeAt(0) - 65 : correct;
             const cards = document.querySelectorAll('.option-card');
-            
             cards.forEach(c => c.onclick = null);
-            if (idx === correctIdx) {
-                el.classList.add('correct');
-            } else {
-                el.classList.add('wrong');
-                cards[correctIdx].classList.add('correct');
-            }
-            document.getElementById('explanation-text').innerText = exp || "Sin explicación disponible.";
+            if (idx === correctIdx) el.classList.add('correct');
+            else { el.classList.add('wrong'); cards[correctIdx].classList.add('correct'); }
+            document.getElementById('explanation-text').innerText = exp || "Sin explicación.";
             document.getElementById('explanation-box').classList.remove('hidden');
         }
 
-        function playAudioFromItem() {
+        function playAudio() {
             const item = db[state.test][state.section][state.index];
-            const audioSrc = state.audios[state.test];
+            const source = state.audios[state.test] || driveAudios[state.test];
             
-            if (!audioSrc) {
-                alert("Primero sube el archivo MP3 en el menú de configuración (engrane).");
-                toggleSettings();
-                return;
-            }
-
+            if (player.src !== source) player.src = source;
+            
             const timeParts = item.timestamp.split(':');
             const seconds = parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]);
 
-            player.src = audioSrc;
-            player.currentTime = seconds;
-            player.play();
-            
-            const btn = document.getElementById('btn-audio');
-            btn.classList.add('audio-pulse');
-            btn.innerHTML = `<i class="fas fa-pause text-white"></i>`;
-            btn.onclick = () => {
-                player.pause();
-                btn.classList.remove('audio-pulse');
-                btn.innerHTML = `<i class="fas fa-play text-white"></i>`;
-                btn.onclick = playAudioFromItem;
-            };
-        }
-
-        function nextItem() {
-            const data = db[state.test][state.section];
-            if (state.index < data.length - 1) {
-                state.index++;
-                player.pause();
-                renderItem();
+            if (player.paused) {
+                player.currentTime = seconds;
+                player.play();
+                document.getElementById('audio-icon').className = "fas fa-pause text-white";
+                document.getElementById('btn-audio').classList.add('audio-pulse');
             } else {
-                alert("¡Sección terminada!");
+                player.pause();
+                document.getElementById('audio-icon').className = "fas fa-play text-white";
+                document.getElementById('btn-audio').classList.remove('audio-pulse');
             }
         }
 
-        function prevItem() {
-            if (state.index > 0) {
-                state.index--;
-                player.pause();
-                renderItem();
+        function navigate(step) {
+            const data = db[state.test][state.section];
+            state.index += step;
+            if (state.index < 0) state.index = 0;
+            else if (state.index >= data.length) {
+                if (state.section === 'listening') changeSection('structure');
+                else if (state.section === 'structure') changeSection('reading');
+                else { alert("Test Finalizado"); return; }
             }
+            player.pause();
+            renderItem();
+        }
+
+        function changeSection(s) {
+            state.section = s; state.index = 0;
+            renderItem();
+        }
+
+        function toggleSettings() { document.getElementById('settings-modal').classList.toggle('hidden'); }
+        
+        function setMode(m) {
+            state.mode = m;
+            document.getElementById('m-learning').classList.toggle('tab-active', m === 'learning');
+            document.getElementById('m-real').classList.toggle('tab-active', m === 'real');
         }
 
         function resumeSession() {
             const saved = JSON.parse(localStorage.getItem('toefl_v3_guido'));
-            state.test = saved.test;
-            state.section = saved.section;
-            state.index = saved.index;
-            state.mode = saved.mode;
-            startSession();
+            state.test = saved.test; state.section = saved.section; state.index = saved.index; state.mode = saved.mode;
+            selectTest(state.test);
         }
 
-        function saveAndExit() {
-            if(confirm("¿Guardar y salir?")) location.reload();
+        function checkPersistence() {
+            if (localStorage.getItem('toefl_v3_guido')) document.getElementById('resume-card').classList.remove('hidden');
         }
     </script>
 </body>
