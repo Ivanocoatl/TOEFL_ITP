@@ -265,7 +265,7 @@
 
         // Protección de variables
         let app, auth, db, user;
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'toefl-speed-pro-v9';
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'toefl-speed-pro-v10';
         
         let examData = null;
         let currentTest = null;
@@ -282,21 +282,50 @@
         let qTimeLeft = 0;
         let generalTimerInt;
 
-        // MAPEO EXACTO DE AUDIOS (2 preguntas por página)
+        // 🌟 NUEVA LÓGICA DE AGRUPACIÓN (PAGINACIÓN) 🌟
+        // Las preguntas de Listening Parte B y C ya no se cortan de 2 en 2.
+        function getPagesForSection(section, dataLength) {
+            if (section === 'listening' && dataLength >= 50) {
+                return [
+                    [0,2], [2,4], [4,6], [6,8], [8,10],
+                    [10,12], [12,14], [14,16], [16,18], [18,20],
+                    [20,22], [22,24], [24,26], [26,28], [28,30], // Parte A (Cortas, 2 por página)
+                    [30,34], // Parte B - Conv 1 (Preguntas 31-34 juntas)
+                    [34,37], // Parte B - Conv 2 (Preguntas 35-37 juntas)
+                    [37,41], // Parte C - Talk 1 (Preguntas 38-41 juntas)
+                    [41,46], // Parte C - Talk 2 (Preguntas 42-46 juntas)
+                    [46,50]  // Parte C - Talk 3 (Preguntas 47-50 juntas)
+                ]; // Total: 20 páginas
+            } else {
+                let pages = [];
+                for(let i=0; i<dataLength; i+=2) {
+                    pages.push([i, Math.min(i+2, dataLength)]);
+                }
+                return pages;
+            }
+        }
+
+        // MAPEO EXACTO DE AUDIOS (Coincide con las 20 páginas de Listening)
         const audioTimings = {
             testA: [
                 [143, 194], [194, 252], [252, 310], [310, 351], [351, 423],
                 [423, 480], [480, 532], [532, 591], [591, 649], [649, 704],
                 [704, 758], [758, 815], [815, 869], [869, 933], [933, 993],
-                [1043, 1158], [1158, 1191], [1191, 1330], [1330, 1654], [1654, 1691],
-                [1691, 1826], [1826, 1862], [1862, 1900], [1900, 2051], [2051, 2089]
+                [1046, 1191], // Q31-34 (Conferencia completa + preguntas)
+                [1194, 1350], // Q35-37 (Conferencia completa + preguntas)
+                [1534, 1712], // Q38-41 (Conferencia completa + preguntas)
+                [1715, 1900], // Q42-46 (Conferencia completa + preguntas)
+                [1903, 2083]  // Q47-50 (Conferencia completa + preguntas)
             ],
             testB: [
                 [143, 191], [191, 245], [245, 302], [302, 358], [358, 416],
                 [416, 469], [469, 524], [524, 581], [581, 633], [633, 689],
                 [689, 753], [753, 810], [810, 867], [867, 927], [927, 983],
-                [1033, 1149], [1149, 1186], [1186, 1327], [1327, 1650], [1650, 1688],
-                [1688, 1832], [1832, 1877], [1877, 1909], [1909, 2047], [2047, 2080]
+                [1040, 1186], // Q31-34
+                [1189, 1346], // Q35-37
+                [1530, 1705], // Q38-41
+                [1708, 1909], // Q42-46
+                [1917, 2080]  // Q47-50
             ]
         };
 
@@ -357,7 +386,6 @@
 
             for (let file of possibleFiles) {
                 try {
-                    // Agregamos el cacheBuster y le decimos a fetch que no guarde memoria
                     const res = await fetch(file + cacheBuster, { cache: "no-store" });
                     
                     if (res.ok) {
@@ -376,10 +404,7 @@
                 const fallbackContainer = document.getElementById('json-fallback-container');
                 fallbackContainer.classList.remove('hidden');
                 
-                // Quitamos el pulso después de unos segundos para que no maree
-                setTimeout(() => {
-                    fallbackContainer.classList.remove('animate-pulse');
-                }, 3000);
+                setTimeout(() => { fallbackContainer.classList.remove('animate-pulse'); }, 3000);
                 
                 document.getElementById('file-json').addEventListener('change', window.procesarJsonSubido);
             }
@@ -517,7 +542,7 @@
             iniciarRelojGeneral(session.section === 'listening' ? 35 : (session.section === 'structure' ? 25 : 55));
         };
 
-        // --- RENDERIZADO CON PROTECCIÓN ANTI-CRASH ---
+        // --- RENDERIZADO CON PROTECCIÓN ANTI-CRASH Y NUEVA PAGINACIÓN ---
         function renderBlock() {
             try {
                 const box = document.getElementById('q-box'); 
@@ -534,14 +559,25 @@
                     return; 
                 }
                 
-                const start = session.step * 2;
-                const slice = data.slice(start, start + 2);
-                document.getElementById('p-bar').style.width = ((start + slice.length) / data.length * 100) + "%";
+                // Obtenemos los bloques definidos para esta sección
+                const pages = getPagesForSection(session.section, data.length);
+                const [start, end] = pages[session.step];
+                const slice = data.slice(start, end);
+                
+                document.getElementById('p-bar').style.width = ((session.step + 1) / pages.length * 100) + "%";
                 document.getElementById('p-btn').disabled = session.step === 0;
                 
                 if (slice.length === 0) {
                     box.innerHTML = '<p class="text-slate-500 font-bold text-center py-10">Has llegado al final de esta sección.</p>';
                     return;
+                }
+
+                // Header especial para las partes largas
+                if (session.section === 'listening' && slice.length > 2) {
+                    box.innerHTML += `
+                    <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-4 mb-2 text-center text-indigo-800 shadow-sm fade-in">
+                        <p class="font-black text-sm uppercase tracking-widest"><i class="fas fa-bullhorn mr-2"></i>Escucha la conferencia y contesta este bloque.</p>
+                    </div>`;
                 }
 
                 slice.forEach(q => {
@@ -639,8 +675,12 @@
                 const timings = audioTimings[currentTest];
                 if (timings && timings[session.step]) {
                     const [startT, endT] = timings[session.step];
-                    // Tiempo de audio x2 repeticiones + 24 segundos extras para pensar
-                    qTimeLeft = Math.ceil(((endT || (startT + 60)) - startT) * 2) + 24; 
+                    // Recuperamos cuantas preguntas hay en la página actual
+                    const pages = getPagesForSection(session.section, examData[currentTest][session.section].length);
+                    const numQuestions = pages[session.step][1] - pages[session.step][0];
+                    
+                    // Tiempo de audio x2 repeticiones + 15 segundos extras para pensar POR CADA pregunta en el bloque
+                    qTimeLeft = Math.ceil(((endT || (startT + 60)) - startT) * 2) + (numQuestions * 15); 
                 } else {
                     qTimeLeft = 60;
                 }
@@ -697,7 +737,9 @@
 
         window.navegarPasos = (d) => {
             const data = examData[currentTest][session.section];
-            const max = Math.ceil(data.length / 2);
+            const pages = getPagesForSection(session.section, data.length);
+            const max = pages.length;
+            
             if (session.step + d >= max) {
                 if (session.section === 'listening') cambiarVista('structure');
                 else if (session.section === 'structure') cambiarVista('reading');
