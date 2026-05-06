@@ -133,6 +133,14 @@
                         <p class="text-slate-500 text-sm md:text-base font-medium">Sube tus audios una vez, nosotros los recordamos por ti.</p>
                     </div>
 
+                    <!-- CONTENEDOR DE EMERGENCIA PARA EL JSON (Oculto por defecto) -->
+                    <div id="json-fallback-container" class="hidden bg-rose-50 p-8 rounded-[2rem] border border-rose-200 text-center shadow-md animate-pulse">
+                        <div class="text-4xl mb-3">📂</div>
+                        <h3 class="text-rose-700 font-black mb-2 text-xl">La base de datos (JSON) no se detectó</h3>
+                        <p class="text-sm text-rose-600/80 font-bold mb-5 max-w-lg mx-auto">No pudimos encontrar el archivo automáticamente en tu servidor. Por favor, sube tu archivo <b>datos.json</b> o <b>examen_data.json</b> manualmente para continuar.</p>
+                        <input type="file" id="file-json" accept=".json" class="mx-auto text-xs block w-full max-w-sm file:bg-rose-600 file:text-white file:border-0 file:px-5 file:py-2.5 file:rounded-xl file:cursor-pointer file:font-black file:uppercase file:tracking-widest mb-2 transition-all hover:file:bg-rose-700">
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- TEST A -->
                         <div class="glass-card p-6 md:p-8 rounded-[2rem] border-2 border-white transition-all hover:-translate-y-1 hover:shadow-xl">
@@ -226,38 +234,38 @@
                             <p class="text-[10px] font-black uppercase opacity-60 tracking-[0.3em] mb-3">Puntaje Estimado</p>
                             <h3 id="final-score" class="text-7xl md:text-8xl font-black mb-5 tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-sky-300 to-white">---</h3>
                             <div id="final-level" class="vibrant-gradient-b text-white px-8 py-2.5 rounded-full inline-block font-black text-lg uppercase tracking-widest shadow-md">Nivel MCER: ---</div>
+                        </div>
+                        
+                        <button onclick="window.location.reload()" class="bg-slate-100 text-slate-800 px-10 py-4 rounded-2xl font-black text-base hover:bg-slate-200 transition-all">Finalizar y Salir</button>
                     </div>
-                    
-                    <button onclick="window.location.reload()" class="bg-slate-100 text-slate-800 px-10 py-4 rounded-2xl font-black text-base hover:bg-slate-200 transition-all">Finalizar y Salir</button>
                 </div>
+
             </div>
+        </main>
+    </div>
 
-        </div>
-    </main>
-</div>
-
-<!-- MODAL DE CONFIRMACIÓN DE REINICIO -->
-<div id="reinicio-modal" class="hidden fixed inset-0 z-[400] flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4 fade-in">
-    <div class="bg-white rounded-[2rem] p-8 max-w-sm w-full shadow-2xl text-center">
-        <div class="text-5xl mb-4 text-amber-500"><i class="fas fa-exclamation-triangle"></i></div>
-        <h2 class="text-2xl font-black text-slate-900 mb-2">¿Volver al inicio?</h2>
-        <p class="text-slate-500 mb-6 text-sm">Tu progreso actual <b>no se guardará</b> y se perderá. ¿Estás seguro de que deseas salir y comenzar de nuevo?</p>
-        <div class="flex gap-3 justify-center">
-            <button onclick="cerrarModalReinicio()" class="bg-slate-100 text-slate-600 px-6 py-3 rounded-xl font-bold hover:bg-slate-200 transition-all text-sm">Cancelar</button>
-            <button onclick="ejecutarReinicio()" class="bg-rose-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-rose-600 transition-all shadow-md text-sm">Sí, reiniciar</button>
+    <!-- MODAL DE CONFIRMACIÓN DE REINICIO -->
+    <div id="reinicio-modal" class="hidden fixed inset-0 z-[400] flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4 fade-in">
+        <div class="bg-white rounded-[2rem] p-8 max-w-sm w-full shadow-2xl text-center">
+            <div class="text-5xl mb-4 text-amber-500"><i class="fas fa-exclamation-triangle"></i></div>
+            <h2 class="text-2xl font-black text-slate-900 mb-2">¿Volver al inicio?</h2>
+            <p class="text-slate-500 mb-6 text-sm">Tu progreso actual <b>no se guardará</b> y se perderá. ¿Estás seguro de que deseas salir y comenzar de nuevo?</p>
+            <div class="flex gap-3 justify-center">
+                <button onclick="cerrarModalReinicio()" class="bg-slate-100 text-slate-600 px-6 py-3 rounded-xl font-bold hover:bg-slate-200 transition-all text-sm">Cancelar</button>
+                <button onclick="ejecutarReinicio()" class="bg-rose-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-rose-600 transition-all shadow-md text-sm">Sí, reiniciar</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- SCRIPT PRINCIPAL -->
-<script type="module">
+    <!-- SCRIPT PRINCIPAL -->
+    <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Protección de variables
         let app, auth, db, user;
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'toefl-speed-pro-v7';
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'toefl-speed-pro-v8';
         
         let examData = null;
         let currentTest = null;
@@ -311,21 +319,21 @@
         ];
 
         window.onload = async () => {
-        // Asignar Event Listeners de Audio DE INMEDIATO
-        document.getElementById('file-a').addEventListener('change', e => procesarAudioSubido(e, 'testA'));
-        document.getElementById('file-b').addEventListener('change', e => procesarAudioSubido(e, 'testB'));
+            // Asignar Event Listeners de Audio DE INMEDIATO
+            document.getElementById('file-a').addEventListener('change', e => procesarAudioSubido(e, 'testA'));
+            document.getElementById('file-b').addEventListener('change', e => procesarAudioSubido(e, 'testB'));
 
-        // Verificar progreso guardado en LocalStorage (Por si Firebase no está disponible)
-        const localProgress = localStorage.getItem('toefl_progress');
-        if (localProgress) {
-            document.getElementById('welcome-hub').classList.remove('hidden');
-            document.getElementById('welcome-hub').dataset.progress = localProgress;
-        }
+            // Verificar progreso guardado en LocalStorage (Por si Firebase no está disponible)
+            const localProgress = localStorage.getItem('toefl_progress');
+            if (localProgress) {
+                document.getElementById('welcome-hub').classList.remove('hidden');
+                document.getElementById('welcome-hub').dataset.progress = localProgress;
+            }
 
-        // Intentar conectar con Firebase
-        try {
-            if(typeof __firebase_config !== 'undefined') {
-                const firebaseConfig = JSON.parse(__firebase_config);
+            // Intentar conectar con Firebase
+            try {
+                if(typeof __firebase_config !== 'undefined') {
+                    const firebaseConfig = JSON.parse(__firebase_config);
                     app = initializeApp(firebaseConfig);
                     auth = getAuth(app);
                     db = getFirestore(app);
@@ -340,7 +348,7 @@
                 }
             } catch(e) { console.warn("Modo local activado."); }
 
-            // 🌟 NUEVO BUSCADOR INTELIGENTE DE ARCHIVOS JSON 🌟
+            // 🌟 BUSCADOR INTELIGENTE DE ARCHIVOS JSON 🌟
             let jsonLoaded = false;
             const possibleFiles = ['datos.json', 'examen_data.json', 'examen_data - Copy.json'];
             
@@ -359,14 +367,39 @@
             }
 
             if (!jsonLoaded) {
-                console.error("❌ No se pudo cargar ningún JSON.");
-                alert("⚠️ Error: No se ha podido cargar tu archivo de preguntas. Asegúrate de que el archivo se llame 'datos.json' o 'examen_data.json' y esté en la misma carpeta del html.");
+                console.warn("⚠️ No se pudo cargar el JSON automáticamente. Mostrando carga manual.");
+                const fallbackContainer = document.getElementById('json-fallback-container');
+                fallbackContainer.classList.remove('hidden');
+                
+                // Quitamos el pulso después de unos segundos para que no maree
+                setTimeout(() => {
+                    fallbackContainer.classList.remove('animate-pulse');
+                }, 3000);
+                
+                document.getElementById('file-json').addEventListener('change', window.procesarJsonSubido);
             }
             
             document.getElementById('loading-screen').classList.add('hidden');
 
             initAudioStorage();
             setupAudioLogic();
+        };
+
+        // --- GESTIÓN MANUAL DE JSON ---
+        window.procesarJsonSubido = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    examData = JSON.parse(event.target.result);
+                    alert("✅ Base de datos cargada con éxito. Ya puedes elegir tu test.");
+                    document.getElementById('json-fallback-container').classList.add('hidden');
+                } catch (err) {
+                    alert("❌ El archivo subido no es válido. Revisa que sea un formato JSON correcto.");
+                }
+            };
+            reader.readAsText(file);
         };
 
         // --- GESTIÓN ROBUSTA DE AUDIOS ---
@@ -424,7 +457,7 @@
 
         // --- NAVEGACIÓN PRINCIPAL ---
         window.elegirTest = (id) => {
-            if (!examData) return alert("⚠️ Error: No se ha cargado la base de datos JSON. Recarga la página y asegúrate de que el archivo esté en la misma carpeta.");
+            if (!examData) return alert("⚠️ Error: No se ha cargado la base de datos JSON. Sube el archivo manualmente arriba.");
             if (!localAudios[id]) return alert("⚠️ Debes subir el archivo de audio MP3 para este test primero.");
             currentTest = id;
             document.getElementById('test-info-nav').innerText = id === 'testA' ? "Test A: Volume 3" : "Test B: Advanced";
@@ -479,7 +512,7 @@
             iniciarRelojGeneral(session.section === 'listening' ? 35 : (session.section === 'structure' ? 25 : 55));
         };
 
-        // --- 🌟 RENDERIZADO CON PROTECCIÓN ANTI-CRASH 🌟 ---
+        // --- RENDERIZADO CON PROTECCIÓN ANTI-CRASH ---
         function renderBlock() {
             try {
                 const box = document.getElementById('q-box'); 
@@ -490,7 +523,6 @@
                     return;
                 }
 
-                // Verificar que exista la sección específica en el JSON
                 const data = examData[currentTest] && examData[currentTest][session.section];
                 if (!data || !Array.isArray(data) || data.length === 0) { 
                     box.innerHTML = `<div class="bg-rose-50 p-8 rounded-2xl border border-rose-200 text-center"><p class="text-rose-600 font-bold text-lg mb-2">⛔ Faltan datos en tu JSON para: ${currentTest} -> ${session.section}</p><p class="text-slate-600 text-sm">Revisa que la estructura de tu archivo datos.json coincida exactamente con la requerida.</p></div>`; 
@@ -511,7 +543,6 @@
                     const card = document.createElement('div');
                     card.className = "bg-white p-6 md:p-8 rounded-[2rem] border border-slate-100 shadow-md fade-in";
                     
-                    // Protección por si 'opciones' no es un arreglo
                     const opcionesSeguras = Array.isArray(q.opciones) ? q.opciones : [];
                     const letras = ['A','B','C','D'];
                     
@@ -711,55 +742,58 @@
         }
 
         window.continuarSesion = () => {
-        const d = JSON.parse(document.getElementById('welcome-hub').dataset.progress);
-        currentTest = d.test; session = d.session; 
-        document.getElementById('welcome-hub').classList.add('hidden');
-        cambiarVista(session.section); 
-        finalizarDirections();
-    };
+            const d = JSON.parse(document.getElementById('welcome-hub').dataset.progress);
+            currentTest = d.test; session = d.session; 
+            document.getElementById('welcome-hub').classList.add('hidden');
+            cambiarVista(session.section); 
+            finalizarDirections();
+        };
 
-    window.iniciarDesdeCero = () => { 
-        localStorage.removeItem('toefl_progress');
-        document.getElementById('welcome-hub').classList.add('hidden'); 
-        cambiarVista('setup'); 
-    };
+        window.iniciarDesdeCero = () => { 
+            localStorage.removeItem('toefl_progress');
+            document.getElementById('welcome-hub').classList.add('hidden'); 
+            cambiarVista('setup'); 
+        };
 
-    window.pausarYSalir = async () => {
-        const progressData = { test: currentTest, session: session, timestamp: Date.now() };
-        // Guardar localmente como respaldo
-        localStorage.setItem('toefl_progress', JSON.stringify(progressData));
+        window.pausarYSalir = async () => {
+            const progressData = { test: currentTest, session: session, timestamp: Date.now() };
+            // Guardar localmente como respaldo
+            localStorage.setItem('toefl_progress', JSON.stringify(progressData));
 
-        if (user && db && currentTest) {
-            try {
-                await setDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'progress', 'current'), progressData);
-            } catch(e) { console.warn("Error guardando progreso en la nube."); }
-        }
-        // Recarga para volver al inicio conservando el guardado
-        window.location.reload();
-    };
+            if (user && db && currentTest) {
+                try {
+                    await setDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'progress', 'current'), progressData);
+                } catch(e) { console.warn("Error guardando progreso en la nube."); }
+            }
+            // Recarga para volver al inicio conservando el guardado
+            window.location.reload();
+        };
 
-    // --- FUNCIONES DEL MODAL DE REINICIO ---
-    window.mostrarModalReinicio = () => {
-        document.getElementById('reinicio-modal').classList.remove('hidden');
-    };
-    
-    window.cerrarModalReinicio = () => {
-        document.getElementById('reinicio-modal').classList.add('hidden');
-    };
-    
-    window.ejecutarReinicio = () => {
-        // Recargar sin llamar a pausarYSalir limpia el estado en memoria sin guardar los cambios recientes
-        window.location.reload();
-    };
+        // --- FUNCIONES DEL MODAL DE REINICIO ---
+        window.mostrarModalReinicio = () => {
+            document.getElementById('reinicio-modal').classList.remove('hidden');
+        };
+        
+        window.cerrarModalReinicio = () => {
+            document.getElementById('reinicio-modal').classList.add('hidden');
+        };
+        
+        window.ejecutarReinicio = () => {
+            // Limpiamos el localStorage para que al recargar no nos regrese al avance viejo
+            localStorage.removeItem('toefl_progress');
+            window.location.reload();
+        };
 
-    function ocultarTodo() { ['view-setup', 'view-directions', 'view-test', 'view-results'].forEach(v => document.getElementById(v).classList.add('hidden-section')); }
-    function iniciarRelojGeneral(m) { 
+        function ocultarTodo() { ['view-setup', 'view-directions', 'view-test', 'view-results'].forEach(v => document.getElementById(v).classList.add('hidden-section')); }
+        
+        function iniciarRelojGeneral(m) { 
             clearInterval(generalTimerInt); let t = m * 60; 
             generalTimerInt = setInterval(() => { 
                 let mm = Math.floor(t / 60), ss = t % 60; 
                 document.getElementById('timer').innerText = `${mm < 10 ? '0'+mm : mm}:${ss < 10 ? '0'+ss : ss}`; t--; 
             }, 1000); 
         }
+
         window.toggleTutor = () => { 
             session.tutor = !session.tutor; 
             const btn = document.getElementById('tutor-toggle');
