@@ -136,8 +136,8 @@
                     <!-- CONTENEDOR DE EMERGENCIA PARA EL JSON (Oculto por defecto) -->
                     <div id="json-fallback-container" class="hidden bg-rose-50 p-8 rounded-[2rem] border border-rose-200 text-center shadow-md animate-pulse">
                         <div class="text-4xl mb-3">📂</div>
-                        <h3 class="text-rose-700 font-black mb-2 text-xl">La base de datos (JSON) no se detectó</h3>
-                        <p class="text-sm text-rose-600/80 font-bold mb-5 max-w-lg mx-auto">No pudimos encontrar el archivo automáticamente en tu servidor. Por favor, sube tu archivo <b>datos.json</b> o <b>examen_data.json</b> manualmente para continuar.</p>
+                        <h3 class="text-rose-700 font-black mb-2 text-xl">La base de datos (JSON) no se detectó automáticamente</h3>
+                        <p class="text-sm text-rose-600/80 font-bold mb-5 max-w-lg mx-auto">A veces los servidores tardan en actualizar. Por favor, sube tu archivo <b>datos.json</b> o <b>examen_data.json</b> manualmente aquí abajo para continuar al instante.</p>
                         <input type="file" id="file-json" accept=".json" class="mx-auto text-xs block w-full max-w-sm file:bg-rose-600 file:text-white file:border-0 file:px-5 file:py-2.5 file:rounded-xl file:cursor-pointer file:font-black file:uppercase file:tracking-widest mb-2 transition-all hover:file:bg-rose-700">
                     </div>
 
@@ -265,7 +265,7 @@
 
         // Protección de variables
         let app, auth, db, user;
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'toefl-speed-pro-v8';
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'toefl-speed-pro-v9';
         
         let examData = null;
         let currentTest = null;
@@ -323,7 +323,7 @@
             document.getElementById('file-a').addEventListener('change', e => procesarAudioSubido(e, 'testA'));
             document.getElementById('file-b').addEventListener('change', e => procesarAudioSubido(e, 'testB'));
 
-            // Verificar progreso guardado en LocalStorage (Por si Firebase no está disponible)
+            // Verificar progreso guardado en LocalStorage
             const localProgress = localStorage.getItem('toefl_progress');
             if (localProgress) {
                 document.getElementById('welcome-hub').classList.remove('hidden');
@@ -348,26 +348,31 @@
                 }
             } catch(e) { console.warn("Modo local activado."); }
 
-            // 🌟 BUSCADOR INTELIGENTE DE ARCHIVOS JSON 🌟
+            // 🌟 BUSCADOR INTELIGENTE DE ARCHIVOS JSON CON ANTI-CACHÉ 🌟
             let jsonLoaded = false;
             const possibleFiles = ['datos.json', 'examen_data.json', 'examen_data - Copy.json'];
             
+            // Generar una cadena única para evadir la memoria del navegador
+            const cacheBuster = '?nocache=' + new Date().getTime();
+
             for (let file of possibleFiles) {
                 try {
-                    const res = await fetch(file);
+                    // Agregamos el cacheBuster y le decimos a fetch que no guarde memoria
+                    const res = await fetch(file + cacheBuster, { cache: "no-store" });
+                    
                     if (res.ok) {
                         examData = await res.json();
                         jsonLoaded = true;
-                        console.log("✅ JSON cargado con éxito desde:", file);
+                        console.log("✅ JSON cargado con éxito desde el servidor:", file);
                         break;
                     }
                 } catch (e) {
-                    console.log(`Buscando... ${file} no encontrado.`);
+                    console.log(`Buscando... ${file} no encontrado o bloqueado por red.`);
                 }
             }
 
             if (!jsonLoaded) {
-                console.warn("⚠️ No se pudo cargar el JSON automáticamente. Mostrando carga manual.");
+                console.warn("⚠️ No se pudo cargar el JSON automáticamente del servidor. Mostrando carga manual.");
                 const fallbackContainer = document.getElementById('json-fallback-container');
                 fallbackContainer.classList.remove('hidden');
                 
