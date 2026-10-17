@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOEFL ITP Pro Simulator - Ultimate Edition</title>
+    <title>TOEFL ITP Pro Simulator - Speed Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Fuentes para segmentación visual en vocabulario -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&family=Playfair+Display:ital,wght@0,800;1,800&family=Fredoka:wght@600&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap');
-        
         :root { --base-size: 16px; }
         html { font-size: var(--base-size); transition: font-size 0.3s ease; }
         body { font-family: 'Nunito', sans-serif; background-color: #f0fdfa; } 
@@ -19,32 +19,36 @@
         .vibrant-success { background: linear-gradient(135deg, #34d399 0%, #10b981 100%); }
         .vibrant-warning { background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); }
         
-        .toefl-radio { appearance: none; width: 1.5rem; height: 1.5rem; border: 3px solid #cbd5e1; border-radius: 50%; cursor: pointer; transition: all 0.3s ease; flex-shrink: 0;}
-        .toefl-radio:checked { background-color: #0f172a; border-color: #0f172a; box-shadow: inset 0 0 0 4px #fff; transform: scale(1.1); }
+        .toefl-radio { appearance: none; width: 22px; height: 22px; border: 3px solid #cbd5e1; border-radius: 50%; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .toefl-radio:checked { background-color: #0f172a; border-color: #0f172a; box-shadow: inset 0 0 0 5px #fff; transform: scale(1.1); }
         
         .hidden-section { display: none !important; }
         .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
+        .active-nav { background: #f0f9ff; border-left: 5px solid #0ea5e9; color: #0369a1; font-weight: 900; }
+        
+        .timer-warning { animation: pulse-red 1s infinite; color: #ef4444; font-weight: 900; }
+        @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); text-shadow: 0 0 8px rgba(239, 68, 68, 0.5); } 100% { transform: scale(1); } }
+
+        .glow-success { box-shadow: 0 0 15px rgba(52, 211, 153, 0.5); border-color: #34d399; }
+        
         .answer-correct { animation: pulseGreen 0.5s ease; background-color: #ecfdf5 !important; border-color: #10b981 !important; color: #065f46 !important; }
         .answer-incorrect { animation: shakeRed 0.5s ease; background-color: #fff1f2 !important; border-color: #f43f5e !important; color: #9f1239 !important; }
         
         @keyframes pulseGreen { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 50% { transform: scale(1.02); box-shadow: 0 0 20px 10px rgba(16, 185, 129, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
         @keyframes shakeRed { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
 
-        .timer-warning { animation: pulse-red 1s infinite; color: #ef4444; font-weight: 900; }
-        @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); text-shadow: 0 0 8px rgba(239, 68, 68, 0.5); } 100% { transform: scale(1); } }
-
         .flip-card { perspective: 1000px; cursor: pointer; height: 350px; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
-        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 1.5rem; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; text-align: center; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
-        .flip-card-front { background: white; border: 2px solid #e2e8f0; }
+        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 2rem; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; text-align: center; box-shadow: 0 15px 35px -5px rgba(0,0,0,0.2); }
+        .flip-card-front { background: white; border: 3px solid #e2e8f0; }
         .flip-card-back { background: #0f172a; color: white; transform: rotateY(180deg); overflow-y: auto;}
-
-        .particle { position: absolute; border-radius: 50%; pointer-events: none; z-index: 100; }
         
-        ::-webkit-scrollbar { width: 8px; }
+        .particle { position: absolute; border-radius: 50%; pointer-events: none; z-index: 100; }
+
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
@@ -52,29 +56,40 @@
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-slate-800">
 
+    <!-- HEADER MÁS COMPACTO Y CONTROLES -->
     <header class="bg-slate-900 text-white py-3 px-6 flex justify-between items-center shadow-lg z-50 shrink-0">
         <div class="flex items-center gap-3">
             <div class="vibrant-gradient-a p-2 rounded-xl shadow-md rotate-3">
                 <i class="fas fa-rocket text-lg text-white"></i>
             </div>
             <div>
-                <h1 class="text-xl font-black tracking-tight leading-none uppercase">TOEFL Speed Pro</h1>
+                <h1 class="text-xl font-black tracking-tight leading-none uppercase">TOEFL Speed Pro ⚡</h1>
                 <p id="user-display-name" class="text-[10px] text-sky-400 font-bold uppercase mt-0.5 tracking-widest">Inicia Sesión</p>
             </div>
         </div>
         
-        <div class="flex items-center gap-3">
-            <!-- Botones de Accesibilidad -->
-            <div class="flex bg-slate-800 rounded-lg overflow-hidden border border-slate-700 mr-2">
+        <div class="flex items-center gap-4">
+            
+            <!-- Controles de Audio y Accesibilidad -->
+            <div class="hidden md:flex bg-slate-800 rounded-lg overflow-hidden border border-slate-700 items-center">
                 <button onclick="changeFontSize(-1)" class="px-3 py-1 hover:bg-slate-700 text-sm font-bold" title="Reducir letra">A-</button>
-                <div class="w-px bg-slate-700"></div>
+                <div class="w-px h-5 bg-slate-700"></div>
                 <button onclick="changeFontSize(1)" class="px-3 py-1 hover:bg-slate-700 text-lg font-bold" title="Aumentar letra">A+</button>
+                <div class="w-px h-5 bg-slate-700 mx-1"></div>
+                <button onclick="toggleMute()" id="btn-mute" class="px-3 py-1 hover:bg-slate-700 text-slate-400 transition-colors" title="Silenciar Sonidos">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.8" class="w-20 mx-2 accent-sky-500 cursor-pointer" onchange="changeVolume(this.value)" title="Volumen">
             </div>
 
             <div id="q-timer-display" class="bg-slate-800/80 px-4 py-1.5 rounded-xl border border-slate-700 text-xs font-black hidden shadow-inner">
                 ⏱️ VELOCIDAD: <span id="q-timer-val" class="text-amber-400 ml-1 text-base">00:00</span>
             </div>
-            <button id="btn-home" onclick="goHome()" class="hidden bg-sky-500/10 text-sky-500 hover:bg-sky-500 hover:text-white p-2.5 rounded-xl transition-all" title="Ir al Panel">
+            <div id="general-timer-container" class="hidden bg-slate-800 px-4 py-1.5 rounded-xl font-mono text-xl text-sky-400 border border-slate-700 shadow-inner">
+                <span id="timer">00:00</span>
+            </div>
+            
+            <button id="btn-home" onclick="goHome()" class="hidden bg-sky-500/10 text-sky-500 hover:bg-sky-500 hover:text-white p-2.5 rounded-xl transition-all mr-1" title="Ir al Panel">
                 <i class="fas fa-home"></i>
             </button>
             <button id="btn-save" onclick="pausarYSalir()" class="hidden bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white p-2.5 rounded-xl transition-all" title="Guardar y Salir">
@@ -86,19 +101,21 @@
         </div>
     </header>
 
-    <div id="loading-screen" class="absolute inset-0 bg-teal-50 z-[300] flex flex-col items-center justify-center fade-in">
+    <!-- PANTALLA DE CARGA -->
+    <div id="loading-screen" class="absolute inset-0 bg-teal-50 z-[300] flex flex-col items-center justify-center">
         <div class="w-16 h-16 border-8 border-teal-200 border-t-teal-500 rounded-full animate-spin shadow-md"></div>
-        <h2 class="mt-6 font-black text-teal-900 text-2xl tracking-tight">Cargando sistema...</h2>
+        <h2 class="mt-6 font-black text-teal-900 text-2xl tracking-tight">Preparando tu entorno... 🌟</h2>
+        <p class="text-teal-600 mt-2 font-bold text-sm">Sincronizando tus avances y base de datos.</p>
     </div>
 
     <!-- MAIN CONTAINER -->
     <div class="flex flex-1 overflow-hidden relative">
 
+        <!-- AUTH VIEW -->
         <div id="view-auth" class="w-full h-full flex items-center justify-center p-4 bg-slate-50 fade-in overflow-y-auto">
             <div class="glass-card w-full max-w-md rounded-[2rem] p-8 shadow-2xl relative overflow-hidden my-auto">
                 <div class="absolute top-0 left-0 w-full h-2 vibrant-gradient-a"></div>
                 
-                <!-- Login -->
                 <div id="auth-login">
                     <h2 class="text-3xl font-black text-slate-800 mb-2">Bienvenido</h2>
                     <p class="text-slate-500 text-sm mb-6 font-bold">Ingresa para continuar tu entrenamiento offline.</p>
@@ -113,7 +130,6 @@
                     </div>
                 </div>
 
-                <!-- Registro -->
                 <div id="auth-register" class="hidden">
                     <h2 class="text-3xl font-black text-slate-800 mb-2">Nueva Cuenta</h2>
                     <p class="text-slate-500 text-sm mb-4 font-bold">Límite: 10 usuarios en este equipo.</p>
@@ -127,7 +143,6 @@
                     <button onclick="switchAuth('login')" class="mt-4 text-sm font-bold text-slate-400 hover:text-slate-600 w-full text-center">Volver</button>
                 </div>
 
-                <!-- Recuperar -->
                 <div id="auth-recover" class="hidden">
                     <h2 class="text-3xl font-black text-slate-800 mb-2">Recuperar Acceso</h2>
                     <div class="space-y-4" id="rec-step-1">
@@ -178,23 +193,22 @@
                     <div onclick="startVocab()" class="glass-card p-8 rounded-[2rem] border-2 border-white transition-all hover:-translate-y-2 hover:shadow-2xl cursor-pointer group">
                         <div class="w-16 h-16 vibrant-warning rounded-2xl flex items-center justify-center text-white text-3xl mb-6 shadow-lg group-hover:-rotate-12 transition-transform"><i class="fas fa-layer-group"></i></div>
                         <h3 class="text-2xl font-black mb-2 text-slate-800">Vocabulario</h3>
-                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Mazo interactivo de cartas con memoria inteligente. Estudia palabras esenciales de inglés académico.</p>
+                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Expande tu léxico. Tarjetas interactivas con memoria a largo plazo de las palabras esenciales del TOEFL.</p>
                     </div>
                 </div>
 
-                <!-- Fallback Container en caso de que Github colapse -->
                 <div id="json-fallback-container" class="hidden mt-10 bg-rose-50 p-6 rounded-[2rem] border border-rose-200 text-center shadow-md">
-                    <h3 class="text-rose-700 font-black mb-2 text-xl">⚠️ JSON Inválido o No Encontrado</h3>
-                    <p id="error-log-json" class="text-sm text-rose-600 font-bold mb-4"></p>
-                    <p class="text-sm text-slate-700 mb-4">El servidor tardó o el archivo tiene un error de formato. Puedes cargarlos manualmente aquí:</p>
+                    <h3 class="text-rose-700 font-black mb-2 text-xl">Archivos JSON mal formateados o no encontrados</h3>
+                    <p id="error-log-json" class="text-xs text-rose-600 font-bold mb-4 font-mono"></p>
+                    <p class="text-sm text-slate-700 mb-4">Puedes cargar los archivos manualmente aquí si el problema persiste:</p>
                     <div class="flex flex-col md:flex-row gap-4 justify-center">
                         <div>
                             <label class="block text-[10px] font-black uppercase text-rose-400 mb-1">datos.json (Test)</label>
-                            <input type="file" id="file-json-data" accept=".json" class="text-xs w-full file:bg-rose-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-xl cursor-pointer">
+                            <input type="file" id="file-json-data" accept=".json" class="text-xs w-full file:bg-rose-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-xl">
                         </div>
                         <div>
                             <label class="block text-[10px] font-black uppercase text-rose-400 mb-1">vocabulary.json (Cartas)</label>
-                            <input type="file" id="file-json-vocab" accept=".json" class="text-xs w-full file:bg-rose-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-xl cursor-pointer">
+                            <input type="file" id="file-json-vocab" accept=".json" class="text-xs w-full file:bg-rose-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-xl">
                         </div>
                     </div>
                 </div>
@@ -290,15 +304,14 @@
         </div>
 
         <div id="view-vocab" class="hidden-section w-full overflow-y-auto p-6 md:p-10 fade-in bg-slate-900 relative">
-            <!-- Capa de partículas para explosiones -->
             <div id="vocab-particles" class="absolute inset-0 pointer-events-none z-[100] overflow-hidden"></div>
             
             <div class="max-w-3xl mx-auto relative z-10">
                 <button onclick="goHome()" class="mb-6 text-slate-400 hover:text-white font-bold text-sm flex items-center gap-2 transition-colors"><i class="fas fa-arrow-left"></i> Volver al panel</button>
                 
                 <div class="text-center mb-10">
-                    <h2 class="text-3xl md:text-5xl font-black text-white tracking-tighter mb-3">Vocabulario Activo</h2>
-                    <p class="text-slate-400 font-bold text-sm">Lee la definición en inglés. Haz clic para ver el español (chispas).<br>Haz clic de nuevo para avanzar (explosión).</p>
+                    <h2 class="text-4xl md:text-5xl font-black text-white tracking-tighter mb-3">Vocabulario Activo</h2>
+                    <p class="text-slate-400 font-bold text-sm">Lee la definición en inglés. Haz clic para ver su significado en español.<br>Haz clic de nuevo para avanzar a la siguiente tarjeta.</p>
                 </div>
 
                 <div id="vocab-card-container" class="flip-card w-full max-w-xl mx-auto mb-10 transition-all duration-[600ms]" onclick="handleCardClick()">
@@ -306,14 +319,17 @@
                         <!-- Frente: Todo Inglés -->
                         <div class="flip-card-front">
                             <span id="v-type" class="text-[10px] font-black text-sky-500 uppercase tracking-[0.2em] mb-4 bg-sky-50 px-3 py-1 rounded-full border border-sky-100">---</span>
-                            <h3 id="v-word" class="text-4xl md:text-5xl font-black text-slate-800 tracking-tight">Cargando...</h3>
+                            <h3 id="v-word" class="text-5xl md:text-6xl font-black text-blue-800 tracking-tight" style="font-family: 'Playfair Display', serif;">Cargando...</h3>
                             <div class="w-16 h-px bg-slate-200 my-6"></div>
                             <p id="v-def-front" class="text-slate-600 text-lg md:text-xl font-medium px-4">"..."</p>
                         </div>
                         <!-- Reverso: Español -->
-                        <div class="flip-card-back flex flex-col justify-center items-center">
-                            <p class="text-[10px] font-black text-teal-400 uppercase tracking-[0.2em] mb-4 border border-teal-400/30 px-3 py-1 rounded-full">Traducción</p>
-                            <p id="v-es" class="text-4xl md:text-5xl text-white font-black uppercase tracking-tight">---</p>
+                        <div class="flip-card-back flex flex-col justify-center items-center relative overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-br from-slate-900 to-slate-800 z-0"></div>
+                            <div class="z-10 flex flex-col items-center">
+                                <p class="text-[10px] font-black text-teal-400 uppercase tracking-[0.2em] mb-4 border border-teal-400/30 px-3 py-1 rounded-full">Traducción</p>
+                                <p id="v-es" class="text-5xl md:text-6xl text-amber-400 font-black uppercase tracking-tight" style="font-family: 'Fredoka', sans-serif;">---</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -328,11 +344,33 @@
 
     </div>
 
+    <!-- SCRIPT PRINCIPAL -->
     <script>
-        // --- GAMIFICATION AUDIO SYNTHESIS (8-Bit Sounds) ---
+        // --- AUDIO & GAMIFICATION ---
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let audioCtx;
+        let globalVolume = 0.8;
+        let isMuted = false;
+
+        window.changeVolume = (val) => {
+            globalVolume = parseFloat(val);
+            const player = document.getElementById('audio-player');
+            if (player) player.volume = globalVolume;
+            if (globalVolume > 0 && isMuted) toggleMute();
+        };
+
+        window.toggleMute = () => {
+            isMuted = !isMuted;
+            const btn = document.getElementById('btn-mute');
+            btn.innerHTML = isMuted ? '<i class="fas fa-volume-mute text-rose-500"></i>' : '<i class="fas fa-volume-up"></i>';
+            const player = document.getElementById('audio-player');
+            if (player) player.muted = isMuted;
+        };
+
         function play8BitSound(type) {
+            let volMultiplier = isMuted ? 0 : globalVolume;
+            if (volMultiplier <= 0) return;
+
             if(!audioCtx) audioCtx = new AudioContext();
             if(audioCtx.state === 'suspended') audioCtx.resume();
             
@@ -344,28 +382,28 @@
                 osc.type = 'square';
                 osc.frequency.setValueAtTime(400, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.05, audioCtx.currentTime); 
+                gain.gain.setValueAtTime(0.15 * volMultiplier, audioCtx.currentTime); 
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.2);
             } else if(type === 'fail') {
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(150, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.3);
-                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.15 * volMultiplier, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.3);
             } else if(type === 'spark') {
                 osc.type = 'triangle';
                 osc.frequency.setValueAtTime(800, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(1400, audioCtx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.20 * volMultiplier, audioCtx.currentTime);
                 gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.1);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.1);
             } else if(type === 'explode') {
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(200, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.4);
-                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.25 * volMultiplier, audioCtx.currentTime);
                 gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.4);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.4);
             }
@@ -448,6 +486,7 @@
             document.getElementById('btn-logout').classList.add('hidden');
             document.getElementById('btn-home').classList.add('hidden');
             document.getElementById('btn-save').classList.add('hidden');
+            document.getElementById('general-timer-container').classList.add('hidden');
             ocultarTodo();
             document.getElementById('view-auth').classList.remove('hidden-section');
         };
@@ -461,38 +500,61 @@
         const localAudios = { testA: null, testB: null };
         let audioEndTime = 0; let repsCount = 0; let qTimerInt; let qTimeLeft = 0; let generalTimerInt;
 
+        // PAGINATION LOGIC
+        function getPagesForSection(section, dataLength) {
+            if (section === 'listening' && dataLength >= 50) {
+                return [
+                    [0,2], [2,4], [4,6], [6,8], [8,10],
+                    [10,12], [12,14], [14,16], [16,18], [18,20],
+                    [20,22], [22,24], [24,26], [26,28], [28,30], // Part A
+                    [30,34], [34,37], [37,41], [41,46], [46,50]  // Part B & C Blocks
+                ];
+            } else {
+                let pages = [];
+                for(let i=0; i<dataLength; i+=2) pages.push([i, Math.min(i+2, dataLength)]);
+                return pages;
+            }
+        }
+
+        const audioTimings = {
+            testA: [
+                [143, 194], [194, 252], [252, 310], [310, 351], [351, 423],
+                [423, 480], [480, 532], [532, 591], [591, 649], [649, 704],
+                [704, 758], [758, 815], [815, 869], [869, 933], [933, 993],
+                [1046, 1191], [1194, 1350], [1534, 1712], [1715, 1900], [1903, 2083]
+            ],
+            testB: [
+                [143, 191], [191, 245], [245, 302], [302, 358], [358, 416],
+                [416, 469], [469, 524], [524, 581], [581, 633], [633, 689],
+                [689, 753], [753, 810], [810, 867], [867, 927], [927, 983],
+                [1040, 1186], [1189, 1346], [1530, 1705], [1708, 1909], [1917, 2080]
+            ]
+        };
+
         window.onload = async () => {
             const cacheBuster = '?nocache=' + new Date().getTime();
-            let dataError = null;
-            let vocabError = null;
+            let jsonErrors = [];
 
-            // 1. CARGA DE DATOS.JSON
             try {
                 const resData = await fetch('./datos.json' + cacheBuster, { cache: "no-store" });
-                if(resData.ok) { examData = await resData.json(); } 
-                else { dataError = `Network Error (datos.json): ${resData.status}`; }
-            } catch(e) { dataError = `Sintaxis Inválida en datos.json`; }
+                if(resData.ok) examData = await resData.json(); 
+                else jsonErrors.push(`Network: datos.json respondió con código ${resData.status}`);
+            } catch(e) { jsonErrors.push(`Syntax/Parse: datos.json está mal formateado. (${e.message})`); }
             
-            // 2. CARGA DE VOCABULARY.JSON
             try {
                 const resVocab = await fetch('./vocabulary.json' + cacheBuster, { cache: "no-store" });
-                if(resVocab.ok) { vocabData = await resVocab.json(); } 
-                else { vocabError = `Network Error (vocabulary.json): ${resVocab.status}`; }
-            } catch(e) { vocabError = `Sintaxis Inválida en vocabulary.json`; }
+                if(resVocab.ok) vocabData = await resVocab.json();
+                else jsonErrors.push(`Network: vocabulary.json respondió con código ${resVocab.status}`);
+            } catch(e) { jsonErrors.push(`Syntax/Parse: vocabulary.json está mal formateado. (${e.message})`); }
 
             if (!examData || !vocabData) {
                 const errorBox = document.getElementById('json-fallback-container');
                 errorBox.classList.remove('hidden');
-                const log = [];
-                if(dataError) log.push(dataError);
-                if(vocabError) log.push(vocabError);
-                document.getElementById('error-log-json').innerHTML = log.join("<br>");
-                
+                document.getElementById('error-log-json').innerHTML = jsonErrors.join("<br>");
                 document.getElementById('file-json-data').addEventListener('change', e => manualJsonLoad(e, 'data'));
                 document.getElementById('file-json-vocab').addEventListener('change', e => manualJsonLoad(e, 'vocab'));
             }
 
-            // 3. AUTO-CARGA DE MP3 LOCALES
             attemptAudioAutoLoad();
             
             document.getElementById('file-a').addEventListener('change', e => { if(e.target.files[0]){ localAudios.testA = e.target.files[0]; updateAudioUI('testA', true); } });
@@ -500,6 +562,7 @@
 
             setupAudioPlayerLogic();
             document.getElementById('loading-screen').classList.add('hidden');
+            document.getElementById('audio-player').volume = globalVolume;
         };
 
         function manualJsonLoad(e, type) {
@@ -511,7 +574,7 @@
                     if(type === 'data') examData = JSON.parse(event.target.result);
                     if(type === 'vocab') vocabData = JSON.parse(event.target.result);
                     if(examData && vocabData) {
-                        alert("Ambos archivos JSON cargados y validados. ¡Listo!");
+                        alert("Ambos archivos JSON cargados. Listo.");
                         document.getElementById('json-fallback-container').classList.add('hidden');
                     }
                 } catch(err) { alert(`Error de Sintaxis en el JSON que subiste: ${err.message}`); }
@@ -535,7 +598,7 @@
                         }
                     } catch(e) {}
                 }
-                if(!localAudios[test.key]) { updateAudioUI(test.key, false); }
+                if(!localAudios[test.key]) updateAudioUI(test.key, false);
             }
         }
 
@@ -552,17 +615,14 @@
             }
         }
 
-        // --- SESSION LOGIC ---
         function initSession() {
             document.getElementById('user-display-name').innerText = currentUser.username;
             document.getElementById('btn-logout').classList.remove('hidden');
             ocultarTodo();
             
-            if(currentUser.progress) {
-                document.getElementById('resume-card').classList.remove('hidden');
-            } else {
-                document.getElementById('resume-card').classList.add('hidden');
-            }
+            if(currentUser.progress) document.getElementById('resume-card').classList.remove('hidden');
+            else document.getElementById('resume-card').classList.add('hidden');
+            
             document.getElementById('view-dashboard').classList.remove('hidden-section');
         }
 
@@ -594,6 +654,7 @@
             document.getElementById('btn-home').classList.add('hidden');
             document.getElementById('btn-save').classList.add('hidden');
             document.getElementById('q-timer-display').classList.add('hidden');
+            document.getElementById('general-timer-container').classList.add('hidden');
             document.getElementById('audio-player').pause();
             
             if(currentUser && currentUser.progress) document.getElementById('resume-card').classList.remove('hidden');
@@ -602,7 +663,6 @@
 
         function ocultarTodo() { ['view-auth', 'view-dashboard', 'view-setup', 'view-test', 'view-results', 'view-vocab'].forEach(id => document.getElementById(id).classList.add('hidden-section')); }
 
-        // --- TEST SETUP & RENDER ---
         window.openSetup = (mode) => {
             if(!examData) return alert("Falta el archivo JSON de datos.");
             isGuideMode = (mode === 'guide');
@@ -623,6 +683,7 @@
             ocultarTodo();
             document.getElementById('btn-home').classList.remove('hidden');
             document.getElementById('btn-save').classList.remove('hidden');
+            document.getElementById('general-timer-container').classList.remove('hidden');
             
             const badge = document.getElementById('live-mode-badge');
             if(isGuideMode) {
@@ -637,31 +698,33 @@
 
         window.jumpSection = (sec) => { session.section = sec; session.step = 0; renderSection(); };
 
-        function getPagesForSection(section, dataLength) {
-            if (section === 'listening' && dataLength >= 50) {
-                return [
-                    [0,2], [2,4], [4,6], [6,8], [8,10], [10,12], [12,14], [14,16], [16,18], [18,20],
-                    [20,22], [22,24], [24,26], [26,28], [28,30], // Parte A (Cortas, 2 por página)
-                    [30,34], [34,37], [37,41], [41,46], [46,50] // Partes B y C agrupadas
-                ]; 
-            } else {
-                let pages = [];
-                for(let i=0; i<dataLength; i+=2) pages.push([i, Math.min(i+2, dataLength)]);
-                return pages;
+        window.replayQuestionAudio = (qid) => {
+            const player = document.getElementById('audio-player');
+            const timings = audioTimings[currentTest];
+            if(!timings || !timings[session.step]) return;
+            
+            let [startT, endT] = timings[session.step];
+            
+            // Smart Split logic for Part A (ID <= 30) where 2 questions share 1 block
+            if (qid <= 30) {
+                const data = examData[currentTest][session.section];
+                const pages = getPagesForSection(session.section, data.length);
+                const [startIdx, endIdx] = pages[session.step];
+                const slice = data.slice(startIdx, endIdx);
+                
+                if (slice.length === 2) {
+                    const midT = startT + (endT - startT) / 2;
+                    if (slice[0].id === qid) {
+                        endT = midT; // Replay first half
+                    } else if (slice[1].id === qid) {
+                        startT = midT; // Replay second half
+                    }
+                }
             }
-        }
-
-        const audioTimings = {
-            testA: [
-                [143, 194], [194, 252], [252, 310], [310, 351], [351, 423], [423, 480], [480, 532], [532, 591], [591, 649], [649, 704],
-                [704, 758], [758, 815], [815, 869], [869, 933], [933, 993],
-                [1046, 1191], [1194, 1350], [1534, 1712], [1715, 1900], [1903, 2083] 
-            ],
-            testB: [
-                [143, 191], [191, 245], [245, 302], [302, 358], [358, 416], [416, 469], [469, 524], [524, 581], [581, 633], [633, 689],
-                [689, 753], [753, 810], [810, 867], [867, 927], [927, 983],
-                [1040, 1186], [1189, 1346], [1530, 1705], [1708, 1909], [1917, 2080] 
-            ]
+            
+            audioEndTime = endT;
+            player.currentTime = startT;
+            player.play().catch(e=>{});
         };
 
         function renderSection() {
@@ -726,13 +789,19 @@
                     }
                 }
 
+                let replayBtnHTML = '';
+                if (isGuideMode && session.section === 'listening') {
+                    replayBtnHTML = `<button onclick="replayQuestionAudio(${q.id})" class="ml-auto bg-sky-100 text-sky-600 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest hover:bg-sky-200 transition-colors shadow-sm"><i class="fas fa-volume-up mr-2"></i>Repetir Fragmento</button>`;
+                }
+
                 card.innerHTML = `
                     ${prepHTML}
-                    <div class="flex justify-between border-b border-slate-50 pb-4 mb-5">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-50 pb-4 mb-5 gap-3">
                         <div class="flex gap-3 items-center">
                             <span class="bg-slate-900 text-white w-8 h-8 flex items-center justify-center rounded-lg font-black text-sm">${q.id}</span>
                             <span class="font-black text-base text-slate-800">${q.pregunta || 'Select answer:'}</span>
                         </div>
+                        ${replayBtnHTML}
                     </div>
                     <div class="grid gap-3" id="opts-${q.id}">${opcionesHTML}</div>
                     <div id="feed-${q.id}">${feedHTML}</div>`;
@@ -879,7 +948,6 @@
             document.getElementById('btn-home').classList.remove('hidden');
             document.getElementById('view-vocab').classList.remove('hidden-section');
             
-            // Inicializar array de memoria
             if(vocabSeenCounts.length !== vocabData.length) {
                 vocabSeenCounts = new Array(vocabData.length).fill(0);
             }
@@ -890,11 +958,9 @@
         };
 
         function pickNextVocab() {
-            // Algoritmo Spaced Repetition Simple (SRS)
-            // Las cartas vistas tienen peso 3 (salen más frecuente), las nuevas tienen peso 1.
             let totalWeight = 0;
             for(let i=0; i<vocabData.length; i++) {
-                if(i === lastVocabIndex && vocabData.length > 1) continue; // Evitar repetir la misma inmediatamente
+                if(i === lastVocabIndex && vocabData.length > 1) continue; 
                 totalWeight += vocabSeenCounts[i] > 0 ? 3 : 1; 
             }
             
@@ -928,9 +994,8 @@
 
         window.handleCardClick = () => {
             if(!isCardFlipped) {
-                // Clic 1: Voltear y Chispas
                 isCardFlipped = true;
-                vocabSeenCounts[vocabIndex]++; // Marcar como vista para memoria a largo plazo
+                vocabSeenCounts[vocabIndex]++; 
                 cardsSeenToday++;
                 document.getElementById('v-counter').innerText = cardsSeenToday;
                 
@@ -938,7 +1003,6 @@
                 play8BitSound('spark');
                 createParticles('sparks');
             } else {
-                // Clic 2: Explosión y Siguiente
                 play8BitSound('explode');
                 createParticles('explosion');
                 
@@ -946,10 +1010,7 @@
                 card.style.opacity = '0';
                 card.style.transform = 'scale(0.5)';
                 
-                // Esperar a que pase la explosión para cargar la nueva
-                setTimeout(() => {
-                    pickNextVocab();
-                }, 500); 
+                setTimeout(() => { pickNextVocab(); }, 500); 
             }
         };
 
@@ -966,11 +1027,9 @@
                 p.style.height = size + 'px';
                 p.style.background = colors[Math.floor(Math.random() * colors.length)];
                 
-                // Posicionar al centro
                 p.style.top = '50%';
                 p.style.left = '50%';
                 
-                // Calcular vector de explosión
                 const angle = Math.random() * Math.PI * 2;
                 const distance = type === 'sparks' ? (Math.random() * 60 + 40) : (Math.random() * 300 + 100);
                 const tx = Math.cos(angle) * distance;
@@ -981,16 +1040,12 @@
 
                 container.appendChild(p);
 
-                // Forzar animación
                 requestAnimationFrame(() => {
                     p.style.transform = `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0)`;
                     p.style.opacity = '0';
                 });
 
-                // Limpiar basura
-                setTimeout(() => {
-                    if(p.parentNode) p.parentNode.removeChild(p);
-                }, 600);
+                setTimeout(() => { if(p.parentNode) p.parentNode.removeChild(p); }, 600);
             }
         }
 
