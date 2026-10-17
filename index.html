@@ -26,15 +26,13 @@
         .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Animaciones de Feedback (Gamification) */
         .answer-correct { animation: pulseGreen 0.5s ease; background-color: #ecfdf5 !important; border-color: #10b981 !important; color: #065f46 !important; }
         .answer-incorrect { animation: shakeRed 0.5s ease; background-color: #fff1f2 !important; border-color: #f43f5e !important; color: #9f1239 !important; }
         
         @keyframes pulseGreen { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 50% { transform: scale(1.02); box-shadow: 0 0 20px 10px rgba(16, 185, 129, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
         @keyframes shakeRed { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
 
-        /* Tarjetas Flip (Vocabulario) */
-        .flip-card { perspective: 1000px; cursor: pointer; height: 250px; }
+        .flip-card { perspective: 1000px; cursor: pointer; height: 300px; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
         .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 1.5rem; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; text-align: center; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
@@ -49,7 +47,6 @@
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-slate-800">
 
-    <!-- GLOBAL HEADER -->
     <header class="bg-slate-900 text-white py-3 px-6 flex justify-between items-center shadow-lg z-50 shrink-0">
         <div class="flex items-center gap-3">
             <div class="vibrant-gradient-a p-2 rounded-xl shadow-md rotate-3">
@@ -93,58 +90,45 @@
     <!-- MAIN CONTAINER -->
     <div class="flex flex-1 overflow-hidden relative">
 
-        <!-- ========================================== -->
-        <!-- VISTA 1: AUTHENTICATION (LOGIN / REGISTER) -->
-        <!-- ========================================== -->
-        <div id="view-auth" class="w-full h-full flex items-center justify-center p-4 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-slate-50 fade-in">
-            <div class="glass-card w-full max-w-md rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
+        <div id="view-auth" class="w-full h-full flex items-center justify-center p-4 bg-slate-50 fade-in overflow-y-auto">
+            <div class="glass-card w-full max-w-md rounded-[2rem] p-8 shadow-2xl relative overflow-hidden my-auto">
                 <div class="absolute top-0 left-0 w-full h-2 vibrant-gradient-a"></div>
                 
-                <!-- LOGIN FORM -->
+                <!-- LOGIN -->
                 <div id="auth-login">
-                    <h2 class="text-3xl font-black text-slate-800 mb-2">Bienvenido de vuelta</h2>
+                    <h2 class="text-3xl font-black text-slate-800 mb-2">Bienvenido</h2>
                     <p class="text-slate-500 text-sm mb-6 font-bold">Ingresa para continuar tu entrenamiento.</p>
-                    
                     <div class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Usuario</label>
-                            <input type="text" id="login-user" class="w-full bg-slate-100 border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none font-bold" placeholder="Tu nombre de usuario">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Contraseña</label>
-                            <input type="password" id="login-pass" class="w-full bg-slate-100 border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none font-bold" placeholder="••••••••">
-                        </div>
+                        <input type="text" id="login-user" class="w-full bg-slate-100 border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none font-bold" placeholder="Usuario">
+                        <input type="password" id="login-pass" class="w-full bg-slate-100 border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none font-bold" placeholder="Contraseña">
                         <button onclick="handleLogin()" class="w-full vibrant-gradient-a text-white font-black py-3.5 rounded-xl shadow-lg hover:scale-[1.02] transition-transform">INICIAR SESIÓN</button>
                     </div>
-                    
-                    <div class="mt-6 flex justify-between text-sm font-bold text-sky-600">
+                    <div class="mt-6 flex flex-col gap-2 text-sm font-bold text-sky-600 text-center">
                         <button onclick="switchAuth('register')" class="hover:underline">Crear cuenta nueva</button>
-                        <button onclick="switchAuth('recover')" class="hover:underline">¿Olvidaste tu contraseña?</button>
+                        <button onclick="switchAuth('recover')" class="hover:underline text-slate-400">¿Olvidaste tu contraseña?</button>
                     </div>
                 </div>
 
-                <!-- REGISTER FORM -->
+                <!-- REGISTER -->
                 <div id="auth-register" class="hidden">
                     <h2 class="text-3xl font-black text-slate-800 mb-2">Nueva Cuenta</h2>
-                    <p class="text-slate-500 text-sm mb-6 font-bold">Límite de 10 usuarios locales.</p>
-                    
+                    <p class="text-slate-500 text-sm mb-4 font-bold">Límite: 10 usuarios en este equipo.</p>
                     <div class="space-y-3">
                         <input type="text" id="reg-user" class="w-full bg-slate-100 border border-slate-200 p-3 rounded-xl outline-none font-bold text-sm" placeholder="Nombre de usuario">
                         <input type="password" id="reg-pass" class="w-full bg-slate-100 border border-slate-200 p-3 rounded-xl outline-none font-bold text-sm" placeholder="Contraseña">
-                        <input type="text" id="reg-q" class="w-full bg-slate-100 border border-slate-200 p-3 rounded-xl outline-none font-bold text-sm" placeholder="Pregunta secreta (Ej. Nombre de mi mascota)">
+                        <input type="text" id="reg-q" class="w-full bg-slate-100 border border-slate-200 p-3 rounded-xl outline-none font-bold text-sm" placeholder="Pregunta secreta (Ej. Mi mascota)">
                         <input type="password" id="reg-a" class="w-full bg-slate-100 border border-slate-200 p-3 rounded-xl outline-none font-bold text-sm" placeholder="Respuesta secreta">
-                        
                         <button onclick="handleRegister()" class="w-full vibrant-success text-white font-black py-3.5 rounded-xl shadow-lg hover:scale-[1.02] transition-transform mt-2">REGISTRARSE</button>
                     </div>
-                    <button onclick="switchAuth('login')" class="mt-4 text-sm font-bold text-slate-400 hover:text-slate-600 w-full text-center">Volver al inicio de sesión</button>
+                    <button onclick="switchAuth('login')" class="mt-4 text-sm font-bold text-slate-400 hover:text-slate-600 w-full text-center">Volver</button>
                 </div>
 
-                <!-- RECOVER FORM -->
+                <!-- RECOVER -->
                 <div id="auth-recover" class="hidden">
                     <h2 class="text-3xl font-black text-slate-800 mb-2">Recuperar Acceso</h2>
                     <div class="space-y-4" id="rec-step-1">
-                        <input type="text" id="rec-user" class="w-full bg-slate-100 border border-slate-200 p-3 rounded-xl outline-none font-bold" placeholder="Ingresa tu nombre de usuario">
-                        <button onclick="findRecoverUser()" class="w-full bg-slate-800 text-white font-black py-3 rounded-xl">Buscar Usuario</button>
+                        <input type="text" id="rec-user" class="w-full bg-slate-100 border border-slate-200 p-3 rounded-xl outline-none font-bold" placeholder="Tu usuario">
+                        <button onclick="findRecoverUser()" class="w-full bg-slate-800 text-white font-black py-3 rounded-xl">Buscar</button>
                     </div>
                     <div class="space-y-4 hidden mt-4" id="rec-step-2">
                         <p id="rec-question-display" class="font-bold text-sky-700 bg-sky-50 p-3 rounded-lg"></p>
@@ -152,27 +136,34 @@
                         <button onclick="verifyRecover()" class="w-full vibrant-success text-white font-black py-3 rounded-xl">Verificar</button>
                     </div>
                     <p id="rec-result" class="mt-4 font-black text-center text-lg hidden"></p>
-                    <button onclick="switchAuth('login')" class="mt-6 text-sm font-bold text-slate-400 hover:text-slate-600 w-full text-center">Volver al inicio de sesión</button>
+                    <button onclick="switchAuth('login')" class="mt-6 text-sm font-bold text-slate-400 hover:text-slate-600 w-full text-center">Volver</button>
                 </div>
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- VISTA 2: DASHBOARD PRINCIPAL -->
-        <!-- ========================================== -->
         <div id="view-dashboard" class="hidden-section w-full overflow-y-auto p-6 md:p-10 fade-in">
             <div class="max-w-5xl mx-auto">
                 <h2 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-2">Tu Panel de Entrenamiento</h2>
-                <p class="text-slate-500 text-lg font-bold mb-10">Selecciona el modo de estudio para el día de hoy.</p>
+                <p class="text-slate-500 text-lg font-bold mb-10">Selecciona tu misión para el día de hoy.</p>
                 
+                <!-- Resume Progress Card -->
+                <div id="resume-card" class="hidden mb-8 bg-sky-50 border border-sky-200 p-6 rounded-3xl flex justify-between items-center shadow-sm">
+                    <div>
+                        <h3 class="text-sky-800 font-black text-xl mb-1">¡Tienes un test en pausa!</h3>
+                        <p class="text-sky-600 text-sm font-bold">Continúa justo donde te quedaste.</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="iniciarDesdeCero()" class="px-4 py-2 bg-white text-rose-500 rounded-xl font-bold text-sm hover:bg-rose-50">Borrar</button>
+                        <button onclick="continuarSesion()" class="px-6 py-2 vibrant-gradient-a text-white rounded-xl font-black shadow-md">Continuar</button>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    
                     <!-- GUIA DE ESTUDIO -->
                     <div onclick="openSetup('guide')" class="glass-card p-8 rounded-[2rem] border-2 border-white transition-all hover:-translate-y-2 hover:shadow-2xl cursor-pointer group">
                         <div class="w-16 h-16 vibrant-gradient-a rounded-2xl flex items-center justify-center text-white text-3xl mb-6 shadow-lg group-hover:rotate-12 transition-transform"><i class="fas fa-book-reader"></i></div>
                         <h3 class="text-2xl font-black mb-2 text-slate-800">Guía de Estudio</h3>
                         <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Aprende sin presión. Te mostraremos la respuesta y explicación al instante si te equivocas. Sin límite de tiempo.</p>
-                        <span class="inline-block bg-sky-100 text-sky-700 px-3 py-1 rounded-lg text-xs font-black uppercase">Modo Relajado</span>
                     </div>
 
                     <!-- COMENZAR TEST -->
@@ -181,30 +172,34 @@
                         <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-sky-400 text-3xl mb-6 shadow-lg group-hover:scale-110 transition-transform"><i class="fas fa-stopwatch"></i></div>
                         <h3 class="text-2xl font-black mb-2 text-white">Comenzar Test</h3>
                         <p class="text-slate-400 text-sm font-bold leading-relaxed mb-4">Simulación real. Temporizador activo, sin explicaciones durante el examen. Mide tu puntaje oficial.</p>
-                        <span class="inline-block bg-rose-500 text-white px-3 py-1 rounded-lg text-xs font-black uppercase shadow-md">Modo Examen</span>
                     </div>
 
                     <!-- VOCABULARIO -->
                     <div onclick="startVocab()" class="glass-card p-8 rounded-[2rem] border-2 border-white transition-all hover:-translate-y-2 hover:shadow-2xl cursor-pointer group">
                         <div class="w-16 h-16 vibrant-warning rounded-2xl flex items-center justify-center text-white text-3xl mb-6 shadow-lg group-hover:-rotate-12 transition-transform"><i class="fas fa-layer-group"></i></div>
                         <h3 class="text-2xl font-black mb-2 text-slate-800">Vocabulario</h3>
-                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Expande tu léxico. Tarjetas interactivas con las palabras más usadas y verbos irregulares.</p>
-                        <span class="inline-block bg-amber-100 text-amber-700 px-3 py-1 rounded-lg text-xs font-black uppercase">Flashcards</span>
+                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Expande tu léxico. Tarjetas interactivas con las palabras más usadas y verbos irregulares del TOEFL.</p>
                     </div>
                 </div>
 
-                <!-- CONTENEDOR DE CARGA JSON (Solo si falla el auto-load) -->
+                <!-- Fallback JSON Upload -->
                 <div id="json-fallback-container" class="hidden mt-10 bg-rose-50 p-6 rounded-[2rem] border border-rose-200 text-center shadow-md">
-                    <h3 class="text-rose-700 font-black mb-2">Base de datos (datos.json) no detectada</h3>
-                    <p class="text-xs text-rose-600 font-bold mb-4">Sube el archivo manualmente para activar los test.</p>
-                    <input type="file" id="file-json" accept=".json" class="mx-auto text-xs block w-full max-w-sm file:bg-rose-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-xl file:cursor-pointer file:font-black">
+                    <h3 class="text-rose-700 font-black mb-2">Faltan archivos de base de datos</h3>
+                    <p class="text-xs text-rose-600 font-bold mb-4">Por favor sube tus archivos JSON manualmente.</p>
+                    <div class="flex flex-col md:flex-row gap-4 justify-center">
+                        <div>
+                            <label class="block text-[10px] font-black uppercase text-rose-400 mb-1">datos.json (Test)</label>
+                            <input type="file" id="file-json-data" accept=".json" class="text-xs w-full file:bg-rose-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black uppercase text-rose-400 mb-1">vocabulary.json (Cartas)</label>
+                            <input type="file" id="file-json-vocab" accept=".json" class="text-xs w-full file:bg-rose-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-xl">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- VISTA 3: SELECCIÓN DE TEST Y AUDIOS -->
-        <!-- ========================================== -->
         <div id="view-setup" class="hidden-section w-full overflow-y-auto p-6 md:p-10 fade-in">
             <div class="max-w-4xl mx-auto">
                 <button onclick="goHome()" class="mb-6 text-slate-400 hover:text-slate-800 font-bold text-sm flex items-center gap-2 transition-colors"><i class="fas fa-arrow-left"></i> Volver al panel</button>
@@ -218,10 +213,9 @@
                             <div id="display-a" class="bg-slate-100 text-slate-500 px-3 py-1 rounded-xl text-[9px] font-black uppercase border border-slate-200">Falta Audio</div>
                         </div>
                         <h3 class="text-2xl font-black mb-2 text-slate-800">Test A: Volume 3</h3>
-                        <p class="text-slate-500 text-sm mb-4">Complejidad: Media. Ideal para medir tu nivel base actual.</p>
                         
                         <div id="upload-box-a" class="mb-4">
-                            <label class="block text-[10px] font-black uppercase text-slate-400 mb-1">Cargar Audio Manual (si no se auto-cargó)</label>
+                            <label class="block text-[10px] font-black uppercase text-slate-400 mb-1">Cargar Audio MP3 (Si no se auto-cargó)</label>
                             <input type="file" id="file-a" accept="audio/*" class="text-[10px] block w-full file:bg-slate-200 file:text-slate-700 file:border-0 file:px-3 file:py-1.5 file:rounded-lg file:cursor-pointer file:font-bold">
                         </div>
                         <button onclick="iniciarTestFlow('testA')" class="w-full bg-slate-900 text-white py-3.5 rounded-xl font-black uppercase text-xs tracking-widest hover:bg-sky-600 transition-colors shadow-md">Iniciar Test A</button>
@@ -234,10 +228,9 @@
                             <div id="display-b" class="bg-slate-100 text-slate-500 px-3 py-1 rounded-xl text-[9px] font-black uppercase border border-slate-200">Falta Audio</div>
                         </div>
                         <h3 class="text-2xl font-black mb-2 text-slate-800">Test B: Advanced</h3>
-                        <p class="text-slate-500 text-sm mb-4">Complejidad: Alta. Textos y audios más densos.</p>
                         
                         <div id="upload-box-b" class="mb-4">
-                            <label class="block text-[10px] font-black uppercase text-slate-400 mb-1">Cargar Audio Manual (si no se auto-cargó)</label>
+                            <label class="block text-[10px] font-black uppercase text-slate-400 mb-1">Cargar Audio MP3 (Si no se auto-cargó)</label>
                             <input type="file" id="file-b" accept="audio/*" class="text-[10px] block w-full file:bg-slate-200 file:text-slate-700 file:border-0 file:px-3 file:py-1.5 file:rounded-lg file:cursor-pointer file:font-bold">
                         </div>
                         <button onclick="iniciarTestFlow('testB')" class="w-full bg-slate-900 text-white py-3.5 rounded-xl font-black uppercase text-xs tracking-widest hover:bg-indigo-600 transition-colors shadow-md">Iniciar Test B</button>
@@ -246,41 +239,37 @@
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- VISTA 4: EL EXAMEN (TEST VIEW) -->
-        <!-- ========================================== -->
         <div id="view-test" class="hidden-section w-full flex flex-col h-full fade-in">
-            <!-- Menú Lateral Dinámico -->
             <div class="flex flex-1 overflow-hidden">
-                <aside class="w-48 bg-slate-50 border-r border-slate-200 shrink-0 hidden md:flex flex-col">
-                    <div class="p-4 bg-slate-100 border-b border-slate-200">
-                        <p id="live-mode-badge" class="text-[9px] font-black uppercase tracking-widest text-center px-2 py-1 rounded bg-slate-200 text-slate-600">MODO</p>
+                <!-- Lateral Menu -->
+                <aside class="w-48 bg-white border-r border-slate-200 shrink-0 hidden md:flex flex-col shadow-md z-10">
+                    <div class="p-4 bg-slate-50 border-b border-slate-200 text-center">
+                        <p id="live-mode-badge" class="text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded">MODO</p>
                     </div>
                     <nav class="flex-1 py-4 space-y-2 px-2" id="test-nav">
-                        <button onclick="jumpSection('listening')" id="nav-listening" class="w-full text-left px-4 py-3 rounded-xl font-bold text-sm text-slate-500 hover:bg-white active-nav transition-colors"><i class="fas fa-headphones-alt mr-2"></i> Listening</button>
-                        <button onclick="jumpSection('structure')" id="nav-structure" class="w-full text-left px-4 py-3 rounded-xl font-bold text-sm text-slate-500 hover:bg-white transition-colors"><i class="fas fa-pen-nib mr-2"></i> Structure</button>
-                        <button onclick="jumpSection('reading')" id="nav-reading" class="w-full text-left px-4 py-3 rounded-xl font-bold text-sm text-slate-500 hover:bg-white transition-colors"><i class="fas fa-book-open mr-2"></i> Reading</button>
+                        <button onclick="jumpSection('listening')" id="nav-listening" class="w-full text-left px-4 py-3 rounded-xl font-bold text-sm text-slate-500 hover:bg-slate-50 transition-colors"><i class="fas fa-headphones-alt mr-2 text-sky-500"></i> Listening</button>
+                        <button onclick="jumpSection('structure')" id="nav-structure" class="w-full text-left px-4 py-3 rounded-xl font-bold text-sm text-slate-500 hover:bg-slate-50 transition-colors"><i class="fas fa-pen-nib mr-2 text-teal-500"></i> Structure</button>
+                        <button onclick="jumpSection('reading')" id="nav-reading" class="w-full text-left px-4 py-3 rounded-xl font-bold text-sm text-slate-500 hover:bg-slate-50 transition-colors"><i class="fas fa-book-open mr-2 text-indigo-500"></i> Reading</button>
                     </nav>
                 </aside>
 
+                <!-- Question Area -->
                 <main class="flex-1 overflow-y-auto p-4 md:p-8 relative" id="test-scroll-area">
-                    <div class="max-w-3xl mx-auto">
-                        <!-- Cabecera de Sección -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 mb-6 flex justify-between items-center sticky top-0 z-10">
-                            <h2 id="live-sec-title" class="text-2xl font-black uppercase tracking-tight text-slate-800">Listening</h2>
+                    <div class="max-w-3xl mx-auto pb-20">
+                        <div class="bg-slate-900 p-6 md:p-8 rounded-3xl shadow-lg mb-6 flex justify-between items-center sticky top-0 z-20">
+                            <h2 id="live-sec-title" class="text-2xl font-black uppercase tracking-tight text-white">Section</h2>
                             <div id="audio-panel" class="hidden flex flex-col items-end gap-1">
-                                <audio id="audio-player" class="h-8 w-48" controls controlsList="nodownload"></audio>
-                                <span class="text-[9px] font-black text-amber-500 uppercase tracking-widest">Reps: <span id="reps-label">1 / 2</span></span>
+                                <audio id="audio-player" class="h-8 w-48 opacity-70 hover:opacity-100 transition-opacity" controls controlsList="nodownload"></audio>
+                                <span class="text-[9px] font-black text-amber-500 uppercase tracking-widest bg-slate-800 px-2 py-1 rounded">Reps: <span id="reps-label">1 / 2</span></span>
                             </div>
                         </div>
                         
-                        <!-- Contenedor de Preguntas -->
                         <div id="q-box" class="space-y-6"></div>
                         
-                        <!-- Navegación Inferior -->
-                        <div class="mt-8 flex justify-between items-center bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                        <!-- Navigation Bar -->
+                        <div class="mt-8 flex justify-between items-center bg-white p-4 rounded-2xl shadow-md border border-slate-100">
                             <button id="p-btn" onclick="navegarPasos(-1)" class="px-6 py-3 font-bold text-slate-400 hover:text-slate-800 transition-colors disabled:opacity-20 text-sm">Anterior</button>
-                            <div class="flex-1 mx-4 h-2 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="flex-1 mx-4 h-2.5 bg-slate-100 rounded-full overflow-hidden">
                                 <div id="p-bar" class="h-full vibrant-gradient-a transition-all duration-500" style="width: 0%"></div>
                             </div>
                             <button id="n-btn" onclick="navegarPasos(1)" class="bg-slate-900 text-white px-8 py-3 rounded-xl font-black uppercase text-xs tracking-widest hover:bg-sky-600 transition-colors shadow-md">Siguiente</button>
@@ -290,76 +279,92 @@
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- VISTA 5: RESULTADOS -->
-        <!-- ========================================== -->
         <div id="view-results" class="hidden-section w-full overflow-y-auto p-6 md:p-10 fade-in flex items-center justify-center">
             <div class="glass-card p-10 rounded-[3rem] shadow-2xl border-2 border-white text-center max-w-lg w-full relative overflow-hidden">
-                <!-- Confetti Canvas (Simulated via CSS/JS later if needed, using simple CSS for now) -->
                 <div class="text-7xl mb-6 animate-bounce">🏆</div>
                 <h2 class="text-4xl font-black text-slate-900 mb-2">¡Terminaste!</h2>
-                <p class="text-slate-500 font-bold mb-8">Este es tu desempeño en el simulacro.</p>
+                <p class="text-slate-500 font-bold mb-8">Desempeño estimado ITP.</p>
                 
                 <div class="bg-slate-900 text-white p-8 rounded-[2rem] mb-8 shadow-inner relative">
-                    <p class="text-xs font-black uppercase opacity-60 tracking-[0.2em] mb-2">Puntaje Estimado ITP</p>
                     <h3 id="final-score" class="text-7xl font-black mb-3 text-transparent bg-clip-text bg-gradient-to-br from-sky-300 to-white">---</h3>
                     <div id="final-level" class="vibrant-gradient-b text-white px-6 py-1.5 rounded-full inline-block font-black text-sm uppercase tracking-widest">Nivel: ---</div>
                 </div>
-                
                 <button onclick="goHome()" class="w-full bg-slate-100 text-slate-800 py-4 rounded-xl font-black text-sm hover:bg-slate-200 transition-all uppercase tracking-widest">Volver al Panel</button>
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- VISTA 6: VOCABULARIO (FLASHCARDS) -->
-        <!-- ========================================== -->
         <div id="view-vocab" class="hidden-section w-full overflow-y-auto p-6 md:p-10 fade-in bg-slate-900">
             <div class="max-w-3xl mx-auto">
                 <button onclick="goHome()" class="mb-6 text-slate-400 hover:text-white font-bold text-sm flex items-center gap-2 transition-colors"><i class="fas fa-arrow-left"></i> Volver al panel</button>
                 
                 <div class="text-center mb-10">
-                    <h2 class="text-3xl md:text-5xl font-black text-white tracking-tighter mb-3">Master Vocabulary</h2>
-                    <p class="text-slate-400 font-bold">Haz clic en la tarjeta para ver el significado. Memoriza y avanza.</p>
+                    <h2 class="text-3xl md:text-5xl font-black text-white tracking-tighter mb-3">Vocabulario & Verbos</h2>
+                    <p class="text-slate-400 font-bold">Haz clic en la tarjeta para revelar su significado y explicación.</p>
                 </div>
 
-                <div id="vocab-card-container" class="flip-card w-full max-w-xl mx-auto mb-8" onclick="flipCard()">
+                <div id="vocab-card-container" class="flip-card w-full max-w-xl mx-auto mb-10" onclick="flipCard()">
                     <div class="flip-card-inner shadow-2xl">
-                        <!-- Front (English Word) -->
+                        <!-- Front -->
                         <div class="flip-card-front">
-                            <span id="v-type" class="text-xs font-black text-sky-500 uppercase tracking-widest mb-4">---</span>
-                            <h3 id="v-word" class="text-5xl font-black text-slate-800 tracking-tight">Loading...</h3>
+                            <span id="v-type" class="text-[10px] font-black text-sky-500 uppercase tracking-[0.2em] mb-4 bg-sky-50 px-3 py-1 rounded-full border border-sky-100">---</span>
+                            <h3 id="v-word" class="text-4xl md:text-5xl font-black text-slate-800 tracking-tight">Cargando...</h3>
                         </div>
-                        <!-- Back (Definition & Spanish) -->
+                        <!-- Back -->
                         <div class="flip-card-back">
-                            <h4 id="v-word-back" class="text-3xl font-black text-white mb-4">---</h4>
-                            <p id="v-def" class="text-slate-300 text-lg italic mb-6">"..."</p>
+                            <h4 id="v-word-back" class="text-3xl font-black text-sky-300 mb-4">---</h4>
+                            <p id="v-def" class="text-slate-300 text-base md:text-lg italic mb-6">"..."</p>
                             <div class="w-16 h-px bg-slate-700 mb-6"></div>
-                            <p id="v-es" class="text-sky-400 font-black text-2xl uppercase tracking-widest">---</p>
+                            <p id="v-es" class="text-white font-black text-xl md:text-2xl uppercase tracking-widest">---</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex justify-center gap-4 max-w-xl mx-auto">
-                    <button onclick="navVocab(-1)" class="flex-1 bg-slate-800 text-white py-4 rounded-2xl font-black hover:bg-slate-700 transition-colors"><i class="fas fa-chevron-left"></i> Anterior</button>
+                    <button onclick="navVocab(-1)" class="flex-1 bg-slate-800 text-white py-4 rounded-2xl font-black hover:bg-slate-700 transition-colors active:scale-95"><i class="fas fa-chevron-left mr-2"></i> Anterior</button>
                     <div class="bg-slate-800 text-sky-400 px-6 py-4 rounded-2xl font-black flex items-center justify-center min-w-[100px]" id="v-counter">1 / X</div>
-                    <button onclick="navVocab(1)" class="flex-1 bg-sky-600 text-white py-4 rounded-2xl font-black hover:bg-sky-500 transition-colors">Siguiente <i class="fas fa-chevron-right"></i></button>
+                    <button onclick="navVocab(1)" class="flex-1 bg-sky-600 text-white py-4 rounded-2xl font-black hover:bg-sky-500 transition-colors active:scale-95">Siguiente <i class="fas fa-chevron-right ml-2"></i></button>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- SCRIPT PRINCIPAL -->
     <script>
-        // ==========================================
-        // 1. SISTEMA DE USUARIOS LOCAL (Simulación DB)
-        // ==========================================
-        let currentUser = null;
+        // --- GAMIFICATION AUDIO SYNTHESIS (8-Bit Sounds) ---
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+        function play8BitSound(type) {
+            if(!audioCtx) audioCtx = new AudioContext();
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            
+            if(type === 'success') {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime); 
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+            } else {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+            }
+        }
+
+        // --- LOCAL USER MANAGEMENT (Max 10) ---
         let usersDB = JSON.parse(localStorage.getItem('toefl_users_db')) || [];
+        let currentUser = null;
         
         function saveUsersDB() { localStorage.setItem('toefl_users_db', JSON.stringify(usersDB)); }
 
-        function handleLogin() {
+        window.handleLogin = () => {
             const user = document.getElementById('login-user').value.trim();
             const pass = document.getElementById('login-pass').value.trim();
             if(!user || !pass) return alert("Llena todos los campos.");
@@ -369,32 +374,29 @@
                 currentUser = found;
                 initSession();
             } else { alert("Usuario o contraseña incorrectos."); }
-        }
+        };
 
-        function handleRegister() {
+        window.handleRegister = () => {
             const user = document.getElementById('reg-user').value.trim();
             const pass = document.getElementById('reg-pass').value.trim();
             const q = document.getElementById('reg-q').value.trim();
             const a = document.getElementById('reg-a').value.trim();
             
             if(!user || !pass || !q || !a) return alert("Llena todos los campos.");
-            if(usersDB.length >= 10) return alert("Se ha alcanzado el límite máximo de 10 usuarios en este dispositivo.");
+            if(usersDB.length >= 10) return alert("Se ha alcanzado el límite máximo de 10 usuarios en este equipo.");
             if(usersDB.find(u => u.username === user)) return alert("El usuario ya existe. Elige otro nombre.");
             
-            const newUser = {
-                username: user, password: pass, secretQ: q, secretA: a.toLowerCase(),
-                progress: null // Para guardar dónde se quedó
-            };
+            const newUser = { username: user, password: pass, secretQ: q, secretA: a.toLowerCase(), progress: null };
             usersDB.push(newUser);
             saveUsersDB();
             
             alert("¡Cuenta creada con éxito! Iniciando sesión...");
             currentUser = newUser;
             initSession();
-        }
+        };
 
         let recTempUser = null;
-        function findRecoverUser() {
+        window.findRecoverUser = () => {
             const user = document.getElementById('rec-user').value.trim();
             recTempUser = usersDB.find(u => u.username === user);
             if(recTempUser) {
@@ -402,9 +404,9 @@
                 document.getElementById('rec-step-2').classList.remove('hidden');
                 document.getElementById('rec-question-display').innerText = "¿" + recTempUser.secretQ + "?";
             } else { alert("Usuario no encontrado."); }
-        }
+        };
 
-        function verifyRecover() {
+        window.verifyRecover = () => {
             const ans = document.getElementById('rec-answer').value.trim().toLowerCase();
             const resEl = document.getElementById('rec-result');
             resEl.classList.remove('hidden');
@@ -415,9 +417,9 @@
                 resEl.className = "mt-4 font-black text-center text-lg text-rose-600 bg-rose-50 p-3 rounded-lg";
                 resEl.innerText = "Respuesta incorrecta.";
             }
-        }
+        };
 
-        function switchAuth(view) {
+        window.switchAuth = (view) => {
             ['login', 'register', 'recover'].forEach(v => document.getElementById(`auth-${v}`).classList.add('hidden'));
             document.getElementById(`auth-${view}`).classList.remove('hidden');
             if(view === 'recover') {
@@ -425,9 +427,9 @@
                 document.getElementById('rec-step-2').classList.add('hidden');
                 document.getElementById('rec-result').classList.add('hidden');
             }
-        }
+        };
 
-        function logout() {
+        window.logout = () => {
             currentUser = null;
             document.getElementById('user-display-name').innerText = "Inicia Sesión";
             document.getElementById('btn-logout').classList.add('hidden');
@@ -435,105 +437,76 @@
             document.getElementById('btn-save').classList.add('hidden');
             ocultarTodo();
             document.getElementById('view-auth').classList.remove('hidden-section');
-        }
+        };
 
-        // ==========================================
-        // 2. LÓGICA PRINCIPAL DE LA APP
-        // ==========================================
+        // --- GLOBAL VARIABLES & DATA LOADING ---
         let examData = null;
-        let vocabData = [];
+        let vocabData = null;
         let currentTest = null;
         let isGuideMode = false;
         let session = { section: 'listening', step: 0, answers: {} };
-        
         const localAudios = { testA: null, testB: null };
-        let audioEndTime = 0;
-        let repsCount = 0;
-        let qTimerInt;
-        let qTimeLeft = 0;
-        let generalTimerInt;
-
-        // Auto-load audios al arrancar
-        async function attemptAudioAutoLoad() {
-            try {
-                // Buscamos audios en la misma ruta con nombres estándar
-                const files = [
-                    { key: 'testA', paths: ['AUDIO_A_LIGERO.mp3', 'Audio_A.mp3'] },
-                    { key: 'testB', paths: ['AUDIO_B_LIGERO.mp3', 'Audio_B.mp3'] }
-                ];
-                
-                for(let test of files) {
-                    for(let path of test.paths) {
-                        try {
-                            const res = await fetch(path, {method: 'HEAD'}); // Solo revisa si existe
-                            if(res.ok) {
-                                // Lo descargamos en un blob
-                                const fullRes = await fetch(path);
-                                const blob = await fullRes.blob();
-                                localAudios[test.key] = blob;
-                                updateAudioUI(test.key, true);
-                                console.log(`Audio auto-cargado: ${path}`);
-                                break; // Siguiente test
-                            }
-                        } catch(e) {}
-                    }
-                }
-            } catch(e) { console.log("Auto-load de audios omitido."); }
-        }
+        let audioEndTime = 0; let repsCount = 0; let qTimerInt; let qTimeLeft = 0; let generalTimerInt;
 
         window.onload = async () => {
-            // Verificar si hay usuarios, si no, crear usuario de prueba
-            if(usersDB.length === 0) {
-                usersDB.push({username: "admin", password: "123", secretQ: "rol", secretA: "admin", progress: null});
-                saveUsersDB();
-            }
-
-            // Cargar JSON
-            let jsonLoaded = false;
-            const possibleFiles = ['datos.json', 'examen_data.json'];
+            // Check for both JSON files
             const cacheBuster = '?nocache=' + new Date().getTime();
+            
+            try {
+                const resData = await fetch('datos.json' + cacheBuster, { cache: "no-store" });
+                if(resData.ok) examData = await resData.json();
+            } catch(e) { console.log("datos.json not found via auto-fetch."); }
+            
+            try {
+                const resVocab = await fetch('vocabulary.json' + cacheBuster, { cache: "no-store" });
+                if(resVocab.ok) vocabData = await resVocab.json();
+            } catch(e) { console.log("vocabulary.json not found via auto-fetch."); }
 
-            for (let file of possibleFiles) {
-                try {
-                    const res = await fetch(file + cacheBuster, { cache: "no-store" });
-                    if (res.ok) {
-                        const rawData = await res.json();
-                        examData = rawData;
-                        vocabData = rawData.vocabulary || [];
-                        jsonLoaded = true;
-                        break;
-                    }
-                } catch (e) {}
-            }
-
-            if (!jsonLoaded) {
+            if (!examData || !vocabData) {
                 document.getElementById('json-fallback-container').classList.remove('hidden');
-                document.getElementById('file-json').addEventListener('change', (e) => {
-                    const file = e.target.files[0];
-                    if(!file) return;
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        try { 
-                            const parsed = JSON.parse(event.target.result);
-                            examData = parsed; vocabData = parsed.vocabulary || [];
-                            document.getElementById('json-fallback-container').classList.add('hidden');
-                            alert("JSON cargado.");
-                        } catch(e) { alert("JSON inválido."); }
-                    };
-                    reader.readAsText(file);
-                });
+                document.getElementById('file-json-data').addEventListener('change', e => manualJsonLoad(e, 'data'));
+                document.getElementById('file-json-vocab').addEventListener('change', e => manualJsonLoad(e, 'vocab'));
             }
 
-            await attemptAudioAutoLoad();
-
-            // Setup manual audio inputs
+            attemptAudioAutoLoad();
             document.getElementById('file-a').addEventListener('change', e => { if(e.target.files[0]){ localAudios.testA = e.target.files[0]; updateAudioUI('testA', true); } });
             document.getElementById('file-b').addEventListener('change', e => { if(e.target.files[0]){ localAudios.testB = e.target.files[0]; updateAudioUI('testB', true); } });
 
             setupAudioPlayerLogic();
-            
             document.getElementById('loading-screen').classList.add('hidden');
         };
+
+        function manualJsonLoad(e, type) {
+            const file = e.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    if(type === 'data') examData = JSON.parse(event.target.result);
+                    if(type === 'vocab') vocabData = JSON.parse(event.target.result);
+                    if(examData && vocabData) {
+                        alert("Ambos archivos cargados. Listo.");
+                        document.getElementById('json-fallback-container').classList.add('hidden');
+                    }
+                } catch(err) { alert("JSON Inválido."); }
+            };
+            reader.readAsText(file);
+        }
+
+        async function attemptAudioAutoLoad() {
+            const files = [{ key: 'testA', paths: ['AUDIO_A_LIGERO.mp3', 'Audio_A.mp3'] }, { key: 'testB', paths: ['AUDIO_B_LIGERO.mp3', 'Audio_B.mp3'] }];
+            for(let test of files) {
+                for(let path of test.paths) {
+                    try {
+                        const res = await fetch(path);
+                        if(res.ok) {
+                            localAudios[test.key] = await res.blob();
+                            updateAudioUI(test.key, true); break;
+                        }
+                    } catch(e) {}
+                }
+            }
+        }
 
         function updateAudioUI(key, ok) {
             const display = document.getElementById(`display-${key.slice(-1).toLowerCase()}`);
@@ -552,27 +525,25 @@
             ocultarTodo();
             
             if(currentUser.progress) {
-                document.getElementById('welcome-hub').classList.remove('hidden');
+                document.getElementById('resume-card').classList.remove('hidden');
             } else {
-                goHome();
+                document.getElementById('resume-card').classList.add('hidden');
             }
+            document.getElementById('view-dashboard').classList.remove('hidden-section');
         }
 
         window.continuarSesion = () => {
             if(currentUser && currentUser.progress) {
                 const p = currentUser.progress;
-                currentTest = p.test;
-                isGuideMode = p.mode;
-                session = p.session;
-                document.getElementById('welcome-hub').classList.add('hidden');
+                currentTest = p.test; isGuideMode = p.mode; session = p.session;
+                document.getElementById('resume-card').classList.add('hidden');
                 arrancarInterfazTest();
             }
         };
 
         window.iniciarDesdeCero = () => {
             if(currentUser) { currentUser.progress = null; saveUsersDB(); }
-            document.getElementById('welcome-hub').classList.add('hidden');
-            goHome();
+            document.getElementById('resume-card').classList.add('hidden');
         };
 
         window.pausarYSalir = () => {
@@ -590,18 +561,16 @@
             document.getElementById('btn-save').classList.add('hidden');
             document.getElementById('q-timer-display').classList.add('hidden');
             document.getElementById('audio-player').pause();
+            
+            if(currentUser.progress) document.getElementById('resume-card').classList.remove('hidden');
             document.getElementById('view-dashboard').classList.remove('hidden-section');
         };
 
-        function ocultarTodo() {
-            ['view-auth', 'view-dashboard', 'view-setup', 'view-test', 'view-results', 'view-vocab'].forEach(id => {
-                document.getElementById(id).classList.add('hidden-section');
-            });
-        }
+        function ocultarTodo() { ['view-auth', 'view-dashboard', 'view-setup', 'view-test', 'view-results', 'view-vocab'].forEach(id => document.getElementById(id).classList.add('hidden-section')); }
 
-        // --- SETUP FLOW ---
+        // --- TEST SETUP & RENDER ---
         window.openSetup = (mode) => {
-            if(!examData) return alert("Falta el archivo JSON.");
+            if(!examData) return alert("Falta el archivo JSON de datos.");
             isGuideMode = (mode === 'guide');
             ocultarTodo();
             document.getElementById('btn-home').classList.remove('hidden');
@@ -623,30 +592,21 @@
             
             const badge = document.getElementById('live-mode-badge');
             if(isGuideMode) {
-                badge.innerText = "GUÍA DE ESTUDIO";
-                badge.className = "text-[9px] font-black uppercase tracking-widest text-center px-2 py-1 rounded bg-sky-100 text-sky-700";
+                badge.innerText = "MODO GUÍA"; badge.className = "text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded bg-sky-100 text-sky-700";
             } else {
-                badge.innerText = "MODO EXAMEN";
-                badge.className = "text-[9px] font-black uppercase tracking-widest text-center px-2 py-1 rounded bg-rose-100 text-rose-700";
-                iniciarRelojGeneral(115); // Examen completo
+                badge.innerText = "MODO EXAMEN"; badge.className = "text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded bg-rose-100 text-rose-700";
+                iniciarRelojGeneral(115); 
             }
-            
             document.getElementById('view-test').classList.remove('hidden-section');
             renderSection();
         }
 
-        window.jumpSection = (sec) => {
-            session.section = sec; session.step = 0;
-            renderSection();
-        };
+        window.jumpSection = (sec) => { session.section = sec; session.step = 0; renderSection(); };
 
-        // --- TEST RENDER LOGIC ---
-        // Paginação Inteligente: Listening B/C van en bloques, lo demás de 2 en 2.
         function getPagesForSection(section, dataLength) {
             if (section === 'listening' && dataLength >= 50) {
                 return [
-                    [0,2], [2,4], [4,6], [6,8], [8,10],
-                    [10,12], [12,14], [14,16], [16,18], [18,20],
+                    [0,2], [2,4], [4,6], [6,8], [8,10], [10,12], [12,14], [14,16], [16,18], [18,20],
                     [20,22], [22,24], [24,26], [26,28], [28,30], // A
                     [30,34], [34,37], // B
                     [37,41], [41,46], [46,50] // C
@@ -658,71 +618,55 @@
             }
         }
 
-        // Tiempos ajustados a la base de datos oficial
         const audioTimings = {
             testA: [
-                [143, 194], [194, 252], [252, 310], [310, 351], [351, 423],
-                [423, 480], [480, 532], [532, 591], [591, 649], [649, 704],
+                [143, 194], [194, 252], [252, 310], [310, 351], [351, 423], [423, 480], [480, 532], [532, 591], [591, 649], [649, 704],
                 [704, 758], [758, 815], [815, 869], [869, 933], [933, 993],
-                [1046, 1191], [1194, 1350], // B
-                [1534, 1712], [1715, 1900], [1903, 2083] // C
+                [1046, 1191], [1194, 1350], [1534, 1712], [1715, 1900], [1903, 2083] 
             ],
             testB: [
-                [143, 191], [191, 245], [245, 302], [302, 358], [358, 416],
-                [416, 469], [469, 524], [524, 581], [581, 633], [633, 689],
+                [143, 191], [191, 245], [245, 302], [302, 358], [358, 416], [416, 469], [469, 524], [524, 581], [581, 633], [633, 689],
                 [689, 753], [753, 810], [810, 867], [867, 927], [927, 983],
-                [1040, 1186], [1189, 1346],
-                [1530, 1705], [1708, 1909], [1917, 2080] 
+                [1040, 1186], [1189, 1346], [1530, 1705], [1708, 1909], [1917, 2080] 
             ]
         };
 
         function renderSection() {
-            // Actualizar menú lateral
-            ['listening', 'structure', 'reading'].forEach(s => document.getElementById(`nav-${s}`).classList.remove('bg-white', 'text-sky-600', 'shadow-sm'));
-            document.getElementById(`nav-${session.section}`).classList.add('bg-white', 'text-sky-600', 'shadow-sm');
+            ['listening', 'structure', 'reading'].forEach(s => {
+                document.getElementById(`nav-${s}`).classList.remove('bg-slate-100', 'border-l-4', 'border-sky-500');
+            });
+            document.getElementById(`nav-${session.section}`).classList.add('bg-slate-100', 'border-l-4', 'border-sky-500');
             document.getElementById('live-sec-title').innerText = session.section;
 
             const box = document.getElementById('q-box'); box.innerHTML = '';
             const data = examData[currentTest][session.section];
-            
-            if(!data) { box.innerHTML = "No data"; return; }
+            if(!data) return;
 
             const pages = getPagesForSection(session.section, data.length);
             if(session.step >= pages.length) session.step = pages.length - 1;
             const [start, end] = pages[session.step];
             const slice = data.slice(start, end);
 
-            // ProgressBar
             document.getElementById('p-bar').style.width = ((session.step + 1) / pages.length * 100) + "%";
             document.getElementById('p-btn').disabled = (session.step === 0);
 
-            // Audio Panel Visibility
             const audioPanel = document.getElementById('audio-panel');
-            if(session.section === 'listening') {
-                audioPanel.classList.remove('hidden');
-                gestionarAudioDePagina();
-            } else {
-                audioPanel.classList.add('hidden');
-                document.getElementById('audio-player').pause();
-            }
+            if(session.section === 'listening') { audioPanel.classList.remove('hidden'); gestionarAudioDePagina(); } 
+            else { audioPanel.classList.add('hidden'); document.getElementById('audio-player').pause(); }
 
-            // Headers especiales para context (Reading o Listening largo)
             if(session.section === 'listening' && slice.length > 2) {
                 box.innerHTML += `<div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-4 text-center text-indigo-800 shadow-sm"><p class="font-black text-sm uppercase tracking-widest"><i class="fas fa-bullhorn mr-2"></i>Escucha la conferencia y contesta este bloque.</p></div>`;
             }
 
             slice.forEach(q => {
                 const card = document.createElement('div');
-                card.className = "bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-100 transition-all";
-                card.id = `card-${q.id}`;
-                
+                card.className = "bg-white p-6 md:p-8 rounded-[2rem] shadow-md border border-slate-100 transition-all";
                 const answered = session.answers[q.id];
                 
                 const opcionesHTML = q.opciones.map((op, i) => {
                     const letra = String.fromCharCode(65 + i);
                     const isChecked = answered === letra ? "checked" : "";
-                    // En modo guía, si ya contestó, deshabilitamos
-                    const disabled = (isGuideMode && answered) ? "disabled" : "";
+                    const disabled = (isGuideMode && answered && answered === q.correcta) ? "disabled" : "";
                     
                     return `
                     <label class="flex items-center p-3.5 rounded-xl border-2 border-slate-50 hover:bg-slate-50 cursor-pointer group transition-colors" id="lbl-${q.id}-${letra}">
@@ -731,7 +675,6 @@
                     </label>`;
                 }).join('');
 
-                // Si estamos en modo guía y ya contestó, mostrar feedback
                 let feedHTML = '';
                 if(isGuideMode && answered) {
                     if(answered === q.correcta) {
@@ -742,7 +685,6 @@
                 }
 
                 let prepHTML = ``;
-                // Para Reading, si es la primera pregunta del pasaje, mostrar el pasaje (Simulado extrayendo de la pregunta si lo hay)
                 if(session.section === 'reading' && q.pregunta.includes("PASSAJE")) {
                     const parts = q.pregunta.split("...");
                     if(parts.length > 1) {
@@ -761,10 +703,8 @@
                     </div>
                     <div class="grid gap-3" id="opts-${q.id}">${opcionesHTML}</div>
                     <div id="feed-${q.id}">${feedHTML}</div>`;
-                
                 box.appendChild(card);
                 
-                // Pintar la carta si ya está contestada en modo guía
                 if(isGuideMode && answered) {
                     const lbl = document.getElementById(`lbl-${q.id}-${answered}`);
                     if(answered === q.correcta) lbl.classList.add('answer-correct');
@@ -776,61 +716,34 @@
             document.getElementById('test-scroll-area').scrollTo(0,0);
         }
 
-        // --- GAMIFICATION SOUNDS (Web Audio API - No files needed!) ---
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function play8BitSound(type) {
-            if(audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            
-            if(type === 'success') {
-                osc.type = 'square';
-                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.05, audioCtx.currentTime); // Bajo volumen
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.2);
-            } else {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.3);
-                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
-            }
-        }
-
-        // --- CHECK ANSWER ---
         window.chk = (qid, sel) => {
             session.answers[qid] = sel;
-            
             if (isGuideMode) {
                 const q = examData[currentTest][session.section].find(x => x.id === qid);
                 const isCorrect = (sel === q.correcta);
-                
-                // UI Feedback
                 const lbl = document.getElementById(`lbl-${qid}-${sel}`);
+                
+                // Clear previous highlights
+                document.querySelectorAll(`input[name="q-${qid}"]`).forEach(radio => {
+                    radio.parentElement.classList.remove('answer-correct', 'answer-incorrect');
+                });
+
                 if(isCorrect) {
                     play8BitSound('success');
                     lbl.classList.add('answer-correct');
                     document.getElementById(`feed-${qid}`).innerHTML = `<div class="mt-4 p-4 rounded-xl bg-teal-50 text-teal-800 font-bold border border-teal-200 text-sm fade-in"><i class="fas fa-check-circle mr-2"></i>¡Correcto! ${q.explicacion}</div>`;
+                    document.querySelectorAll(`input[name="q-${qid}"]`).forEach(r => r.disabled = true);
                 } else {
                     play8BitSound('fail');
                     lbl.classList.add('answer-incorrect');
-                    document.getElementById(`feed-${qid}`).innerHTML = `<div class="mt-4 p-4 rounded-xl bg-rose-50 text-rose-800 font-bold border border-rose-200 text-sm fade-in"><i class="fas fa-times-circle mr-2"></i>Incorrecto. Era ${q.correcta}. ${q.explicacion}</div>`;
+                    document.getElementById(`feed-${qid}`).innerHTML = `<div class="mt-4 p-4 rounded-xl bg-rose-50 text-rose-800 font-bold border border-rose-200 text-sm fade-in"><i class="fas fa-times-circle mr-2"></i>Vuelve a intentarlo. ${q.explicacion}</div>`;
                 }
-                
-                // Deshabilitar otros radios para esta pregunta en modo guía
-                const radios = document.querySelectorAll(`input[name="q-${qid}"]`);
-                radios.forEach(r => r.disabled = true);
             }
         };
 
         window.navegarPasos = (dir) => {
             const data = examData[currentTest][session.section];
             const pages = getPagesForSection(session.section, data.length);
-            
             if (session.step + dir >= pages.length) {
                 if (session.section === 'listening') jumpSection('structure');
                 else if (session.section === 'structure') jumpSection('reading');
@@ -838,52 +751,38 @@
                 return;
             }
             if (session.step + dir < 0) return;
-            
-            session.step += dir;
-            renderSection();
+            session.step += dir; renderSection();
         };
 
         function calificarTest() {
             clearInterval(qTimerInt); clearInterval(generalTimerInt);
-            ocultarTodo();
-            document.getElementById('btn-save').classList.add('hidden');
+            ocultarTodo(); document.getElementById('btn-save').classList.add('hidden');
             
             const getC = (s) => { let c = 0; if (examData[currentTest][s]) examData[currentTest][s].forEach(q => { if (session.answers[q.id] === q.correcta) c++; }); return c; };
             const r1 = getC('listening'), r2 = getC('structure'), r3 = getC('reading');
             
-            // Fórmula simple ITP aproximada
             const conv = (score) => Math.min(68, Math.max(31, Math.round((score / 50) * (68-31) + 31)));
-            const s1 = conv(r1 * (50/50)), s2 = conv(r2 * (50/40)), s3 = conv(r3 * (50/50)); // Normalizar Structure a 50
-            const total = Math.round(((s1 + s2 + s3) * 10) / 3);
+            const total = Math.round(((conv(r1) + conv(r2 * 1.25) + conv(r3)) * 10) / 3);
             
             document.getElementById('final-score').innerText = total;
             document.getElementById('final-level').innerText = `Nivel MCER: ${total >= 627 ? "C1" : (total >= 543 ? "B2" : "B1")}`;
+            if(currentUser) { currentUser.progress = null; saveUsersDB(); }
             
-            if(currentUser) { currentUser.progress = null; saveUsersDB(); } // Borrar save
-            
-            play8BitSound('success'); // Fanfarria corta
-            setTimeout(() => play8BitSound('success'), 200);
-            setTimeout(() => play8BitSound('success'), 400);
-            
+            play8BitSound('success'); setTimeout(() => play8BitSound('success'), 200);
             document.getElementById('view-results').classList.remove('hidden-section');
         }
 
-        // --- AUDIO ENGINE ---
+        // --- STREAMING_CHUNK: Timers & Audio Player ---
         function setupAudioPlayerLogic() {
             const player = document.getElementById('audio-player');
             player.addEventListener('timeupdate', () => {
                 if (session.section !== 'listening' || audioEndTime === 0) return;
-                
                 if (player.currentTime >= audioEndTime) {
                     player.pause();
                     if (repsCount < 1) { 
-                        repsCount++;
-                        document.getElementById('reps-label').innerText = "2 / 2";
+                        repsCount++; document.getElementById('reps-label').innerText = "2 / 2";
                         const timings = audioTimings[currentTest];
-                        if(timings && timings[session.step]) {
-                            player.currentTime = timings[session.step][0];
-                            player.play().catch(e=>{});
-                        }
+                        if(timings && timings[session.step]) { player.currentTime = timings[session.step][0]; player.play().catch(e=>{}); }
                     } else { audioEndTime = 0; }
                 }
             });
@@ -892,26 +791,20 @@
         function gestionarAudioDePagina() {
             const player = document.getElementById('audio-player');
             if(!localAudios[currentTest]) return;
-            
-            if(!player.src || !player.src.startsWith('blob:')) {
-                player.src = URL.createObjectURL(localAudios[currentTest]);
-            }
+            if(!player.src || !player.src.startsWith('blob:')) player.src = URL.createObjectURL(localAudios[currentTest]);
             
             const timings = audioTimings[currentTest];
             if(timings && timings[session.step]) {
                 const [startT, endT] = timings[session.step];
                 audioEndTime = endT; repsCount = 0;
                 document.getElementById('reps-label').innerText = "1 / 2";
-                player.currentTime = startT;
-                player.play().catch(e=>{});
+                player.currentTime = startT; player.play().catch(e=>{});
             }
         }
 
-        // --- TIMERS ---
         function startSpeedTimer() {
-            clearInterval(qTimerInt);
-            document.getElementById('q-timer-display').classList.add('hidden');
-            if(isGuideMode) return; // Sin timer por pregunta en guía
+            clearInterval(qTimerInt); document.getElementById('q-timer-display').classList.add('hidden');
+            if(isGuideMode) return; 
             
             if (session.section === 'listening') {
                 const timings = audioTimings[currentTest];
@@ -921,9 +814,7 @@
                     const numQ = pages[session.step][1] - pages[session.step][0];
                     qTimeLeft = Math.ceil(((endT || (startT + 60)) - startT) * 2) + (numQ * 15); 
                 } else { qTimeLeft = 60; }
-            } else {
-                qTimeLeft = (session.section === 'structure' ? 25 : 54) * 2; // 2 preguntas = 50s o 108s
-            }
+            } else { qTimeLeft = (session.section === 'structure' ? 25 : 54) * 2; }
             
             document.getElementById('q-timer-display').classList.remove('hidden');
             qTimerInt = setInterval(() => {
@@ -931,15 +822,8 @@
                 const m = Math.floor(qTimeLeft / 60), s = qTimeLeft % 60;
                 const el = document.getElementById('q-timer-val');
                 el.innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
-                
-                if (qTimeLeft <= 10) el.parentElement.classList.add('timer-warning'); 
-                else el.parentElement.classList.remove('timer-warning');
-                
-                if (qTimeLeft <= 0) { 
-                    clearInterval(qTimerInt); 
-                    play8BitSound('fail');
-                    navegarPasos(1); 
-                }
+                if (qTimeLeft <= 10) el.parentElement.classList.add('timer-warning'); else el.parentElement.classList.remove('timer-warning');
+                if (qTimeLeft <= 0) { clearInterval(qTimerInt); play8BitSound('fail'); navegarPasos(1); }
             }, 1000);
         }
 
@@ -952,41 +836,38 @@
             }, 1000); 
         }
 
-        // --- VOCABULARY SECTION ---
-        let currentVocabIdx = 0;
+        // --- STREAMING_CHUNK: Vocabulary Flashcards ---
+        let vocabIndex = 0;
         window.startVocab = () => {
-            if(!vocabData || vocabData.length === 0) return alert("El JSON cargado no incluye la sección de vocabulario.");
-            ocultarTodo();
-            document.getElementById('btn-home').classList.remove('hidden');
-            currentVocabIdx = 0;
-            renderVocab();
-            document.getElementById('view-vocab').classList.remove('hidden-section');
+            if(!vocabData || vocabData.length === 0) return alert("No se ha cargado el archivo vocabulary.json");
+            ocultarTodo(); document.getElementById('btn-home').classList.remove('hidden');
+            vocabIndex = 0; renderVocab(); document.getElementById('view-vocab').classList.remove('hidden-section');
         };
 
         function renderVocab() {
             const card = document.getElementById('vocab-card-container');
-            card.classList.remove('flipped'); // Reset flip
+            card.classList.remove('flipped'); 
             
             setTimeout(() => {
-                const word = vocabData[currentVocabIdx];
+                const word = vocabData[vocabIndex];
                 document.getElementById('v-type').innerText = word.type || "word";
                 document.getElementById('v-word').innerText = word.en;
                 document.getElementById('v-word-back').innerText = word.en;
                 document.getElementById('v-def').innerText = `"${word.def}"`;
                 document.getElementById('v-es').innerText = word.es;
-                document.getElementById('v-counter').innerText = `${currentVocabIdx + 1} / ${vocabData.length}`;
-            }, 150); // wait for flip back animation if was flipped
+                document.getElementById('v-counter').innerText = `${vocabIndex + 1} / ${vocabData.length}`;
+            }, 150); 
         }
 
         window.flipCard = () => { document.getElementById('vocab-card-container').classList.toggle('flipped'); };
         window.navVocab = (dir) => {
-            currentVocabIdx += dir;
-            if(currentVocabIdx < 0) currentVocabIdx = vocabData.length - 1;
-            if(currentVocabIdx >= vocabData.length) currentVocabIdx = 0;
+            vocabIndex += dir;
+            if(vocabIndex < 0) vocabIndex = vocabData.length - 1;
+            if(vocabIndex >= vocabData.length) vocabIndex = 0;
             renderVocab();
         };
 
-        // --- ACCESSIBILITY ---
+        // --- STREAMING_CHUNK: Accessibility (Font Scaling) ---
         let currentFontSize = 16;
         window.changeFontSize = (dir) => {
             currentFontSize += (dir * 2);
