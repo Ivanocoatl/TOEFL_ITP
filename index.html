@@ -365,8 +365,7 @@
     </div>
 
     <script>
-        // --- AUDIO ENGINE (Synthesizer & Config) ---
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        //        const AudioContext = window.AudioContext || window.webkitAudioContext;
         let audioCtx;
         let globalVolume = 0.8;
         let isMuted = false;
@@ -436,8 +435,7 @@
             document.documentElement.style.setProperty('--base-size', currentFontSize + 'px');
         };
 
-        // --- LOCAL USER MANAGEMENT ---
-        let usersDB = JSON.parse(localStorage.getItem('toefl_users_db')) || [];
+        //        let usersDB = JSON.parse(localStorage.getItem('toefl_users_db')) || [];
         let currentUser = null;
         function saveUsersDB() { localStorage.setItem('toefl_users_db', JSON.stringify(usersDB)); }
 
@@ -510,8 +508,7 @@
             ocultarTodo(); document.getElementById('view-auth').classList.remove('hidden-section');
         };
 
-        // --- GLOBAL VARIABLES & DATA LOADING ---
-        let examData = null; let vocabData = null; let transcriptsData = null;
+        //        let examData = null; let vocabData = null; let transcriptsData = null;
         let currentTest = null; let isGuideMode = false;
         let session = { section: 'listening', step: 0, answers: {} };
         const localAudios = { testA: null, testB: null };
@@ -521,7 +518,7 @@
         // Karaoke State
         let activeTranscriptLines = [];
         let currentActiveIndex = -1;
-        window.activeTranscriptBoxId = null; // Mantiene el ID de la caja actual para no cruzar colores
+        window.activeTranscriptBoxId = null;
 
         window.onload = async () => {
             const cacheBuster = '?nocache=' + new Date().getTime();
@@ -610,7 +607,7 @@
             }
         }
 
-        function initSession() {
+        //        function initSession() {
             document.getElementById('user-display-name').innerText = currentUser.username;
             document.getElementById('btn-logout').classList.remove('hidden');
             ocultarTodo();
@@ -662,7 +659,6 @@
 
         function ocultarTodo() { ['view-auth', 'view-dashboard', 'view-setup', 'view-test', 'view-results', 'view-vocab'].forEach(id => document.getElementById(id).classList.add('hidden-section')); }
 
-        // --- TEST SETUP & RENDER ---
         window.openSetup = (mode) => {
             if(!examData) return alert("Falta el archivo JSON de datos.");
             isGuideMode = (mode === 'guide');
@@ -705,7 +701,6 @@
 
         window.jumpSection = (sec) => { session.section = sec; session.step = 0; renderSection(); };
 
-        // PAGINATION LOGIC
         function getPagesForSection(section, dataLength) {
             if (section === 'listening' && dataLength >= 50) {
                 return [
@@ -720,27 +715,29 @@
             }
         }
 
-        // --- EXTRACT EXACT TIMINGS FROM TRANSCRIPT JSON ---
         function getIndivTimings(qId, currentTest) {
             let startT = 0, endT = 0;
             if (transcriptsData && transcriptsData[currentTest]) {
                 const tData = transcriptsData[currentTest];
-                // Busca exactamente "Number X." para el inicio
                 const startRegex = new RegExp(`^Number ${qId}\\.?$`, 'i');
                 const startIdx = tData.findIndex(t => t.text.match(startRegex));
                 
                 if (startIdx !== -1) {
                     startT = tData[startIdx].time;
-                    // Busca el siguiente "Number X+1." o fin de parte para marcar el fin
+                    
+                    // SMART GAP FIX: Si Whisper grabó mucho silencio antes del diálogo, salta el silencio.
+                    if (tData[startIdx+1] && (tData[startIdx+1].time - startT > 4)) {
+                        startT = Math.max(startT, tData[startIdx+1].time - 2.5);
+                    }
+
                     const endRegex = new RegExp(`^(Number ${qId + 1}\\.?|This is the end|Part B\\.?)$`, 'i');
                     const endIdx = tData.findIndex((t, idx) => idx > startIdx && t.text.match(endRegex));
                     if (endIdx !== -1) {
                         endT = tData[endIdx].time;
                     } else {
-                        endT = startT + 25; // fallback de seguridad
+                        endT = startT + 25; 
                     }
                 } else {
-                    // Fallback si la transcripcion falla en leer el numero
                     startT = 143; endT = 160; 
                 }
             }
@@ -751,8 +748,6 @@
             let startT = 0, endT = 0;
             if (transcriptsData && transcriptsData[currentTest]) {
                 const tData = transcriptsData[currentTest];
-                
-                // Las conferencias comienzan con "Questions X through Y" o "Listen to..."
                 const startRegex = new RegExp(`(Questions ${firstQ}|Listen to)`, 'i');
                 const startIdx = tData.findIndex(t => t.text.match(startRegex));
                 if (startIdx !== -1) startT = tData[startIdx].time;
@@ -760,29 +755,49 @@
                 const endRegex = new RegExp(`(Number ${lastQ + 1}|This is the end)`, 'i');
                 const endIdx = tData.findIndex((t, idx) => idx > startIdx && t.text.match(endRegex));
                 if (endIdx !== -1) endT = tData[endIdx].time;
-                else endT = startT + 120; // fallback
+                else endT = startT + 120; 
             }
             return { startT, endT };
         }
 
-        // --- AUDIO CONTROLS (GUIDE MODE) ---
+        //        window.chk = (qid, sel) => {
+            session.answers[qid] = sel;
+            const q = examData[currentTest][session.section].find(x => x.id === qid);
+            const isCorrect = (sel === q.correcta);
+            const lbl = document.getElementById(`lbl-${qid}-${sel}`);
+            
+            document.querySelectorAll(`input[name="q-${qid}"]`).forEach(radio => {
+                radio.parentElement.classList.remove('answer-correct', 'answer-incorrect');
+            });
+
+            if (isGuideMode) {
+                if (isCorrect) {
+                    play8BitSound('success');
+                    lbl.classList.add('answer-correct');
+                    document.getElementById(`feed-${qid}`).innerHTML = `<div class="mt-4 p-4 rounded-xl bg-teal-50 text-teal-800 font-bold border border-teal-200 text-sm fade-in"><i class="fas fa-check-circle mr-2"></i>¡Correcto! ${q.explicacion}</div>`;
+                    document.querySelectorAll(`input[name="q-${qid}"]`).forEach(r => r.disabled = true);
+                } else {
+                    play8BitSound('fail');
+                    lbl.classList.add('answer-incorrect');
+                    document.getElementById(`feed-${qid}`).innerHTML = `<div class="mt-4 p-4 rounded-xl bg-rose-50 text-rose-800 font-bold border border-rose-200 text-sm fade-in"><i class="fas fa-times-circle mr-2"></i>Incorrecto. Era ${q.correcta}. ${q.explicacion}</div>`;
+                }
+            }
+        };
+
         window.playIndividualAudio = (qId, startT, endT, btn) => {
             const player = document.getElementById('audio-player');
             if(!player.src || !player.src.startsWith('blob:')) player.src = URL.createObjectURL(localAudios[currentTest]);
             
-            // Pausar y resetear otros botones
             document.querySelectorAll('.btn-play-audio').forEach(b => {
                 b.innerHTML = '▶️ Escuchar Audio';
                 b.classList.remove('bg-sky-200', 'text-sky-800');
                 b.classList.add('bg-slate-100', 'text-slate-600');
             });
 
-            // Activar botón actual
             btn.innerHTML = '🔄 Repetir Fragmento';
             btn.classList.remove('bg-slate-100', 'text-slate-600');
             btn.classList.add('bg-sky-200', 'text-sky-800');
 
-            // Ajuste milimétrico para no arrastrar el numero siguiente
             let playStart = Math.max(0, startT - 0.2); 
             let playEnd = Math.max(0, endT - 0.4); 
             
@@ -816,28 +831,18 @@
         function loadTranscriptData(startT, endT, boxId) {
             const container = document.getElementById(boxId);
             if (!container) return;
-            
             if (!transcriptsData || !transcriptsData[currentTest]) {
                 container.innerHTML = '<p class="text-rose-500 font-bold">Base de datos de transcripciones no disponible.</p>';
                 return;
             }
-
-            // Usamos strictly < endT porque el "Number X+1" está exactamente en endT
             activeTranscriptLines = transcriptsData[currentTest].filter(t => t.time >= startT && t.time < endT);
-            
-            if (activeTranscriptLines.length === 0) {
-                container.innerHTML = '<p class="text-slate-500 font-bold">No hay subtítulos para este fragmento temporal.</p>';
-                return;
-            }
-
             currentActiveIndex = -1;
-            // Dibujamos las lineas opacas inicialmente
+            
             container.innerHTML = activeTranscriptLines.map((t, idx) => 
-                `<p id="tl-${idx}" class="transcript-line mb-4 text-slate-500 text-[1.3rem] font-medium transition-all duration-300 opacity-40 leading-relaxed">${t.text}</p>`
+                `<p id="tl-${idx}" class="transcript-line mb-4 text-slate-500 text-[1.3rem] font-medium opacity-30 transition-all duration-300 leading-relaxed">${t.text}</p>`
             ).join('');
         }
 
-        // --- RENDERIZADO DE LA VISTA ---
         function renderSection() {
             ['listening', 'structure', 'reading'].forEach(s => {
                 document.getElementById(`nav-${s}`).classList.remove('bg-slate-100', 'border-l-4', 'border-sky-500');
@@ -846,7 +851,6 @@
             document.getElementById('live-sec-title').innerText = session.section;
 
             const box = document.getElementById('q-box'); box.innerHTML = '';
-            
             const data = examData[currentTest][session.section];
             if(!data) return;
 
@@ -870,9 +874,7 @@
 
             if (session.section === 'listening' && isBlock) {
                 let tBlock = getBlockTimings(slice[0].id, slice[slice.length-1].id, currentTest);
-                
                 let btnStr = isGuideMode ? `<button onclick="playBlockAudio(${tBlock.startT}, ${tBlock.endT}, this)" class="bg-white text-indigo-600 px-6 py-3 rounded-xl text-sm font-black shadow-md hover:scale-105 transition-transform">▶️ Escuchar Conferencia</button>` : '';
-                
                 let transcriptCol = isGuideMode ? `
                     <div class="bg-slate-900 rounded-[2rem] p-6 shadow-inner flex flex-col h-[350px]">
                         <h4 class="text-sky-400 font-black mb-4 text-sm uppercase tracking-widest flex items-center gap-2"><i class="fas fa-closed-captioning"></i> Live Transcript</h4>
@@ -895,12 +897,10 @@
 
             slice.forEach(q => {
                 const answered = session.answers[q.id];
-                
                 const opcionesHTML = q.opciones.map((op, i) => {
                     const letra = String.fromCharCode(65 + i);
                     const isChecked = answered === letra ? "checked" : "";
                     const disabled = (isGuideMode && answered && answered === q.correcta) ? "disabled" : "";
-                    
                     return `
                     <label class="flex items-center p-3.5 rounded-xl border-2 border-slate-50 hover:bg-slate-50 cursor-pointer group transition-colors" id="lbl-${q.id}-${letra}">
                         <input type="radio" name="q-${q.id}" class="toefl-radio" value="${letra}" ${isChecked} ${disabled} onchange="chk(${q.id}, '${letra}')">
@@ -931,9 +931,7 @@
 
                 if (isGuideMode && session.section === 'listening' && !isBlock) {
                     let t = getIndivTimings(q.id, currentTest);
-                    
                     playBtnHTML = `<button onclick="playIndividualAudio(${q.id}, ${t.startT}, ${t.endT}, this)" class="btn-play-audio bg-slate-100 text-slate-600 hover:bg-sky-100 hover:text-sky-700 px-4 py-2 rounded-xl font-black text-xs uppercase tracking-widest transition-colors shadow-sm shrink-0">▶️ Escuchar Audio</button>`;
-                    
                     transcriptCol = `
                     <div class="bg-slate-900 rounded-[2rem] p-6 shadow-md flex flex-col h-full min-h-[300px]">
                         <h4 class="text-sky-400 font-black mb-4 text-sm uppercase tracking-widest flex items-center gap-2"><i class="fas fa-closed-captioning"></i> Live Transcript</h4>
@@ -981,7 +979,7 @@
             document.getElementById('test-scroll-area').scrollTo(0,0);
         }
 
-        function gestionarAudioAutomaticoExamen(slice) {
+        //        function gestionarAudioAutomaticoExamen(slice) {
             if(session.section !== 'listening') return;
             const player = document.getElementById('audio-player');
             if(!localAudios[currentTest]) return;
@@ -991,14 +989,11 @@
             if (slice.length <= 2) {
                 const t1 = getIndivTimings(slice[0].id, currentTest);
                 const t2 = slice.length > 1 ? getIndivTimings(slice[1].id, currentTest) : t1;
-                startT = t1.startT;
-                endT = t2.endT; 
+                startT = t1.startT; endT = t2.endT; 
             } else {
                 const t = getBlockTimings(slice[0].id, slice[slice.length-1].id, currentTest);
-                startT = t.startT;
-                endT = t.endT;
+                startT = t.startT; endT = t.endT;
             }
-
             let playStart = Math.max(0, startT - 0.2); 
             let playEnd = Math.max(0, endT - 0.4);
 
@@ -1009,11 +1004,9 @@
 
         function setupAudioPlayerLogic() {
             const player = document.getElementById('audio-player');
-            
             player.addEventListener('timeupdate', () => {
                 if (session.section !== 'listening' || audioEndTime === 0) return;
                 
-                // 1. Karaoke Logic (Only in Guide Mode)
                 if (isGuideMode && activeTranscriptLines.length > 0 && window.activeTranscriptBoxId) {
                     let ct = player.currentTime;
                     let newActiveIndex = -1;
@@ -1021,50 +1014,39 @@
                     for (let i = 0; i < activeTranscriptLines.length; i++) {
                         if (ct >= activeTranscriptLines[i].time) {
                             newActiveIndex = i;
-                        } else {
-                            break;
-                        }
+                        } else { break; }
                     }
 
                     if (newActiveIndex !== -1 && newActiveIndex !== currentActiveIndex) {
                         currentActiveIndex = newActiveIndex;
-                        
-                        // SCOPE selector to ONLY the active box to prevent flashing across boxes
                         document.querySelectorAll(`#${window.activeTranscriptBoxId} .transcript-line`).forEach((el, idx) => {
-                            if (idx <= newActiveIndex) {
-                                el.className = "transcript-line mb-4 text-sky-400 text-[1.5rem] font-black opacity-100 leading-relaxed drop-shadow-md transition-all";
-                                if(idx === newActiveIndex) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            if (idx < newActiveIndex) {
+                                el.className = "transcript-line mb-4 text-slate-400 text-[1.3rem] font-medium opacity-60 transition-all duration-300 leading-relaxed";
+                            } else if (idx === newActiveIndex) {
+                                el.className = "transcript-line mb-4 text-sky-400 text-[1.5rem] font-black opacity-100 drop-shadow-md transition-all duration-300 leading-relaxed";
+                                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                             } else {
-                                el.className = "transcript-line mb-4 text-slate-500 text-[1.3rem] font-medium opacity-40 leading-relaxed transition-all";
+                                el.className = "transcript-line mb-4 text-slate-500 text-[1.3rem] font-medium opacity-30 transition-all duration-300 leading-relaxed";
                             }
                         });
                     }
                 }
 
-                // 2. Auto-Pause and Repeats logic
                 if (player.currentTime >= audioEndTime) {
                     player.pause();
-                    
                     if (!isGuideMode) {
                         if (repsCount < 1) { 
                             repsCount++;
                             const data = examData[currentTest][session.section];
                             const pages = getPagesForSection(session.section, data.length);
                             const slice = data.slice(pages[session.step][0], pages[session.step][1]);
-                            
                             let startT = 0;
                             if (slice.length <= 2) { startT = getIndivTimings(slice[0].id, currentTest).startT; } 
                             else { startT = getBlockTimings(slice[0].id, slice[slice.length-1].id, currentTest).startT; }
-                            
                             player.currentTime = Math.max(0, startT - 0.2);
                             player.play().catch(e => console.log(e));
-                        } else {
-                            audioEndTime = 0;
-                        }
-                    } else {
-                        // En modo guia es manual. El texto se queda azul porque no reseteamos el HTML.
-                        audioEndTime = 0;
-                    }
+                        } else { audioEndTime = 0; }
+                    } else { audioEndTime = 0; }
                 }
             });
         }
@@ -1077,7 +1059,6 @@
                 const data = examData[currentTest][session.section];
                 const pages = getPagesForSection(session.section, data.length);
                 const slice = data.slice(pages[session.step][0], pages[session.step][1]);
-                
                 let startT = 0, endT = 0;
                 if (slice.length <= 2) {
                     const t1 = getIndivTimings(slice[0].id, currentTest);
@@ -1087,12 +1068,9 @@
                     const t = getBlockTimings(slice[0].id, slice[slice.length-1].id, currentTest);
                     startT = t.startT; endT = t.endT;
                 }
-                
                 const numQ = pages[session.step][1] - pages[session.step][0];
                 qTimeLeft = Math.ceil(((endT || (startT + 60)) - startT) * 2) + (numQ * 15); 
-            } else { 
-                qTimeLeft = (session.section === 'structure' ? 25 : 54) * 2; 
-            }
+            } else { qTimeLeft = (session.section === 'structure' ? 25 : 54) * 2; }
             
             document.getElementById('q-timer-display').classList.remove('hidden');
             qTimerInt = setInterval(() => {
@@ -1113,19 +1091,6 @@
                 if(t<=0) calificarTest();
             }, 1000); 
         }
-
-        window.navegarPasos = (dir) => {
-            const data = examData[currentTest][session.section];
-            const pages = getPagesForSection(session.section, data.length);
-            if (session.step + dir >= pages.length) {
-                if (session.section === 'listening') jumpSection('structure');
-                else if (session.section === 'structure') jumpSection('reading');
-                else calificarTest();
-                return;
-            }
-            if (session.step + dir < 0) return;
-            session.step += dir; renderSection();
-        };
 
         const conversionTable = [
             { range: [48, 50], s1: [64, 68], s2: [63, 68], s3: [65, 67] },
@@ -1161,24 +1126,13 @@
                 return entry[key]; 
             };
 
-            const s1Range = conv(r1, 's1');
-            const s2Range = conv(r2, 's2');
-            const s3Range = conv(r3, 's3');
-
-            const sumLow = s1Range[0] + s2Range[0] + s3Range[0];
-            const sumHigh = s1Range[1] + s2Range[1] + s3Range[1];
-
-            const finalLow = Math.round(sumLow * 10 / 3);
-            const finalHigh = Math.round(sumHigh * 10 / 3);
+            const s1Range = conv(r1, 's1'); const s2Range = conv(r2, 's2'); const s3Range = conv(r3, 's3');
+            const sumLow = s1Range[0] + s2Range[0] + s3Range[0]; const sumHigh = s1Range[1] + s2Range[1] + s3Range[1];
+            const finalLow = Math.round(sumLow * 10 / 3); const finalHigh = Math.round(sumHigh * 10 / 3);
 
             document.getElementById('final-score').innerText = `${finalLow} - ${finalHigh}`;
-            
             const avg = (finalLow + finalHigh) / 2;
-            let mcer = "A2"; 
-            if (avg >= 627) mcer = "C1"; 
-            else if (avg >= 543) mcer = "B2"; 
-            else if (avg >= 460) mcer = "B1";
-            
+            let mcer = "A2"; if (avg >= 627) mcer = "C1"; else if (avg >= 543) mcer = "B2"; else if (avg >= 460) mcer = "B1";
             document.getElementById('final-level').innerText = `Nivel MCER: ${mcer}`;
             
             if(currentUser) { currentUser.progress = null; saveUsersDB(); }
@@ -1186,33 +1140,22 @@
             document.getElementById('view-results').classList.remove('hidden-section');
         }
 
-        let vocabIndex = 0;
-        let isCardFlipped = false;
-        let cardsSeenToday = 0;
-        let vocabWeights = [];
+        //        let vocabIndex = 0; let isCardFlipped = false; let cardsSeenToday = 0; let vocabWeights = [];
 
         window.startVocab = () => {
             if(!vocabData || vocabData.length === 0) return alert("Falta el archivo vocabulary.json");
             ocultarTodo(); document.getElementById('btn-home').classList.remove('hidden');
-            
             if(vocabWeights.length !== vocabData.length) vocabWeights = new Array(vocabData.length).fill(1);
-            
-            cardsSeenToday = 0;
-            pickNextVocab();
-            document.getElementById('view-vocab').classList.remove('hidden-section');
+            cardsSeenToday = 0; pickNextVocab(); document.getElementById('view-vocab').classList.remove('hidden-section');
         };
 
         function pickNextVocab() {
             let totalWeight = vocabWeights.reduce((a, b) => a + b, 0);
             let randomVal = Math.random() * totalWeight;
             let sum = 0;
-            
             for(let i=0; i<vocabWeights.length; i++) {
                 sum += vocabWeights[i];
-                if(randomVal <= sum) {
-                    vocabIndex = i;
-                    break;
-                }
+                if(randomVal <= sum) { vocabIndex = i; break; }
             }
             renderVocab();
         }
@@ -1220,9 +1163,7 @@
         function renderVocab() {
             isCardFlipped = false;
             const card = document.getElementById('vocab-card-container');
-            card.classList.remove('flipped');
-            card.style.opacity = '1';
-            card.style.transform = 'scale(1)';
+            card.classList.remove('flipped'); card.style.opacity = '1'; card.style.transform = 'scale(1)';
             
             setTimeout(() => {
                 const word = vocabData[vocabIndex];
@@ -1236,19 +1177,14 @@
 
         window.handleCardClick = () => {
             if(!isCardFlipped) {
-                isCardFlipped = true;
-                vocabWeights[vocabIndex] += 2; // SRS
-                cardsSeenToday++;
+                isCardFlipped = true; vocabWeights[vocabIndex] += 2; cardsSeenToday++;
                 document.getElementById('v-counter').innerText = cardsSeenToday;
                 document.getElementById('vocab-card-container').classList.add('flipped');
-                play8BitSound('flip');
-                createParticles('sparks');
+                play8BitSound('flip'); createParticles('sparks');
             } else {
-                play8BitSound('explode');
-                createParticles('explosion');
+                play8BitSound('explode'); createParticles('explosion');
                 const card = document.getElementById('vocab-card-container');
-                card.style.opacity = '0';
-                card.style.transform = 'scale(0.5)';
+                card.style.opacity = '0'; card.style.transform = 'scale(0.5)';
                 setTimeout(() => { pickNextVocab(); }, 500); 
             }
         };
