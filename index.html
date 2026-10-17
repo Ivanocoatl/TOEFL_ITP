@@ -32,13 +32,11 @@
         @keyframes pulseGreen { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 50% { transform: scale(1.02); box-shadow: 0 0 20px 10px rgba(16, 185, 129, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
         @keyframes shakeRed { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
 
-        /* KARAOKE STYLES */
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #64748b; }
 
-        /* VOCABULARY CARDS */
         .flip-card { perspective: 1000px; cursor: pointer; height: 350px; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
@@ -63,7 +61,7 @@
         </div>
         
         <div class="flex items-center gap-3">
-            <!-- ACCESIBILIDAD Y VOLUMEN -->
+            <!-- Controles de Accesibilidad y Audio -->
             <div class="hidden md:flex bg-slate-800 rounded-lg overflow-hidden border border-slate-700 items-center mr-2">
                 <button onclick="changeFontSize(-1)" class="px-3 py-1 hover:bg-slate-700 text-sm font-bold" title="Reducir letra">A-</button>
                 <div class="w-px h-5 bg-slate-700"></div>
@@ -93,6 +91,7 @@
         </div>
     </header>
 
+    <!-- LOADING SCREEN -->
     <div id="loading-screen" class="absolute inset-0 bg-teal-50 z-[300] flex flex-col items-center justify-center fade-in">
         <div class="w-16 h-16 border-8 border-teal-200 border-t-teal-500 rounded-full animate-spin shadow-md"></div>
         <h2 class="mt-6 font-black text-teal-900 text-2xl tracking-tight">Cargando sistema...</h2>
@@ -315,7 +314,6 @@
             </div>
         </div>
 
-        <!-- VOCABULARY VIEW -->
         <div id="view-vocab" class="hidden-section w-full overflow-y-auto p-6 md:p-10 fade-in bg-slate-900 relative">
             <div id="vocab-particles" class="absolute inset-0 pointer-events-none z-[100] overflow-hidden"></div>
             
@@ -363,6 +361,7 @@
         let globalVolume = 0.8;
         let isMuted = false;
 
+        // Control de Volumen
         window.changeVolume = (val) => {
             globalVolume = parseFloat(val);
             const player = document.getElementById('audio-player');
@@ -378,6 +377,7 @@
             if (player) player.muted = isMuted;
         };
 
+        // Generador de Sonidos 8-bits
         function play8BitSound(type) {
             let volMultiplier = isMuted ? 0 : globalVolume;
             if (volMultiplier <= 0) return;
@@ -420,6 +420,7 @@
             }
         }
 
+        // Control de Tamaño de Letra
         let currentFontSize = 16;
         window.changeFontSize = (dir) => {
             currentFontSize += (dir * 2);
@@ -428,6 +429,7 @@
             document.documentElement.style.setProperty('--base-size', currentFontSize + 'px');
         };
 
+        // --- GESTIÓN DE USUARIOS LOCAL ---
         let usersDB = JSON.parse(localStorage.getItem('toefl_users_db')) || [];
         let currentUser = null;
         
@@ -502,6 +504,7 @@
             ocultarTodo(); document.getElementById('view-auth').classList.remove('hidden-section');
         };
 
+        // --- STREAMING_CHUNK:Carga de Datos Principal (Resistente a fallos) ---
         let examData = null; let vocabData = null; let transcriptsData = null;
         let currentTest = null; let isGuideMode = false;
         let session = { section: 'listening', step: 0, answers: {} };
@@ -519,22 +522,26 @@
             let jsonErrors = [];
 
             try {
-                const resData = await fetch('./datos.json' + cacheBuster, { cache: "no-store" });
-                if(resData.ok) examData = await resData.json(); 
-                else jsonErrors.push(`datos.json: Código ${resData.status}`);
-            } catch(e) { jsonErrors.push(`datos.json: Error de sintaxis.`); }
-            
-            try {
-                const resVocab = await fetch('./vocabulary.json' + cacheBuster, { cache: "no-store" });
-                if(resVocab.ok) vocabData = await resVocab.json();
-                else jsonErrors.push(`vocabulary.json: Código ${resVocab.status}`);
-            } catch(e) { jsonErrors.push(`vocabulary.json: Error de sintaxis.`); }
+                // Fetch paralelo seguro
+                const [resData, resVocab, resTrans] = await Promise.all([
+                    fetch('./datos.json' + cacheBuster).catch(()=>null),
+                    fetch('./vocabulary.json' + cacheBuster).catch(()=>null),
+                    fetch('./transcripts.json' + cacheBuster).catch(()=>null)
+                ]);
 
-            try {
-                const resTrans = await fetch('./transcripts.json' + cacheBuster, { cache: "no-store" });
-                if(resTrans.ok) transcriptsData = await resTrans.json();
-                else console.warn("No se encontró transcripts.json");
-            } catch(e) { console.warn("transcripts.json sintaxis error."); }
+                if(resData && resData.ok) examData = await resData.json(); 
+                else jsonErrors.push("datos.json no encontrado o con error.");
+                
+                if(resVocab && resVocab.ok) vocabData = await resVocab.json();
+                else jsonErrors.push("vocabulary.json no encontrado o con error.");
+                
+                if(resTrans && resTrans.ok) transcriptsData = await resTrans.json();
+                else console.warn("transcripts.json no encontrado (opcional).");
+
+            } catch(e) {
+                console.error("Error crítico al parsear JSON:", e);
+                jsonErrors.push(`Error de sintaxis: ${e.message}`);
+            }
 
             if (!examData || !vocabData) {
                 const errorBox = document.getElementById('json-fallback-container');
@@ -545,13 +552,16 @@
                 document.getElementById('file-json-trans').addEventListener('change', e => manualJsonLoad(e, 'trans'));
             }
 
-            attemptAudioAutoLoad();
+            attemptAudioAutoLoad(); // Asíncrono, no bloquea
+            
             document.getElementById('file-a').addEventListener('change', e => { if(e.target.files[0]){ localAudios.testA = e.target.files[0]; updateAudioUI('testA', true); } });
             document.getElementById('file-b').addEventListener('change', e => { if(e.target.files[0]){ localAudios.testB = e.target.files[0]; updateAudioUI('testB', true); } });
 
             setupAudioPlayerLogic();
-            document.getElementById('loading-screen').classList.add('hidden');
             document.getElementById('audio-player').volume = globalVolume;
+            
+            // Ocultar pantalla de carga SIEMPRE al final
+            document.getElementById('loading-screen').classList.add('hidden');
         };
 
         function manualJsonLoad(e, type) {
@@ -601,6 +611,7 @@
             }
         }
 
+        // --- STREAMING_CHUNK:Lógica de Sesión y Navegación ---
         function initSession() {
             document.getElementById('user-display-name').innerText = currentUser.username;
             document.getElementById('btn-logout').classList.remove('hidden');
@@ -700,7 +711,7 @@
                 return [
                     [0,2], [2,4], [4,6], [6,8], [8,10], [10,12], [12,14], [14,16], [16,18], [18,20],
                     [20,22], [22,24], [24,26], [26,28], [28,30], // Part A
-                    [30,34], [34,37], [37,41], [41,46], [46,50]  // Part B & C Blocks
+                    [30,34], [34,37], [37,41], [41,46], [46,50]  // Part B & C
                 ];
             } else {
                 let pages = [];
@@ -722,6 +733,7 @@
             session.step += dir; renderSection();
         };
 
+        // --- STREAMING_CHUNK:Extracción Precisa de Tiempos del JSON ---
         function getIndivTimings(qId, currentTest) {
             let startT = 0, endT = 0;
             if (transcriptsData && transcriptsData[currentTest]) {
@@ -731,22 +743,11 @@
                 
                 if (startIdx !== -1) {
                     startT = tData[startIdx].time;
-                    
-                    // SMART GAP FIX: Si Whisper grabó mucho silencio antes del diálogo, salta el silencio.
-                    if (tData[startIdx+1] && (tData[startIdx+1].time - startT > 4)) {
-                        startT = Math.max(startT, tData[startIdx+1].time - 2.5);
-                    }
-
                     const endRegex = new RegExp(`^(Number ${qId + 1}\\.?|This is the end|Part B\\.?)$`, 'i');
                     const endIdx = tData.findIndex((t, idx) => idx > startIdx && t.text.match(endRegex));
-                    if (endIdx !== -1) {
-                        endT = tData[endIdx].time;
-                    } else {
-                        endT = startT + 25; 
-                    }
-                } else {
-                    startT = 143; endT = 160; 
-                }
+                    if (endIdx !== -1) endT = tData[endIdx].time;
+                    else endT = startT + 25; 
+                } else { startT = 143; endT = 160; }
             }
             return { startT, endT };
         }
@@ -767,8 +768,11 @@
             return { startT, endT };
         }
 
+        // --- STREAMING_CHUNK:Gamificación y Verificación de Respuesta ---
         window.chk = (qid, sel) => {
             session.answers[qid] = sel;
+            if(!isGuideMode) return;
+            
             const q = examData[currentTest][session.section].find(x => x.id === qid);
             const isCorrect = (sel === q.correcta);
             const lbl = document.getElementById(`lbl-${qid}-${sel}`);
@@ -777,20 +781,19 @@
                 radio.parentElement.classList.remove('answer-correct', 'answer-incorrect');
             });
 
-            if (isGuideMode) {
-                if (isCorrect) {
-                    play8BitSound('success');
-                    lbl.classList.add('answer-correct');
-                    document.getElementById(`feed-${qid}`).innerHTML = `<div class="mt-4 p-4 rounded-xl bg-teal-50 text-teal-800 font-bold border border-teal-200 text-sm fade-in"><i class="fas fa-check-circle mr-2"></i>¡Correcto! ${q.explicacion}</div>`;
-                    document.querySelectorAll(`input[name="q-${qid}"]`).forEach(r => r.disabled = true);
-                } else {
-                    play8BitSound('fail');
-                    lbl.classList.add('answer-incorrect');
-                    document.getElementById(`feed-${qid}`).innerHTML = `<div class="mt-4 p-4 rounded-xl bg-rose-50 text-rose-800 font-bold border border-rose-200 text-sm fade-in"><i class="fas fa-times-circle mr-2"></i>Incorrecto. Era ${q.correcta}. ${q.explicacion}</div>`;
-                }
+            if (isCorrect) {
+                play8BitSound('success');
+                lbl.classList.add('answer-correct');
+                document.getElementById(`feed-${qid}`).innerHTML = `<div class="mt-4 p-4 rounded-xl bg-teal-50 text-teal-800 font-bold border border-teal-200 text-sm fade-in"><i class="fas fa-check-circle mr-2"></i>¡Correcto! ${q.explicacion}</div>`;
+                document.querySelectorAll(`input[name="q-${qid}"]`).forEach(r => r.disabled = true);
+            } else {
+                play8BitSound('fail');
+                lbl.classList.add('answer-incorrect');
+                document.getElementById(`feed-${qid}`).innerHTML = `<div class="mt-4 p-4 rounded-xl bg-rose-50 text-rose-800 font-bold border border-rose-200 text-sm fade-in"><i class="fas fa-times-circle mr-2"></i>Incorrecto. Era ${q.correcta}. ${q.explicacion}</div>`;
             }
         };
 
+        // --- STREAMING_CHUNK:Reproducción de Audio Individual y Karaoke ---
         window.playIndividualAudio = (qId, startT, endT, btn) => {
             const player = document.getElementById('audio-player');
             if(!player.src || !player.src.startsWith('blob:')) player.src = URL.createObjectURL(localAudios[currentTest]);
@@ -860,6 +863,7 @@
             ).join('');
         }
 
+        // --- STREAMING_CHUNK:Renderización de la Pantalla de Examen ---
         function renderSection() {
             ['listening', 'structure', 'reading'].forEach(s => {
                 document.getElementById(`nav-${s}`).classList.remove('bg-slate-100', 'border-l-4', 'border-sky-500');
@@ -974,7 +978,7 @@
                 if (transcriptCol) {
                     cardWrap.className = "grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-stretch";
                     cardWrap.innerHTML = `
-                        <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-md border border-slate-100 flex flex-col h-full">${qHTML}</div>
+                        <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-md border border-slate-100 flex flex-col h-full justify-between">${qHTML}</div>
                         ${transcriptCol}
                     `;
                 } else {
@@ -996,6 +1000,7 @@
             document.getElementById('test-scroll-area').scrollTo(0,0);
         }
 
+        // --- STREAMING_CHUNK:Control de Reproducción y el "Smart Gap Skipper" ---
         function gestionarAudioAutomaticoExamen(slice) {
             if(session.section !== 'listening') return;
             const player = document.getElementById('audio-player');
@@ -1024,8 +1029,10 @@
             player.addEventListener('timeupdate', () => {
                 if (session.section !== 'listening' || audioEndTime === 0) return;
                 
+                let ct = player.currentTime;
+
+                // Lógica de Sincronización del Karaoke y el GAP Skipper
                 if (isGuideMode && activeTranscriptLines.length > 0 && window.activeTranscriptBoxId) {
-                    let ct = player.currentTime;
                     let newActiveIndex = -1;
                     
                     for (let i = 0; i < activeTranscriptLines.length; i++) {
@@ -1034,15 +1041,28 @@
                         } else { break; }
                     }
 
+                    // SMART GAP SKIPPER (Salta los silencios largos entre oraciones)
+                    if (newActiveIndex >= 0 && newActiveIndex < activeTranscriptLines.length - 1) {
+                        let currentLineTime = activeTranscriptLines[newActiveIndex].time;
+                        let nextLineTime = activeTranscriptLines[newActiveIndex + 1].time;
+                        if (nextLineTime - currentLineTime > 4) { // Si hay más de 4 segs de silencio
+                            // Si ya escuchamos 1.5 segs de la frase (Ej. "Number two") y falta mucho para la siguiente
+                            if (ct > currentLineTime + 1.5 && ct < nextLineTime - 0.5) {
+                                player.currentTime = nextLineTime - 0.5; // Salto temporal mágico
+                            }
+                        }
+                    }
+
+                    // Efectos visuales del texto
                     if (newActiveIndex !== -1 && newActiveIndex !== currentActiveIndex) {
                         currentActiveIndex = newActiveIndex;
                         document.querySelectorAll(`#${window.activeTranscriptBoxId} .transcript-line`).forEach((el, idx) => {
-                            if (idx < newActiveIndex) {
+                            if (idx < newActiveIndex) { // Pasado
                                 el.className = "transcript-line mb-4 text-slate-400 text-[1.3rem] font-medium opacity-60 transition-all duration-300 leading-relaxed";
-                            } else if (idx === newActiveIndex) {
+                            } else if (idx === newActiveIndex) { // Actual (Hablando)
                                 el.className = "transcript-line mb-4 text-sky-400 text-[1.5rem] font-black opacity-100 drop-shadow-md transition-all duration-300 leading-relaxed";
                                 el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            } else {
+                            } else { // Futuro
                                 el.className = "transcript-line mb-4 text-slate-500 text-[1.3rem] font-medium opacity-30 transition-all duration-300 leading-relaxed";
                             }
                         });
@@ -1068,6 +1088,7 @@
             });
         }
 
+        // --- STREAMING_CHUNK:Temporizadores y Calificación (Tabla Oficial ETS) ---
         function startSpeedTimer() {
             clearInterval(qTimerInt); document.getElementById('q-timer-display').classList.add('hidden');
             if(isGuideMode) return; 
@@ -1157,6 +1178,7 @@
             document.getElementById('view-results').classList.remove('hidden-section');
         }
 
+        // --- STREAMING_CHUNK:Lógica de Vocabulario (Repetición Espaciada) ---
         window.startVocab = () => {
             if(!vocabData || vocabData.length === 0) return alert("Falta el archivo vocabulary.json");
             ocultarTodo(); document.getElementById('btn-home').classList.remove('hidden');
