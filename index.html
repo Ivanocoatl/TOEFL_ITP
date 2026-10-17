@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOEFL ITP Pro Simulator - Speed Edition</title>
+    <title>TOEFL ITP Pro Simulator - Ultimate Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -17,21 +17,21 @@
         .vibrant-gradient-a { background: linear-gradient(135deg, #38bdf8 0%, #3b82f6 100%); }
         .vibrant-gradient-b { background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%); }
         .vibrant-success { background: linear-gradient(135deg, #34d399 0%, #10b981 100%); }
+        .vibrant-warning { background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); }
         
-        .toefl-radio { appearance: none; width: 22px; height: 22px; border: 3px solid #cbd5e1; border-radius: 50%; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .toefl-radio:checked { background-color: #0f172a; border-color: #0f172a; box-shadow: inset 0 0 0 5px #fff; transform: scale(1.1); }
+        .toefl-radio { appearance: none; width: 1.5rem; height: 1.5rem; border: 3px solid #cbd5e1; border-radius: 50%; cursor: pointer; transition: all 0.3s ease; flex-shrink: 0;}
+        .toefl-radio:checked { background-color: #0f172a; border-color: #0f172a; box-shadow: inset 0 0 0 4px #fff; transform: scale(1.1); }
         
         .hidden-section { display: none !important; }
         .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        .active-nav { background: #f0f9ff; border-left: 5px solid #0ea5e9; color: #0369a1; font-weight: 900; }
+        .answer-correct { animation: pulseGreen 0.5s ease; background-color: #ecfdf5 !important; border-color: #10b981 !important; color: #065f46 !important; }
+        .answer-incorrect { animation: shakeRed 0.5s ease; background-color: #fff1f2 !important; border-color: #f43f5e !important; color: #9f1239 !important; }
         
-        .timer-warning { animation: pulse-red 1s infinite; color: #ef4444; font-weight: 900; }
-        @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); text-shadow: 0 0 8px rgba(239, 68, 68, 0.5); } 100% { transform: scale(1); } }
+        @keyframes pulseGreen { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 50% { transform: scale(1.02); box-shadow: 0 0 20px 10px rgba(16, 185, 129, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+        @keyframes shakeRed { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
 
-        .glow-success { box-shadow: 0 0 15px rgba(52, 211, 153, 0.5); border-color: #34d399; }
-        
         /* KARAOKE STYLES */
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
@@ -100,23 +100,6 @@
         <h2 class="mt-6 font-black text-teal-900 text-2xl tracking-tight">Cargando sistema...</h2>
     </div>
 
-    <!-- HUB DE BIENVENIDA -->
-    <div id="welcome-hub" class="hidden fixed inset-0 z-[250] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-        <div class="bg-white rounded-[2rem] p-8 max-w-lg w-full shadow-2xl text-center border-t-8 border-sky-500 fade-in">
-            <div class="text-5xl mb-4 animate-bounce">👋</div>
-            <h2 class="text-3xl font-black text-slate-900 mb-2">¡Qué bueno verte!</h2>
-            <p class="text-slate-500 mb-6 text-sm">Tienes un entrenamiento guardado en pausa. ¿Qué energía traes hoy?</p>
-            <div class="grid gap-3">
-                <button onclick="continuarSesion()" class="vibrant-gradient-a text-white py-4 rounded-2xl font-black text-lg shadow-md hover:scale-105 transition-all flex justify-center items-center gap-2">
-                    Continuar donde lo dejé 🚀
-                </button>
-                <button onclick="iniciarDesdeCero()" class="bg-slate-100 text-slate-500 py-3 rounded-2xl font-bold text-sm hover:bg-rose-50 hover:text-rose-600 transition-all">
-                    Borrar progreso y empezar de cero 🔄
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- MAIN CONTAINER -->
     <div class="flex flex-1 overflow-hidden relative">
 
@@ -174,6 +157,17 @@
             <div class="max-w-5xl mx-auto">
                 <h2 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-2">Tu Panel de Entrenamiento</h2>
                 <p class="text-slate-500 text-lg font-bold mb-10">Selecciona tu misión para el día de hoy.</p>
+                
+                <div id="resume-card" class="hidden mb-8 bg-sky-50 border border-sky-200 p-6 rounded-3xl flex justify-between items-center shadow-sm">
+                    <div>
+                        <h3 class="text-sky-800 font-black text-xl mb-1">¡Tienes un test en pausa!</h3>
+                        <p class="text-sky-600 text-sm font-bold">Continúa justo donde te quedaste.</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="iniciarDesdeCero()" class="px-4 py-2 bg-white text-rose-500 rounded-xl font-bold text-sm hover:bg-rose-50 border border-rose-100">Borrar</button>
+                        <button onclick="continuarSesion()" class="px-6 py-2 vibrant-gradient-a text-white rounded-xl font-black shadow-md">Continuar</button>
+                    </div>
+                </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div onclick="openSetup('guide')" class="glass-card p-8 rounded-[2rem] border-2 border-white transition-all hover:-translate-y-2 hover:shadow-2xl cursor-pointer group">
@@ -281,7 +275,7 @@
             <!-- Test Content -->
             <main class="flex-1 overflow-y-auto p-4 md:p-8 relative" id="test-scroll-area">
                 <div class="max-w-6xl mx-auto pb-20">
-                    <div class="bg-slate-900 p-6 md:p-8 rounded-3xl shadow-lg mb-6 flex justify-between items-center sticky top-0 z-20">
+                    <div class="bg-slate-900 p-6 md:p-8 rounded-3xl shadow-lg mb-6 flex justify-between items-center relative z-20">
                         <h2 id="live-sec-title" class="text-2xl font-black uppercase tracking-tight text-white">Section</h2>
                         <div id="audio-panel" class="hidden flex flex-col items-end gap-1">
                             <audio id="audio-player" class="h-8 w-48 opacity-70 hover:opacity-100 transition-opacity" controls controlsList="nodownload"></audio>
@@ -527,6 +521,7 @@
         // Karaoke State
         let activeTranscriptLines = [];
         let currentActiveIndex = -1;
+        window.activeTranscriptBoxId = null; // Mantiene el ID de la caja actual para no cruzar colores
 
         window.onload = async () => {
             const cacheBuster = '?nocache=' + new Date().getTime();
@@ -615,17 +610,40 @@
             }
         }
 
-        // --- SESSION LOGIC ---
         function initSession() {
             document.getElementById('user-display-name').innerText = currentUser.username;
             document.getElementById('btn-logout').classList.remove('hidden');
             ocultarTodo();
             
             if(currentUser.progress) {
-                currentUser.progress = null; saveUsersDB(); // Forzamos inicio limpio como lo pidio
-            } 
+                document.getElementById('resume-card').classList.remove('hidden');
+            } else {
+                document.getElementById('resume-card').classList.add('hidden');
+            }
             document.getElementById('view-dashboard').classList.remove('hidden-section');
         }
+
+        window.continuarSesion = () => {
+            if(currentUser && currentUser.progress) {
+                const p = currentUser.progress;
+                currentTest = p.test; isGuideMode = p.mode; session = p.session;
+                document.getElementById('resume-card').classList.add('hidden');
+                arrancarInterfazTest();
+            }
+        };
+
+        window.iniciarDesdeCero = () => {
+            if(currentUser) { currentUser.progress = null; saveUsersDB(); }
+            document.getElementById('resume-card').classList.add('hidden');
+        };
+
+        window.pausarYSalir = () => {
+            if(!currentUser || !currentTest) return;
+            currentUser.progress = { test: currentTest, mode: isGuideMode, session: session };
+            saveUsersDB();
+            goHome();
+            alert("Progreso guardado. Podrás continuar la próxima vez.");
+        };
 
         window.goHome = () => {
             ocultarTodo();
@@ -637,6 +655,8 @@
             document.getElementById('audio-player').pause();
             document.getElementById('main-sidebar').classList.remove('flex');
             document.getElementById('main-sidebar').classList.add('hidden');
+            
+            if(currentUser && currentUser.progress) document.getElementById('resume-card').classList.remove('hidden');
             document.getElementById('view-dashboard').classList.remove('hidden-section');
         };
 
@@ -662,7 +682,7 @@
         function arrancarInterfazTest() {
             ocultarTodo();
             document.getElementById('btn-home').classList.remove('hidden');
-            document.getElementById('general-timer-container').classList.remove('hidden');
+            document.getElementById('btn-save').classList.remove('hidden');
             document.getElementById('main-sidebar').classList.add('flex');
             document.getElementById('main-sidebar').classList.remove('hidden');
             
@@ -672,9 +692,11 @@
             if(isGuideMode) {
                 badge.innerText = "MODO GUÍA"; badge.className = "mt-2 inline-block text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded bg-sky-100 text-sky-700";
                 ind.innerHTML = `<i class="fas fa-hand-pointer mr-1"></i> Control Manual (Botones Play)`;
+                document.getElementById('general-timer-container').classList.add('hidden');
             } else {
                 badge.innerText = "MODO EXAMEN"; badge.className = "mt-2 inline-block text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded bg-rose-100 text-rose-700";
                 ind.innerHTML = `<i class="fas fa-forward mr-1"></i> Auto-Play (Estricto)`;
+                document.getElementById('general-timer-container').classList.remove('hidden');
                 iniciarRelojGeneral(115); 
             }
             document.getElementById('view-test').classList.remove('hidden-section');
@@ -709,7 +731,7 @@
                 
                 if (startIdx !== -1) {
                     startT = tData[startIdx].time;
-                    // Busca el siguiente "Number X+1." o "Part B" para marcar el fin
+                    // Busca el siguiente "Number X+1." o fin de parte para marcar el fin
                     const endRegex = new RegExp(`^(Number ${qId + 1}\\.?|This is the end|Part B\\.?)$`, 'i');
                     const endIdx = tData.findIndex((t, idx) => idx > startIdx && t.text.match(endRegex));
                     if (endIdx !== -1) {
@@ -730,7 +752,8 @@
             if (transcriptsData && transcriptsData[currentTest]) {
                 const tData = transcriptsData[currentTest];
                 
-                const startRegex = new RegExp(`Questions ${firstQ}`, 'i');
+                // Las conferencias comienzan con "Questions X through Y" o "Listen to..."
+                const startRegex = new RegExp(`(Questions ${firstQ}|Listen to)`, 'i');
                 const startIdx = tData.findIndex(t => t.text.match(startRegex));
                 if (startIdx !== -1) startT = tData[startIdx].time;
                 
@@ -759,10 +782,15 @@
             btn.classList.remove('bg-slate-100', 'text-slate-600');
             btn.classList.add('bg-sky-200', 'text-sky-800');
 
-            audioEndTime = endT;
-            loadTranscriptData(startT, endT, `transcript-text-${qId}`);
+            // Ajuste milimétrico para no arrastrar el numero siguiente
+            let playStart = Math.max(0, startT - 0.2); 
+            let playEnd = Math.max(0, endT - 0.4); 
             
-            player.currentTime = startT;
+            audioEndTime = playEnd;
+            window.activeTranscriptBoxId = `transcript-text-${qId}`;
+            loadTranscriptData(startT, endT, window.activeTranscriptBoxId);
+            
+            player.currentTime = playStart;
             player.play().catch(e=>console.log(e));
         };
 
@@ -774,14 +802,17 @@
             btn.classList.remove('bg-white', 'text-indigo-600');
             btn.classList.add('bg-indigo-600', 'text-white');
 
-            audioEndTime = endT;
-            loadTranscriptData(startT, endT, `transcript-text-block`);
+            let playStart = Math.max(0, startT - 0.2); 
+            let playEnd = Math.max(0, endT - 0.4);
+
+            audioEndTime = playEnd;
+            window.activeTranscriptBoxId = `transcript-text-block`;
+            loadTranscriptData(startT, endT, window.activeTranscriptBoxId);
             
-            player.currentTime = startT;
+            player.currentTime = playStart;
             player.play().catch(e=>console.log(e));
         };
 
-        // --- TRANSCRIPT KRAOKE ENGINE ---
         function loadTranscriptData(startT, endT, boxId) {
             const container = document.getElementById(boxId);
             if (!container) return;
@@ -791,7 +822,8 @@
                 return;
             }
 
-            activeTranscriptLines = transcriptsData[currentTest].filter(t => t.time >= startT && t.time < endT + 1);
+            // Usamos strictly < endT porque el "Number X+1" está exactamente en endT
+            activeTranscriptLines = transcriptsData[currentTest].filter(t => t.time >= startT && t.time < endT);
             
             if (activeTranscriptLines.length === 0) {
                 container.innerHTML = '<p class="text-slate-500 font-bold">No hay subtítulos para este fragmento temporal.</p>';
@@ -801,7 +833,7 @@
             currentActiveIndex = -1;
             // Dibujamos las lineas opacas inicialmente
             container.innerHTML = activeTranscriptLines.map((t, idx) => 
-                `<p id="tl-${idx}" class="transcript-line mb-4 text-slate-500 text-[1.1rem] transition-all duration-300 opacity-50 leading-relaxed">${t.text}</p>`
+                `<p id="tl-${idx}" class="transcript-line mb-4 text-slate-500 text-[1.3rem] font-medium transition-all duration-300 opacity-40 leading-relaxed">${t.text}</p>`
             ).join('');
         }
 
@@ -850,8 +882,8 @@
                     </div>` : '';
 
                 box.innerHTML += `
-                    <div class="${isGuideMode ? 'grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 items-stretch' : 'mb-6'}">
-                        <div class="bg-indigo-50 border border-indigo-200 rounded-3xl p-8 flex flex-col justify-center items-center text-indigo-800 shadow-sm text-center gap-4 h-full">
+                    <div class="${isGuideMode ? 'grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-stretch' : 'mb-6'}">
+                        <div class="bg-indigo-50 border border-indigo-200 rounded-[2rem] p-8 flex flex-col justify-center items-center text-indigo-800 shadow-md text-center gap-4 h-full">
                             <i class="fas fa-bullhorn text-5xl opacity-50 mb-2"></i>
                             <p class="font-black text-xl uppercase tracking-widest leading-tight">Escucha la conferencia y contesta este bloque.</p>
                             ${btnStr}
@@ -894,7 +926,6 @@
                     }
                 }
 
-                // Generación de Botones Play y Transcript Box (Solo Parte A - no bloque)
                 let playBtnHTML = '';
                 let transcriptCol = '';
 
@@ -904,7 +935,7 @@
                     playBtnHTML = `<button onclick="playIndividualAudio(${q.id}, ${t.startT}, ${t.endT}, this)" class="btn-play-audio bg-slate-100 text-slate-600 hover:bg-sky-100 hover:text-sky-700 px-4 py-2 rounded-xl font-black text-xs uppercase tracking-widest transition-colors shadow-sm shrink-0">▶️ Escuchar Audio</button>`;
                     
                     transcriptCol = `
-                    <div class="bg-slate-900 rounded-[2rem] p-6 shadow-inner flex flex-col h-full min-h-[300px]">
+                    <div class="bg-slate-900 rounded-[2rem] p-6 shadow-md flex flex-col h-full min-h-[300px]">
                         <h4 class="text-sky-400 font-black mb-4 text-sm uppercase tracking-widest flex items-center gap-2"><i class="fas fa-closed-captioning"></i> Live Transcript</h4>
                         <div id="transcript-text-${q.id}" class="flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar">
                              <div class="text-slate-500 text-center mt-10"><i class="fas fa-play-circle text-4xl mb-3 opacity-30"></i><br>Presiona "Escuchar Audio" para ver los subtítulos sincronizados.</div>
@@ -926,7 +957,7 @@
 
                 let cardWrap = document.createElement('div');
                 if (transcriptCol) {
-                    cardWrap.className = "grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 items-stretch";
+                    cardWrap.className = "grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-stretch";
                     cardWrap.innerHTML = `
                         <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-md border border-slate-100 flex flex-col h-full">${qHTML}</div>
                         ${transcriptCol}
@@ -945,14 +976,11 @@
                 }
             });
 
-            // En modo examen, el audio corre solo
             if (!isGuideMode) { gestionarAudioAutomaticoExamen(slice); }
-            
             startSpeedTimer();
             document.getElementById('test-scroll-area').scrollTo(0,0);
         }
 
-        // --- EXAM MODE AUTO AUDIO ---
         function gestionarAudioAutomaticoExamen(slice) {
             if(session.section !== 'listening') return;
             const player = document.getElementById('audio-player');
@@ -971,12 +999,14 @@
                 endT = t.endT;
             }
 
-            audioEndTime = endT; repsCount = 0;
-            player.currentTime = startT; 
+            let playStart = Math.max(0, startT - 0.2); 
+            let playEnd = Math.max(0, endT - 0.4);
+
+            audioEndTime = playEnd; repsCount = 0;
+            player.currentTime = playStart; 
             player.play().catch(e => console.log(e));
         }
 
-        // --- PLAYER TIMEUPDATE (Sync Karaoke & Reps) ---
         function setupAudioPlayerLogic() {
             const player = document.getElementById('audio-player');
             
@@ -984,7 +1014,7 @@
                 if (session.section !== 'listening' || audioEndTime === 0) return;
                 
                 // 1. Karaoke Logic (Only in Guide Mode)
-                if (isGuideMode && activeTranscriptLines.length > 0) {
+                if (isGuideMode && activeTranscriptLines.length > 0 && window.activeTranscriptBoxId) {
                     let ct = player.currentTime;
                     let newActiveIndex = -1;
                     
@@ -998,15 +1028,14 @@
 
                     if (newActiveIndex !== -1 && newActiveIndex !== currentActiveIndex) {
                         currentActiveIndex = newActiveIndex;
-                        // Actualizar UI fijando colores
-                        document.querySelectorAll('.transcript-line').forEach((el, idx) => {
-                            if (idx < newActiveIndex) {
-                                el.className = "transcript-line mb-4 text-slate-400 text-[1.1rem] opacity-70 leading-relaxed transition-all";
-                            } else if (idx === newActiveIndex) {
-                                el.className = "transcript-line mb-4 text-sky-400 text-[1.3rem] font-black opacity-100 leading-relaxed drop-shadow-md transition-all";
-                                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        
+                        // SCOPE selector to ONLY the active box to prevent flashing across boxes
+                        document.querySelectorAll(`#${window.activeTranscriptBoxId} .transcript-line`).forEach((el, idx) => {
+                            if (idx <= newActiveIndex) {
+                                el.className = "transcript-line mb-4 text-sky-400 text-[1.5rem] font-black opacity-100 leading-relaxed drop-shadow-md transition-all";
+                                if(idx === newActiveIndex) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                             } else {
-                                el.className = "transcript-line mb-4 text-slate-500 text-[1.1rem] opacity-30 leading-relaxed transition-all";
+                                el.className = "transcript-line mb-4 text-slate-500 text-[1.3rem] font-medium opacity-40 leading-relaxed transition-all";
                             }
                         });
                     }
@@ -1016,11 +1045,9 @@
                 if (player.currentTime >= audioEndTime) {
                     player.pause();
                     
-                    // Si no es modo guía, aplica repetición (Regla ITP)
                     if (!isGuideMode) {
                         if (repsCount < 1) { 
                             repsCount++;
-                            // Volver a reproducir la pagina actual
                             const data = examData[currentTest][session.section];
                             const pages = getPagesForSection(session.section, data.length);
                             const slice = data.slice(pages[session.step][0], pages[session.step][1]);
@@ -1029,13 +1056,13 @@
                             if (slice.length <= 2) { startT = getIndivTimings(slice[0].id, currentTest).startT; } 
                             else { startT = getBlockTimings(slice[0].id, slice[slice.length-1].id, currentTest).startT; }
                             
-                            player.currentTime = startT;
+                            player.currentTime = Math.max(0, startT - 0.2);
                             player.play().catch(e => console.log(e));
                         } else {
-                            audioEndTime = 0; // Termina repeticiones
+                            audioEndTime = 0;
                         }
                     } else {
-                        // En modo guia es manual, termina a la primera y el usuario repite con el boton
+                        // En modo guia es manual. El texto se queda azul porque no reseteamos el HTML.
                         audioEndTime = 0;
                     }
                 }
@@ -1078,28 +1105,26 @@
             }, 1000);
         }
 
-        window.chk = (qid, sel) => {
-            session.answers[qid] = sel;
-            if (isGuideMode) {
-                const q = examData[currentTest][session.section].find(x => x.id === qid);
-                const isCorrect = (sel === q.correcta);
-                const lbl = document.getElementById(`lbl-${qid}-${sel}`);
-                
-                document.querySelectorAll(`input[name="q-${qid}"]`).forEach(radio => {
-                    radio.parentElement.classList.remove('answer-correct', 'answer-incorrect');
-                });
+        function iniciarRelojGeneral(m) { 
+            clearInterval(generalTimerInt); let t = m * 60; 
+            generalTimerInt = setInterval(() => { 
+                let mm = Math.floor(t / 60), ss = t % 60; 
+                document.getElementById('timer').innerText = `${mm < 10 ? '0'+mm : mm}:${ss < 10 ? '0'+ss : ss}`; t--; 
+                if(t<=0) calificarTest();
+            }, 1000); 
+        }
 
-                if(isCorrect) {
-                    play8BitSound('success');
-                    lbl.classList.add('answer-correct');
-                    document.getElementById(`feed-${qid}`).innerHTML = `<div class="mt-4 p-4 rounded-xl bg-teal-50 text-teal-800 font-bold border border-teal-200 text-sm fade-in"><i class="fas fa-check-circle mr-2"></i>¡Correcto! ${q.explicacion}</div>`;
-                    document.querySelectorAll(`input[name="q-${qid}"]`).forEach(r => r.disabled = true);
-                } else {
-                    play8BitSound('fail');
-                    lbl.classList.add('answer-incorrect');
-                    document.getElementById(`feed-${qid}`).innerHTML = `<div class="mt-4 p-4 rounded-xl bg-rose-50 text-rose-800 font-bold border border-rose-200 text-sm fade-in"><i class="fas fa-times-circle mr-2"></i>Vuelve a intentarlo. ${q.explicacion}</div>`;
-                }
+        window.navegarPasos = (dir) => {
+            const data = examData[currentTest][session.section];
+            const pages = getPagesForSection(session.section, data.length);
+            if (session.step + dir >= pages.length) {
+                if (session.section === 'listening') jumpSection('structure');
+                else if (session.section === 'structure') jumpSection('reading');
+                else calificarTest();
+                return;
             }
+            if (session.step + dir < 0) return;
+            session.step += dir; renderSection();
         };
 
         const conversionTable = [
@@ -1161,7 +1186,6 @@
             document.getElementById('view-results').classList.remove('hidden-section');
         }
 
-        // --- VOCABULARY SRS ENGINE ---
         let vocabIndex = 0;
         let isCardFlipped = false;
         let cardsSeenToday = 0;
@@ -1213,7 +1237,7 @@
         window.handleCardClick = () => {
             if(!isCardFlipped) {
                 isCardFlipped = true;
-                vocabWeights[vocabIndex] += 2; // SRS: Triple probabilidad la prox vez
+                vocabWeights[vocabIndex] += 2; // SRS
                 cardsSeenToday++;
                 document.getElementById('v-counter').innerText = cardsSeenToday;
                 document.getElementById('vocab-card-container').classList.add('flipped');
