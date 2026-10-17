@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOEFL ITP Pro Simulator - Ultimate Edition</title>
+    <title>TOEFL ITP Pro Simulator - Speed Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -17,10 +17,9 @@
         .vibrant-gradient-a { background: linear-gradient(135deg, #38bdf8 0%, #3b82f6 100%); }
         .vibrant-gradient-b { background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%); }
         .vibrant-success { background: linear-gradient(135deg, #34d399 0%, #10b981 100%); }
-        .vibrant-warning { background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); }
         
-        .toefl-radio { appearance: none; width: 1.5rem; height: 1.5rem; border: 3px solid #cbd5e1; border-radius: 50%; cursor: pointer; transition: all 0.3s ease; flex-shrink: 0;}
-        .toefl-radio:checked { background-color: #0f172a; border-color: #0f172a; box-shadow: inset 0 0 0 4px #fff; transform: scale(1.1); }
+        .toefl-radio { appearance: none; width: 22px; height: 22px; border: 3px solid #cbd5e1; border-radius: 50%; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .toefl-radio:checked { background-color: #0f172a; border-color: #0f172a; box-shadow: inset 0 0 0 5px #fff; transform: scale(1.1); }
         
         .hidden-section { display: none !important; }
         .fade-in { animation: fadeIn 0.4s ease-out forwards; }
@@ -31,12 +30,15 @@
         .timer-warning { animation: pulse-red 1s infinite; color: #ef4444; font-weight: 900; }
         @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); text-shadow: 0 0 8px rgba(239, 68, 68, 0.5); } 100% { transform: scale(1); } }
 
-        .answer-correct { animation: pulseGreen 0.5s ease; background-color: #ecfdf5 !important; border-color: #10b981 !important; color: #065f46 !important; }
-        .answer-incorrect { animation: shakeRed 0.5s ease; background-color: #fff1f2 !important; border-color: #f43f5e !important; color: #9f1239 !important; }
+        .glow-success { box-shadow: 0 0 15px rgba(52, 211, 153, 0.5); border-color: #34d399; }
         
-        @keyframes pulseGreen { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 50% { transform: scale(1.02); box-shadow: 0 0 20px 10px rgba(16, 185, 129, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
-        @keyframes shakeRed { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
+        /* KARAOKE STYLES */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #64748b; }
 
+        /* VOCABULARY CARDS */
         .flip-card { perspective: 1000px; cursor: pointer; height: 350px; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
@@ -45,30 +47,11 @@
         .flip-card-back { background: #0f172a; color: white; transform: rotateY(180deg); overflow-y: auto;}
         
         .particle { position: absolute; border-radius: 50%; pointer-events: none; z-index: 100; }
-
-        /* KARAOKE STYLES */
-        .transcript-line { transition: all 0.3s ease; opacity: 0.3; }
-        .transcript-past { opacity: 0.7; color: #94a3b8; }
-        .transcript-active {
-            opacity: 1;
-            font-weight: 800;
-            background: linear-gradient(to right, #38bdf8 50%, #475569 50%);
-            background-size: 200% 100%;
-            background-position: right bottom;
-            -webkit-background-clip: text;
-            color: transparent;
-            transform: scale(1.02);
-            transform-origin: left;
-        }
-
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-slate-800">
 
+    <!-- HEADER -->
     <header class="bg-slate-900 text-white py-3 px-6 flex justify-between items-center shadow-lg z-50 shrink-0">
         <div class="flex items-center gap-3">
             <div class="vibrant-gradient-a p-2 rounded-xl shadow-md rotate-3">
@@ -81,7 +64,7 @@
         </div>
         
         <div class="flex items-center gap-3">
-            <!-- CONTROLES DE ACCESIBILIDAD Y AUDIO -->
+            <!-- ACCESIBILIDAD Y VOLUMEN -->
             <div class="hidden md:flex bg-slate-800 rounded-lg overflow-hidden border border-slate-700 items-center mr-2">
                 <button onclick="changeFontSize(-1)" class="px-3 py-1 hover:bg-slate-700 text-sm font-bold" title="Reducir letra">A-</button>
                 <div class="w-px h-5 bg-slate-700"></div>
@@ -111,11 +94,13 @@
         </div>
     </header>
 
+    <!-- LOADING SCREEN -->
     <div id="loading-screen" class="absolute inset-0 bg-teal-50 z-[300] flex flex-col items-center justify-center fade-in">
         <div class="w-16 h-16 border-8 border-teal-200 border-t-teal-500 rounded-full animate-spin shadow-md"></div>
         <h2 class="mt-6 font-black text-teal-900 text-2xl tracking-tight">Cargando sistema...</h2>
     </div>
 
+    <!-- HUB DE BIENVENIDA -->
     <div id="welcome-hub" class="hidden fixed inset-0 z-[250] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
         <div class="bg-white rounded-[2rem] p-8 max-w-lg w-full shadow-2xl text-center border-t-8 border-sky-500 fade-in">
             <div class="text-5xl mb-4 animate-bounce">👋</div>
@@ -135,25 +120,7 @@
     <!-- MAIN CONTAINER -->
     <div class="flex flex-1 overflow-hidden relative">
 
-        <aside id="main-sidebar" class="w-64 md:w-72 bg-white border-r border-slate-200 shadow-md hidden flex-col z-40 shrink-0">
-            <div class="p-6 border-b border-slate-100 bg-slate-50/50">
-                <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1.5">Tu Misión</h2>
-                <div id="test-info-nav" class="text-xs font-black text-sky-700">Test no seleccionado</div>
-                <div id="live-mode-badge" class="mt-2 inline-block text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded">MODO</div>
-            </div>
-            <nav class="flex-1 overflow-y-auto py-3" id="main-nav">
-                <button id="nav-listening" onclick="jumpSection('listening')" class="w-full text-left px-6 py-4 hover:bg-sky-50 flex items-center gap-3 transition-all text-slate-600 font-bold mb-1 rounded-r-2xl text-sm">
-                    <i class="fas fa-headphones-alt text-sky-500 w-5 text-center"></i> 1. Listening
-                </button>
-                <button id="nav-structure" onclick="jumpSection('structure')" class="w-full text-left px-6 py-4 hover:bg-sky-50 flex items-center gap-3 transition-all text-slate-600 font-bold mb-1 rounded-r-2xl text-sm">
-                    <i class="fas fa-pen-nib text-teal-500 w-5 text-center"></i> 2. Structure
-                </button>
-                <button id="nav-reading" onclick="jumpSection('reading')" class="w-full text-left px-6 py-4 hover:bg-sky-50 flex items-center gap-3 transition-all text-slate-600 font-bold mb-1 rounded-r-2xl text-sm">
-                    <i class="fas fa-book-open text-indigo-500 w-5 text-center"></i> 3. Reading
-                </button>
-            </nav>
-        </aside>
-
+        <!-- AUTH VIEW -->
         <div id="view-auth" class="w-full h-full flex items-center justify-center p-4 bg-slate-50 fade-in overflow-y-auto">
             <div class="glass-card w-full max-w-md rounded-[2rem] p-8 shadow-2xl relative overflow-hidden my-auto">
                 <div class="absolute top-0 left-0 w-full h-2 vibrant-gradient-a"></div>
@@ -202,6 +169,7 @@
             </div>
         </div>
 
+        <!-- DASHBOARD VIEW -->
         <div id="view-dashboard" class="hidden-section w-full overflow-y-auto p-6 md:p-10 fade-in">
             <div class="max-w-5xl mx-auto">
                 <h2 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-2">Tu Panel de Entrenamiento</h2>
@@ -211,20 +179,20 @@
                     <div onclick="openSetup('guide')" class="glass-card p-8 rounded-[2rem] border-2 border-white transition-all hover:-translate-y-2 hover:shadow-2xl cursor-pointer group">
                         <div class="w-16 h-16 vibrant-gradient-a rounded-2xl flex items-center justify-center text-white text-3xl mb-6 shadow-lg group-hover:rotate-12 transition-transform"><i class="fas fa-book-reader"></i></div>
                         <h3 class="text-2xl font-black mb-2 text-slate-800">Guía de Estudio</h3>
-                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Aprende sin presión. Reproduce audios individuales. Te mostraremos la respuesta y explicación al instante si te equivocas.</p>
+                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Aprende sin presión. Botones individuales para reproducir cada diálogo y subtítulos integrados.</p>
                     </div>
 
                     <div onclick="openSetup('test')" class="bg-slate-900 p-8 rounded-[2rem] transition-all hover:-translate-y-2 hover:shadow-2xl cursor-pointer group relative overflow-hidden">
                         <div class="absolute -right-10 -top-10 w-40 h-40 bg-sky-500/20 rounded-full blur-2xl"></div>
                         <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-sky-400 text-3xl mb-6 shadow-lg group-hover:scale-110 transition-transform"><i class="fas fa-stopwatch"></i></div>
                         <h3 class="text-2xl font-black mb-2 text-white">Comenzar Test</h3>
-                        <p class="text-slate-400 text-sm font-bold leading-relaxed mb-4">Simulación real. Temporizador activo, audio automático sin pausas. Mide tu puntaje oficial.</p>
+                        <p class="text-slate-400 text-sm font-bold leading-relaxed mb-4">Simulación real. Temporizador activo, audios continuos sin pausa. Mide tu puntaje oficial.</p>
                     </div>
 
                     <div onclick="startVocab()" class="glass-card p-8 rounded-[2rem] border-2 border-white transition-all hover:-translate-y-2 hover:shadow-2xl cursor-pointer group">
                         <div class="w-16 h-16 vibrant-warning rounded-2xl flex items-center justify-center text-white text-3xl mb-6 shadow-lg group-hover:-rotate-12 transition-transform"><i class="fas fa-layer-group"></i></div>
                         <h3 class="text-2xl font-black mb-2 text-slate-800">Vocabulario</h3>
-                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Expande tu léxico. Tarjetas interactivas con sistema de repetición espaciada para las palabras más usadas del TOEFL.</p>
+                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Expande tu léxico. Sistema inteligente de repetición espaciada con las palabras AWL del TOEFL.</p>
                     </div>
                 </div>
 
@@ -242,7 +210,7 @@
                             <input type="file" id="file-json-vocab" accept=".json" class="text-xs w-full file:bg-rose-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-xl cursor-pointer">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-black uppercase text-rose-400 mb-1">transcripts.json (Karaoke)</label>
+                            <label class="block text-[10px] font-black uppercase text-rose-400 mb-1">transcripts.json</label>
                             <input type="file" id="file-json-trans" accept=".json" class="text-xs w-full file:bg-rose-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-xl cursor-pointer">
                         </div>
                     </div>
@@ -250,6 +218,7 @@
             </div>
         </div>
 
+        <!-- SETUP VIEW -->
         <div id="view-setup" class="hidden-section w-full overflow-y-auto p-6 md:p-10 fade-in">
             <div class="max-w-4xl mx-auto">
                 <button onclick="goHome()" class="mb-6 text-slate-400 hover:text-slate-800 font-bold text-sm flex items-center gap-2 transition-colors"><i class="fas fa-arrow-left"></i> Volver al panel</button>
@@ -287,9 +256,31 @@
             </div>
         </div>
 
-        <div id="view-test" class="hidden-section w-full flex flex-col md:flex-row fade-in h-full">
+        <!-- TEST WORKSPACE (Sidebar + Content) -->
+        <div id="view-test" class="hidden-section w-full flex flex-col md:flex-row h-full fade-in">
+            <!-- Sidebar Navigation -->
+            <aside id="main-sidebar" class="w-64 md:w-72 bg-white border-r border-slate-200 shadow-md hidden flex-col z-40 shrink-0">
+                <div class="p-6 border-b border-slate-100 bg-slate-50/50 text-center">
+                    <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1.5">Tu Misión</h2>
+                    <div id="test-info-nav" class="text-xs font-black text-sky-700">Test no seleccionado</div>
+                    <div id="live-mode-badge" class="mt-2 inline-block text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded">MODO</div>
+                </div>
+                <nav class="flex-1 overflow-y-auto py-3" id="main-nav">
+                    <button id="nav-listening" onclick="jumpSection('listening')" class="w-full text-left px-6 py-4 hover:bg-sky-50 flex items-center gap-3 transition-all text-slate-600 font-bold mb-1 rounded-r-2xl text-sm">
+                        <i class="fas fa-headphones-alt text-sky-500 w-5 text-center"></i> 1. Listening
+                    </button>
+                    <button id="nav-structure" onclick="jumpSection('structure')" class="w-full text-left px-6 py-4 hover:bg-sky-50 flex items-center gap-3 transition-all text-slate-600 font-bold mb-1 rounded-r-2xl text-sm">
+                        <i class="fas fa-pen-nib text-teal-500 w-5 text-center"></i> 2. Structure
+                    </button>
+                    <button id="nav-reading" onclick="jumpSection('reading')" class="w-full text-left px-6 py-4 hover:bg-sky-50 flex items-center gap-3 transition-all text-slate-600 font-bold mb-1 rounded-r-2xl text-sm">
+                        <i class="fas fa-book-open text-indigo-500 w-5 text-center"></i> 3. Reading
+                    </button>
+                </nav>
+            </aside>
+
+            <!-- Test Content -->
             <main class="flex-1 overflow-y-auto p-4 md:p-8 relative" id="test-scroll-area">
-                <div class="max-w-3xl mx-auto pb-20">
+                <div class="max-w-6xl mx-auto pb-20">
                     <div class="bg-slate-900 p-6 md:p-8 rounded-3xl shadow-lg mb-6 flex justify-between items-center sticky top-0 z-20">
                         <h2 id="live-sec-title" class="text-2xl font-black uppercase tracking-tight text-white">Section</h2>
                         <div id="audio-panel" class="hidden flex flex-col items-end gap-1">
@@ -298,7 +289,7 @@
                         </div>
                     </div>
                     
-                    <div id="q-box" class="space-y-6"></div>
+                    <div id="q-box"></div>
                     
                     <div class="mt-8 flex justify-between items-center bg-white p-4 rounded-2xl shadow-md border border-slate-100">
                         <button id="p-btn" onclick="navegarPasos(-1)" class="px-6 py-3 font-bold text-slate-400 hover:text-slate-800 transition-colors disabled:opacity-20 text-sm">Anterior</button>
@@ -309,19 +300,9 @@
                     </div>
                 </div>
             </main>
-
-            <!-- PANEL DE SUBTÍTULOS KARAOKE (Solo visible en Listening Modo Guía) -->
-            <aside id="transcript-panel" class="hidden w-full md:w-80 bg-slate-900 border-l border-slate-800 shrink-0 flex-col shadow-2xl z-30">
-                <div class="p-5 border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-10 flex items-center justify-between">
-                    <h3 class="text-sky-400 font-black flex items-center gap-2 tracking-tight"><i class="fas fa-closed-captioning"></i> Live Transcript</h3>
-                    <div class="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></div>
-                </div>
-                <div id="transcript-text" class="flex-1 overflow-y-auto p-5 space-y-4 text-sm font-medium leading-relaxed" style="scroll-behavior: smooth;">
-                    <!-- Lineas inyectadas aquí -->
-                </div>
-            </aside>
         </div>
 
+        <!-- RESULTS VIEW -->
         <div id="view-results" class="hidden-section w-full overflow-y-auto p-6 md:p-10 fade-in flex items-center justify-center">
             <div class="glass-card p-10 rounded-[3rem] shadow-2xl border-2 border-white text-center max-w-2xl w-full relative overflow-hidden">
                 <div class="text-7xl mb-6 animate-bounce">🏆</div>
@@ -347,6 +328,7 @@
             </div>
         </div>
 
+        <!-- VOCABULARY VIEW -->
         <div id="view-vocab" class="hidden-section w-full overflow-y-auto p-6 md:p-10 fade-in bg-slate-900 relative">
             <div id="vocab-particles" class="absolute inset-0 pointer-events-none z-[100] overflow-hidden"></div>
             
@@ -355,25 +337,24 @@
                 
                 <div class="text-center mb-10">
                     <h2 class="text-4xl md:text-5xl font-black text-white tracking-tighter mb-3">Vocabulario Activo</h2>
-                    <p class="text-slate-400 font-bold text-sm">Lee la definición. Haz clic en la carta para ver la traducción. <br>Haz clic de nuevo para avanzar y memorizar.</p>
+                    <p class="text-slate-400 font-bold text-sm">Lee la definición en inglés. Haz clic en la carta para ver el español.<br>Haz clic de nuevo para avanzar y memorizar.</p>
                 </div>
 
                 <div id="vocab-card-container" class="flip-card w-full max-w-xl mx-auto mb-10 transition-all duration-[600ms]" onclick="handleCardClick()">
                     <div class="flip-card-inner shadow-2xl">
-                        <!-- Frente: Inglés (Elegante) -->
+                        <!-- Frente: Inglés -->
                         <div class="flip-card-front">
                             <span id="v-type" class="text-[10px] font-black text-sky-500 uppercase tracking-[0.2em] mb-4 bg-sky-50 px-3 py-1 rounded-full border border-sky-100">---</span>
                             <h3 id="v-word" class="text-5xl md:text-6xl font-black text-blue-900 tracking-tight" style="font-family: 'Playfair Display', serif;">Cargando...</h3>
                             <div class="w-16 h-px bg-slate-200 my-6"></div>
                             <p id="v-def-front" class="text-slate-600 text-lg md:text-xl font-medium px-4">"..."</p>
                         </div>
-                        <!-- Reverso: Español (Moderno/Llamativo) -->
+                        <!-- Reverso: Español -->
                         <div class="flip-card-back flex flex-col justify-center items-center relative overflow-hidden">
                             <div class="absolute inset-0 bg-gradient-to-br from-slate-900 to-slate-800 z-0"></div>
                             <div class="z-10 flex flex-col items-center">
-                                <h3 id="v-word-back" class="text-4xl font-black text-sky-200 tracking-tight mb-8" style="font-family: 'Playfair Display', serif;">---</h3>
-                                <p class="text-[10px] font-black text-teal-400 uppercase tracking-[0.2em] mb-3 border border-teal-400/30 px-3 py-1 rounded-full">Traducción</p>
-                                <p id="v-es" class="text-4xl md:text-5xl text-amber-400 font-black uppercase tracking-tight" style="font-family: 'Fredoka', sans-serif;">---</p>
+                                <p class="text-[10px] font-black text-teal-400 uppercase tracking-[0.2em] mb-4 border border-teal-400/30 px-3 py-1 rounded-full">Traducción</p>
+                                <p id="v-es" class="text-5xl md:text-6xl text-amber-400 font-black uppercase tracking-tight" style="font-family: 'Fredoka', sans-serif;">---</p>
                             </div>
                         </div>
                     </div>
@@ -390,7 +371,7 @@
     </div>
 
     <script>
-        // --- AUDIO & GAMIFICATION ---
+        // --- AUDIO ENGINE (Synthesizer & Config) ---
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let audioCtx;
         let globalVolume = 0.8;
@@ -461,22 +442,18 @@
             document.documentElement.style.setProperty('--base-size', currentFontSize + 'px');
         };
 
-        // --- LOCAL USER MANAGEMENT (Max 10) ---
+        // --- LOCAL USER MANAGEMENT ---
         let usersDB = JSON.parse(localStorage.getItem('toefl_users_db')) || [];
         let currentUser = null;
-        
         function saveUsersDB() { localStorage.setItem('toefl_users_db', JSON.stringify(usersDB)); }
 
         window.handleLogin = () => {
             const user = document.getElementById('login-user').value.trim();
             const pass = document.getElementById('login-pass').value.trim();
             if(!user || !pass) return alert("Llena todos los campos.");
-            
             const found = usersDB.find(u => u.username === user && u.password === pass);
-            if(found) {
-                currentUser = found;
-                initSession();
-            } else { alert("Usuario o contraseña incorrectos."); }
+            if(found) { currentUser = found; initSession(); } 
+            else { alert("Usuario o contraseña incorrectos."); }
         };
 
         window.handleRegister = () => {
@@ -484,18 +461,13 @@
             const pass = document.getElementById('reg-pass').value.trim();
             const q = document.getElementById('reg-q').value.trim();
             const a = document.getElementById('reg-a').value.trim();
-            
             if(!user || !pass || !q || !a) return alert("Llena todos los campos.");
-            if(usersDB.length >= 10) return alert("Se ha alcanzado el límite máximo de 10 usuarios en este equipo.");
-            if(usersDB.find(u => u.username === user)) return alert("El usuario ya existe. Elige otro nombre.");
+            if(usersDB.length >= 10) return alert("Límite de 10 usuarios alcanzado.");
+            if(usersDB.find(u => u.username === user)) return alert("El usuario ya existe.");
             
             const newUser = { username: user, password: pass, secretQ: q, secretA: a.toLowerCase(), progress: null };
-            usersDB.push(newUser);
-            saveUsersDB();
-            
-            alert("¡Cuenta creada con éxito! Iniciando sesión...");
-            currentUser = newUser;
-            initSession();
+            usersDB.push(newUser); saveUsersDB();
+            alert("¡Cuenta creada con éxito!"); currentUser = newUser; initSession();
         };
 
         let recTempUser = null;
@@ -541,24 +513,20 @@
             document.getElementById('general-timer-container').classList.add('hidden');
             document.getElementById('main-sidebar').classList.remove('flex');
             document.getElementById('main-sidebar').classList.add('hidden');
-            ocultarTodo();
-            document.getElementById('view-auth').classList.remove('hidden-section');
+            ocultarTodo(); document.getElementById('view-auth').classList.remove('hidden-section');
         };
 
         // --- GLOBAL VARIABLES & DATA LOADING ---
-        let examData = null;
-        let vocabData = null;
-        let transcriptsData = null;
-        let currentTest = null;
-        let isGuideMode = false;
+        let examData = null; let vocabData = null; let transcriptsData = null;
+        let currentTest = null; let isGuideMode = false;
         let session = { section: 'listening', step: 0, answers: {} };
         const localAudios = { testA: null, testB: null };
         
         let audioEndTime = 0; let repsCount = 0; let qTimerInt; let qTimeLeft = 0; let generalTimerInt;
         
         // Karaoke State
-        let currentTranscriptLines = [];
-        let currentActiveTime = -1;
+        let activeTranscriptLines = [];
+        let currentActiveIndex = -1;
 
         window.onload = async () => {
             const cacheBuster = '?nocache=' + new Date().getTime();
@@ -567,20 +535,20 @@
             try {
                 const resData = await fetch('./datos.json' + cacheBuster, { cache: "no-store" });
                 if(resData.ok) examData = await resData.json(); 
-                else jsonErrors.push(`Network: datos.json respondió con código ${resData.status}`);
-            } catch(e) { jsonErrors.push(`Syntax/Parse: datos.json está mal formateado. (${e.message})`); }
+                else jsonErrors.push(`datos.json: Código ${resData.status}`);
+            } catch(e) { jsonErrors.push(`datos.json: Error de sintaxis.`); }
             
             try {
                 const resVocab = await fetch('./vocabulary.json' + cacheBuster, { cache: "no-store" });
                 if(resVocab.ok) vocabData = await resVocab.json();
-                else jsonErrors.push(`Network: vocabulary.json respondió con código ${resVocab.status}`);
-            } catch(e) { jsonErrors.push(`Syntax/Parse: vocabulary.json está mal formateado. (${e.message})`); }
+                else jsonErrors.push(`vocabulary.json: Código ${resVocab.status}`);
+            } catch(e) { jsonErrors.push(`vocabulary.json: Error de sintaxis.`); }
 
             try {
                 const resTrans = await fetch('./transcripts.json' + cacheBuster, { cache: "no-store" });
                 if(resTrans.ok) transcriptsData = await resTrans.json();
-                else console.warn("No se encontró transcripts.json. El modo Karaoke estará desactivado.");
-            } catch(e) { console.warn(`Syntax/Parse: transcripts.json error. (${e.message})`); }
+                else console.warn("No se encontró transcripts.json");
+            } catch(e) { console.warn("transcripts.json sintaxis error."); }
 
             if (!examData || !vocabData) {
                 const errorBox = document.getElementById('json-fallback-container');
@@ -592,7 +560,6 @@
             }
 
             attemptAudioAutoLoad();
-            
             document.getElementById('file-a').addEventListener('change', e => { if(e.target.files[0]){ localAudios.testA = e.target.files[0]; updateAudioUI('testA', true); } });
             document.getElementById('file-b').addEventListener('change', e => { if(e.target.files[0]){ localAudios.testB = e.target.files[0]; updateAudioUI('testB', true); } });
 
@@ -611,10 +578,10 @@
                     if(type === 'vocab') vocabData = JSON.parse(event.target.result);
                     if(type === 'trans') transcriptsData = JSON.parse(event.target.result);
                     if(examData && vocabData) {
-                        alert("Archivos principales cargados. Listo.");
+                        alert("Archivos cargados correctamente.");
                         document.getElementById('json-fallback-container').classList.add('hidden');
                     }
-                } catch(err) { alert(`Error de Sintaxis en el JSON que subiste: ${err.message}`); }
+                } catch(err) { alert(`Error de Sintaxis en el JSON: ${err.message}`); }
             };
             reader.readAsText(file);
         }
@@ -628,11 +595,7 @@
                 for(let path of test.paths) {
                     try {
                         const res = await fetch(path);
-                        if(res.ok) {
-                            localAudios[test.key] = await res.blob();
-                            updateAudioUI(test.key, true); 
-                            break;
-                        }
+                        if(res.ok) { localAudios[test.key] = await res.blob(); updateAudioUI(test.key, true); break; }
                     } catch(e) {}
                 }
                 if(!localAudios[test.key]) updateAudioUI(test.key, false);
@@ -659,33 +622,10 @@
             ocultarTodo();
             
             if(currentUser.progress) {
-                // Removemos aviso de reanudar, obligamos inicio limpio como lo pidio
-                currentUser.progress = null; saveUsersDB();
+                currentUser.progress = null; saveUsersDB(); // Forzamos inicio limpio como lo pidio
             } 
             document.getElementById('view-dashboard').classList.remove('hidden-section');
         }
-
-        window.continuarSesion = () => {
-            if(currentUser && currentUser.progress) {
-                const p = currentUser.progress;
-                currentTest = p.test; isGuideMode = p.mode; session = p.session;
-                document.getElementById('welcome-hub').classList.add('hidden');
-                arrancarInterfazTest();
-            }
-        };
-
-        window.iniciarDesdeCero = () => {
-            if(currentUser) { currentUser.progress = null; saveUsersDB(); }
-            document.getElementById('welcome-hub').classList.add('hidden');
-        };
-
-        window.pausarYSalir = () => {
-            if(!currentUser || !currentTest) return;
-            currentUser.progress = { test: currentTest, mode: isGuideMode, session: session };
-            saveUsersDB();
-            goHome();
-            alert("Progreso guardado. Podrás continuar la próxima vez.");
-        };
 
         window.goHome = () => {
             ocultarTodo();
@@ -697,8 +637,6 @@
             document.getElementById('audio-player').pause();
             document.getElementById('main-sidebar').classList.remove('flex');
             document.getElementById('main-sidebar').classList.add('hidden');
-            
-            if(currentUser && currentUser.progress) document.getElementById('welcome-hub').classList.remove('hidden');
             document.getElementById('view-dashboard').classList.remove('hidden-section');
         };
 
@@ -724,25 +662,19 @@
         function arrancarInterfazTest() {
             ocultarTodo();
             document.getElementById('btn-home').classList.remove('hidden');
-            document.getElementById('btn-save').classList.remove('hidden');
             document.getElementById('general-timer-container').classList.remove('hidden');
             document.getElementById('main-sidebar').classList.add('flex');
             document.getElementById('main-sidebar').classList.remove('hidden');
             
             const badge = document.getElementById('live-mode-badge');
             const ind = document.getElementById('modo-audio-indicator');
-            const tp = document.getElementById('transcript-panel');
 
             if(isGuideMode) {
                 badge.innerText = "MODO GUÍA"; badge.className = "mt-2 inline-block text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded bg-sky-100 text-sky-700";
-                ind.innerHTML = `<i class="fas fa-hand-pointer mr-1"></i> Control Manual`;
-                tp.classList.remove('hidden');
-                tp.classList.add('flex');
+                ind.innerHTML = `<i class="fas fa-hand-pointer mr-1"></i> Control Manual (Botones Play)`;
             } else {
                 badge.innerText = "MODO EXAMEN"; badge.className = "mt-2 inline-block text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded bg-rose-100 text-rose-700";
                 ind.innerHTML = `<i class="fas fa-forward mr-1"></i> Auto-Play (Estricto)`;
-                tp.classList.remove('flex');
-                tp.classList.add('hidden');
                 iniciarRelojGeneral(115); 
             }
             document.getElementById('view-test').classList.remove('hidden-section');
@@ -751,20 +683,13 @@
 
         window.jumpSection = (sec) => { session.section = sec; session.step = 0; renderSection(); };
 
-        function parseTimestamp(tsStr) {
-            if(!tsStr) return 0;
-            const p = tsStr.split(':');
-            if(p.length === 2) return parseInt(p[0])*60 + parseInt(p[1]);
-            return 0;
-        }
-
-        // Paginacion Inteligente: 2 por pagina en Parte A. Bloques enteros en Partes B y C.
+        // PAGINATION LOGIC
         function getPagesForSection(section, dataLength) {
             if (section === 'listening' && dataLength >= 50) {
                 return [
                     [0,2], [2,4], [4,6], [6,8], [8,10], [10,12], [12,14], [14,16], [16,18], [18,20],
                     [20,22], [22,24], [24,26], [26,28], [28,30], // Part A
-                    [30,34], [34,37], [37,41], [41,46], [46,50]  // Part B & C
+                    [30,34], [34,37], [37,41], [41,46], [46,50]  // Part B & C Blocks
                 ];
             } else {
                 let pages = [];
@@ -773,42 +698,114 @@
             }
         }
 
-        window.playIndividualAudio = (startT, endT, btnElement) => {
+        // --- EXTRACT EXACT TIMINGS FROM TRANSCRIPT JSON ---
+        function getIndivTimings(qId, currentTest) {
+            let startT = 0, endT = 0;
+            if (transcriptsData && transcriptsData[currentTest]) {
+                const tData = transcriptsData[currentTest];
+                // Busca exactamente "Number X." para el inicio
+                const startRegex = new RegExp(`^Number ${qId}\\.?$`, 'i');
+                const startIdx = tData.findIndex(t => t.text.match(startRegex));
+                
+                if (startIdx !== -1) {
+                    startT = tData[startIdx].time;
+                    // Busca el siguiente "Number X+1." o "Part B" para marcar el fin
+                    const endRegex = new RegExp(`^(Number ${qId + 1}\\.?|This is the end|Part B\\.?)$`, 'i');
+                    const endIdx = tData.findIndex((t, idx) => idx > startIdx && t.text.match(endRegex));
+                    if (endIdx !== -1) {
+                        endT = tData[endIdx].time;
+                    } else {
+                        endT = startT + 25; // fallback de seguridad
+                    }
+                } else {
+                    // Fallback si la transcripcion falla en leer el numero
+                    startT = 143; endT = 160; 
+                }
+            }
+            return { startT, endT };
+        }
+
+        function getBlockTimings(firstQ, lastQ, currentTest) {
+            let startT = 0, endT = 0;
+            if (transcriptsData && transcriptsData[currentTest]) {
+                const tData = transcriptsData[currentTest];
+                
+                const startRegex = new RegExp(`Questions ${firstQ}`, 'i');
+                const startIdx = tData.findIndex(t => t.text.match(startRegex));
+                if (startIdx !== -1) startT = tData[startIdx].time;
+                
+                const endRegex = new RegExp(`(Number ${lastQ + 1}|This is the end)`, 'i');
+                const endIdx = tData.findIndex((t, idx) => idx > startIdx && t.text.match(endRegex));
+                if (endIdx !== -1) endT = tData[endIdx].time;
+                else endT = startT + 120; // fallback
+            }
+            return { startT, endT };
+        }
+
+        // --- AUDIO CONTROLS (GUIDE MODE) ---
+        window.playIndividualAudio = (qId, startT, endT, btn) => {
             const player = document.getElementById('audio-player');
             if(!player.src || !player.src.startsWith('blob:')) player.src = URL.createObjectURL(localAudios[currentTest]);
             
-            // Pausar todos los botones primero
-            document.querySelectorAll('.btn-play-ind').forEach(b => {
-                b.innerHTML = `<i class="fas fa-play mr-1"></i> Escuchar Audio`;
-                b.className = "btn-play-ind bg-sky-50 text-sky-600 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-sky-100 transition-colors whitespace-nowrap border border-sky-200 shadow-sm";
+            // Pausar y resetear otros botones
+            document.querySelectorAll('.btn-play-audio').forEach(b => {
+                b.innerHTML = '▶️ Escuchar Audio';
+                b.classList.remove('bg-sky-200', 'text-sky-800');
+                b.classList.add('bg-slate-100', 'text-slate-600');
             });
 
-            audioEndTime = endT;
-            player.currentTime = startT;
-            player.play().catch(e => console.log(e));
-            
-            btnElement.innerHTML = `<i class="fas fa-sync-alt mr-1"></i> Repetir Audio`;
-            btnElement.className = "btn-play-ind bg-sky-100 text-sky-700 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-sky-200 transition-colors whitespace-nowrap border border-sky-300 shadow-inner";
+            // Activar botón actual
+            btn.innerHTML = '🔄 Repetir Fragmento';
+            btn.classList.remove('bg-slate-100', 'text-slate-600');
+            btn.classList.add('bg-sky-200', 'text-sky-800');
 
-            // Cargar y mostrar Karaoke Transcript
-            loadTranscript(startT, endT);
+            audioEndTime = endT;
+            loadTranscriptData(startT, endT, `transcript-text-${qId}`);
+            
+            player.currentTime = startT;
+            player.play().catch(e=>console.log(e));
         };
 
-        window.playBlockAudio = (startT, endT, btnElement) => {
+        window.playBlockAudio = (startT, endT, btn) => {
             const player = document.getElementById('audio-player');
             if(!player.src || !player.src.startsWith('blob:')) player.src = URL.createObjectURL(localAudios[currentTest]);
-            
+
+            btn.innerHTML = '🔄 Repetir Conferencia';
+            btn.classList.remove('bg-white', 'text-indigo-600');
+            btn.classList.add('bg-indigo-600', 'text-white');
+
             audioEndTime = endT;
+            loadTranscriptData(startT, endT, `transcript-text-block`);
+            
             player.currentTime = startT;
-            player.play().catch(e => console.log(e));
-
-            btnElement.innerHTML = `<i class="fas fa-sync-alt mr-1"></i> Repetir Conferencia`;
-            btnElement.className = "bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-indigo-700 transition-colors whitespace-nowrap border border-indigo-700 shadow-inner";
-
-            // Cargar y mostrar Karaoke Transcript
-            loadTranscript(startT, endT);
+            player.play().catch(e=>console.log(e));
         };
 
+        // --- TRANSCRIPT KRAOKE ENGINE ---
+        function loadTranscriptData(startT, endT, boxId) {
+            const container = document.getElementById(boxId);
+            if (!container) return;
+            
+            if (!transcriptsData || !transcriptsData[currentTest]) {
+                container.innerHTML = '<p class="text-rose-500 font-bold">Base de datos de transcripciones no disponible.</p>';
+                return;
+            }
+
+            activeTranscriptLines = transcriptsData[currentTest].filter(t => t.time >= startT && t.time < endT + 1);
+            
+            if (activeTranscriptLines.length === 0) {
+                container.innerHTML = '<p class="text-slate-500 font-bold">No hay subtítulos para este fragmento temporal.</p>';
+                return;
+            }
+
+            currentActiveIndex = -1;
+            // Dibujamos las lineas opacas inicialmente
+            container.innerHTML = activeTranscriptLines.map((t, idx) => 
+                `<p id="tl-${idx}" class="transcript-line mb-4 text-slate-500 text-[1.1rem] transition-all duration-300 opacity-50 leading-relaxed">${t.text}</p>`
+            ).join('');
+        }
+
+        // --- RENDERIZADO DE LA VISTA ---
         function renderSection() {
             ['listening', 'structure', 'reading'].forEach(s => {
                 document.getElementById(`nav-${s}`).classList.remove('bg-slate-100', 'border-l-4', 'border-sky-500');
@@ -817,8 +814,6 @@
             document.getElementById('live-sec-title').innerText = session.section;
 
             const box = document.getElementById('q-box'); box.innerHTML = '';
-            document.getElementById('transcript-text').innerHTML = '<div class="text-center text-slate-600 mt-10"><i class="fas fa-music text-3xl mb-2 opacity-50"></i><br>Presiona "Escuchar Audio" para activar los subtítulos.</div>';
-            currentActiveTime = -1;
             
             const data = examData[currentTest][session.section];
             if(!data) return;
@@ -832,38 +827,41 @@
             document.getElementById('p-btn').disabled = (session.step === 0);
 
             const audioPanel = document.getElementById('audio-panel');
-            const tp = document.getElementById('transcript-panel');
-
             if(session.section === 'listening') { 
                 audioPanel.classList.remove('hidden'); 
-                if(isGuideMode) { tp.classList.remove('hidden'); tp.classList.add('flex'); }
-                if(!isGuideMode) gestionarAudioAutoPlay(slice, data); 
             } else { 
                 audioPanel.classList.add('hidden'); 
-                tp.classList.remove('flex'); tp.classList.add('hidden');
                 document.getElementById('audio-player').pause(); 
             }
 
-            if(session.section === 'listening' && slice.length > 2) {
-                let playBtn = '';
-                if(isGuideMode) {
-                    const blockStartT = parseTimestamp(slice[0].timestamp);
-                    // Para el final, tomamos el inicio del siguiente bloque o un estimado
-                    let blockEndT = blockStartT + 120; // fallback
-                    if(data[end]) blockEndT = parseTimestamp(data[end].timestamp);
+            let isBlock = slice.length > 2;
 
-                    playBtn = `<button onclick="playBlockAudio(${blockStartT}, ${blockEndT}, this)" class="bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-indigo-600 transition-colors whitespace-nowrap shadow-sm"><i class="fas fa-play mr-1"></i> Escuchar Conferencia</button>`;
-                }
+            if (session.section === 'listening' && isBlock) {
+                let tBlock = getBlockTimings(slice[0].id, slice[slice.length-1].id, currentTest);
+                
+                let btnStr = isGuideMode ? `<button onclick="playBlockAudio(${tBlock.startT}, ${tBlock.endT}, this)" class="bg-white text-indigo-600 px-6 py-3 rounded-xl text-sm font-black shadow-md hover:scale-105 transition-transform">▶️ Escuchar Conferencia</button>` : '';
+                
+                let transcriptCol = isGuideMode ? `
+                    <div class="bg-slate-900 rounded-[2rem] p-6 shadow-inner flex flex-col h-[350px]">
+                        <h4 class="text-sky-400 font-black mb-4 text-sm uppercase tracking-widest flex items-center gap-2"><i class="fas fa-closed-captioning"></i> Live Transcript</h4>
+                        <div id="transcript-text-block" class="flex-1 overflow-y-auto space-y-3 pr-2 custom-scrollbar">
+                             <div class="text-slate-500 text-center mt-10"><i class="fas fa-play-circle text-4xl mb-3 opacity-30"></i><br>Presiona "Escuchar Conferencia" para ver los subtítulos sincronizados.</div>
+                        </div>
+                    </div>` : '';
+
                 box.innerHTML += `
-                    <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-5 flex flex-col md:flex-row justify-between items-center text-indigo-800 shadow-sm fade-in gap-4">
-                        <p class="font-black text-sm uppercase tracking-widest leading-tight"><i class="fas fa-bullhorn mr-2"></i>Escucha la conferencia y contesta este bloque.</p>
-                        ${playBtn}
-                    </div>`;
+                    <div class="${isGuideMode ? 'grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 items-stretch' : 'mb-6'}">
+                        <div class="bg-indigo-50 border border-indigo-200 rounded-3xl p-8 flex flex-col justify-center items-center text-indigo-800 shadow-sm text-center gap-4 h-full">
+                            <i class="fas fa-bullhorn text-5xl opacity-50 mb-2"></i>
+                            <p class="font-black text-xl uppercase tracking-widest leading-tight">Escucha la conferencia y contesta este bloque.</p>
+                            ${btnStr}
+                        </div>
+                        ${transcriptCol}
+                    </div>
+                `;
             }
 
-            slice.forEach((q, idx) => {
-                const card = document.createElement('div');
-                card.className = "bg-white p-6 md:p-8 rounded-[2rem] border border-slate-100 shadow-md fade-in";
+            slice.forEach(q => {
                 const answered = session.answers[q.id];
                 
                 const opcionesHTML = q.opciones.map((op, i) => {
@@ -896,29 +894,49 @@
                     }
                 }
 
-                let playIndBtn = '';
-                if(isGuideMode && session.section === 'listening' && slice.length <= 2) {
-                    const startT = parseTimestamp(q.timestamp);
-                    // Para el final del audio, checamos el timestamp de la SIGUIENTE pregunta
-                    let endT = startT + 12; // 12 segs de padding minimo
-                    if(idx + 1 < slice.length) endT = parseTimestamp(slice[idx+1].timestamp);
-                    else if (data[end]) endT = parseTimestamp(data[end].timestamp);
+                // Generación de Botones Play y Transcript Box (Solo Parte A - no bloque)
+                let playBtnHTML = '';
+                let transcriptCol = '';
+
+                if (isGuideMode && session.section === 'listening' && !isBlock) {
+                    let t = getIndivTimings(q.id, currentTest);
                     
-                    playIndBtn = `<button onclick="playIndividualAudio(${startT}, ${endT}, this)" class="btn-play-ind bg-sky-50 text-sky-600 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-sky-100 transition-colors whitespace-nowrap border border-sky-200 shadow-sm"><i class="fas fa-play mr-1"></i> Escuchar Audio</button>`;
+                    playBtnHTML = `<button onclick="playIndividualAudio(${q.id}, ${t.startT}, ${t.endT}, this)" class="btn-play-audio bg-slate-100 text-slate-600 hover:bg-sky-100 hover:text-sky-700 px-4 py-2 rounded-xl font-black text-xs uppercase tracking-widest transition-colors shadow-sm shrink-0">▶️ Escuchar Audio</button>`;
+                    
+                    transcriptCol = `
+                    <div class="bg-slate-900 rounded-[2rem] p-6 shadow-inner flex flex-col h-full min-h-[300px]">
+                        <h4 class="text-sky-400 font-black mb-4 text-sm uppercase tracking-widest flex items-center gap-2"><i class="fas fa-closed-captioning"></i> Live Transcript</h4>
+                        <div id="transcript-text-${q.id}" class="flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar">
+                             <div class="text-slate-500 text-center mt-10"><i class="fas fa-play-circle text-4xl mb-3 opacity-30"></i><br>Presiona "Escuchar Audio" para ver los subtítulos sincronizados.</div>
+                        </div>
+                    </div>`;
                 }
 
-                card.innerHTML = `
+                let qHTML = `
                     ${prepHTML}
                     <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-50 pb-4 mb-5 gap-3">
-                        <div class="flex gap-3 items-start md:items-center">
+                        <div class="flex gap-3 items-center">
                             <span class="bg-slate-900 text-white w-8 h-8 flex items-center justify-center rounded-lg font-black text-sm shrink-0">${q.id}</span>
-                            <span class="font-black text-base text-slate-800 pt-1 md:pt-0">${q.pregunta || 'Select answer:'}</span>
+                            <span class="font-black text-base text-slate-800">${q.pregunta || 'Select answer:'}</span>
                         </div>
-                        ${playIndBtn}
+                        ${playBtnHTML}
                     </div>
                     <div class="grid gap-3" id="opts-${q.id}">${opcionesHTML}</div>
                     <div id="feed-${q.id}">${feedHTML}</div>`;
-                box.appendChild(card);
+
+                let cardWrap = document.createElement('div');
+                if (transcriptCol) {
+                    cardWrap.className = "grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 items-stretch";
+                    cardWrap.innerHTML = `
+                        <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-md border border-slate-100 flex flex-col h-full">${qHTML}</div>
+                        ${transcriptCol}
+                    `;
+                } else {
+                    cardWrap.className = "bg-white p-6 md:p-8 rounded-[2rem] shadow-md border border-slate-100 mb-6";
+                    cardWrap.innerHTML = qHTML;
+                }
+                
+                box.appendChild(cardWrap);
                 
                 if(isGuideMode && answered) {
                     const lbl = document.getElementById(`lbl-${q.id}-${answered}`);
@@ -927,8 +945,137 @@
                 }
             });
 
-            startSpeedTimer(slice, data);
+            // En modo examen, el audio corre solo
+            if (!isGuideMode) { gestionarAudioAutomaticoExamen(slice); }
+            
+            startSpeedTimer();
             document.getElementById('test-scroll-area').scrollTo(0,0);
+        }
+
+        // --- EXAM MODE AUTO AUDIO ---
+        function gestionarAudioAutomaticoExamen(slice) {
+            if(session.section !== 'listening') return;
+            const player = document.getElementById('audio-player');
+            if(!localAudios[currentTest]) return;
+            if(!player.src || !player.src.startsWith('blob:')) player.src = URL.createObjectURL(localAudios[currentTest]);
+            
+            let startT = 0, endT = 0;
+            if (slice.length <= 2) {
+                const t1 = getIndivTimings(slice[0].id, currentTest);
+                const t2 = slice.length > 1 ? getIndivTimings(slice[1].id, currentTest) : t1;
+                startT = t1.startT;
+                endT = t2.endT; 
+            } else {
+                const t = getBlockTimings(slice[0].id, slice[slice.length-1].id, currentTest);
+                startT = t.startT;
+                endT = t.endT;
+            }
+
+            audioEndTime = endT; repsCount = 0;
+            player.currentTime = startT; 
+            player.play().catch(e => console.log(e));
+        }
+
+        // --- PLAYER TIMEUPDATE (Sync Karaoke & Reps) ---
+        function setupAudioPlayerLogic() {
+            const player = document.getElementById('audio-player');
+            
+            player.addEventListener('timeupdate', () => {
+                if (session.section !== 'listening' || audioEndTime === 0) return;
+                
+                // 1. Karaoke Logic (Only in Guide Mode)
+                if (isGuideMode && activeTranscriptLines.length > 0) {
+                    let ct = player.currentTime;
+                    let newActiveIndex = -1;
+                    
+                    for (let i = 0; i < activeTranscriptLines.length; i++) {
+                        if (ct >= activeTranscriptLines[i].time) {
+                            newActiveIndex = i;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    if (newActiveIndex !== -1 && newActiveIndex !== currentActiveIndex) {
+                        currentActiveIndex = newActiveIndex;
+                        // Actualizar UI fijando colores
+                        document.querySelectorAll('.transcript-line').forEach((el, idx) => {
+                            if (idx < newActiveIndex) {
+                                el.className = "transcript-line mb-4 text-slate-400 text-[1.1rem] opacity-70 leading-relaxed transition-all";
+                            } else if (idx === newActiveIndex) {
+                                el.className = "transcript-line mb-4 text-sky-400 text-[1.3rem] font-black opacity-100 leading-relaxed drop-shadow-md transition-all";
+                                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            } else {
+                                el.className = "transcript-line mb-4 text-slate-500 text-[1.1rem] opacity-30 leading-relaxed transition-all";
+                            }
+                        });
+                    }
+                }
+
+                // 2. Auto-Pause and Repeats logic
+                if (player.currentTime >= audioEndTime) {
+                    player.pause();
+                    
+                    // Si no es modo guía, aplica repetición (Regla ITP)
+                    if (!isGuideMode) {
+                        if (repsCount < 1) { 
+                            repsCount++;
+                            // Volver a reproducir la pagina actual
+                            const data = examData[currentTest][session.section];
+                            const pages = getPagesForSection(session.section, data.length);
+                            const slice = data.slice(pages[session.step][0], pages[session.step][1]);
+                            
+                            let startT = 0;
+                            if (slice.length <= 2) { startT = getIndivTimings(slice[0].id, currentTest).startT; } 
+                            else { startT = getBlockTimings(slice[0].id, slice[slice.length-1].id, currentTest).startT; }
+                            
+                            player.currentTime = startT;
+                            player.play().catch(e => console.log(e));
+                        } else {
+                            audioEndTime = 0; // Termina repeticiones
+                        }
+                    } else {
+                        // En modo guia es manual, termina a la primera y el usuario repite con el boton
+                        audioEndTime = 0;
+                    }
+                }
+            });
+        }
+
+        function startSpeedTimer() {
+            clearInterval(qTimerInt); document.getElementById('q-timer-display').classList.add('hidden');
+            if(isGuideMode) return; 
+            
+            if (session.section === 'listening') {
+                const data = examData[currentTest][session.section];
+                const pages = getPagesForSection(session.section, data.length);
+                const slice = data.slice(pages[session.step][0], pages[session.step][1]);
+                
+                let startT = 0, endT = 0;
+                if (slice.length <= 2) {
+                    const t1 = getIndivTimings(slice[0].id, currentTest);
+                    const t2 = slice.length > 1 ? getIndivTimings(slice[1].id, currentTest) : t1;
+                    startT = t1.startT; endT = t2.endT; 
+                } else {
+                    const t = getBlockTimings(slice[0].id, slice[slice.length-1].id, currentTest);
+                    startT = t.startT; endT = t.endT;
+                }
+                
+                const numQ = pages[session.step][1] - pages[session.step][0];
+                qTimeLeft = Math.ceil(((endT || (startT + 60)) - startT) * 2) + (numQ * 15); 
+            } else { 
+                qTimeLeft = (session.section === 'structure' ? 25 : 54) * 2; 
+            }
+            
+            document.getElementById('q-timer-display').classList.remove('hidden');
+            qTimerInt = setInterval(() => {
+                qTimeLeft--;
+                const m = Math.floor(qTimeLeft / 60), s = qTimeLeft % 60;
+                const el = document.getElementById('q-timer-val');
+                el.innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
+                if (qTimeLeft <= 10) el.parentElement.classList.add('timer-warning'); else el.parentElement.classList.remove('timer-warning');
+                if (qTimeLeft <= 0) { clearInterval(qTimerInt); play8BitSound('fail'); navegarPasos(1); }
+            }, 1000);
         }
 
         window.chk = (qid, sel) => {
@@ -955,70 +1102,53 @@
             }
         };
 
-        window.navegarPasos = (dir) => {
-            const player = document.getElementById('audio-player');
-            player.pause();
-            const data = examData[currentTest][session.section];
-            const pages = getPagesForSection(session.section, data.length);
-            if (session.step + dir >= pages.length) {
-                if (session.section === 'listening') jumpSection('structure');
-                else if (session.section === 'structure') jumpSection('reading');
-                else calificarTest();
-                return;
-            }
-            if (session.step + dir < 0) return;
-            session.step += dir; renderSection();
-        };
-
-        const scaleTable = [
-            { r: [48, 50], s1: [64, 68], s2: [63, 68], s3: [65, 67] },
-            { r: [45, 47], s1: [59, 62], s2: [59, 61], s3: [62, 64] },
-            { r: [42, 44], s1: [56, 58], s2: [56, 58], s3: [59, 61] },
-            { r: [39, 41], s1: [54, 56], s2: [53, 55], s3: [57, 58] },
-            { r: [36, 38], s1: [52, 54], s2: [50, 52], s3: [55, 56] },
-            { r: [33, 35], s1: [51, 52], s2: [48, 49], s3: [53, 54] },
-            { r: [30, 32], s1: [49, 50], s2: [45, 47], s3: [51, 52] },
-            { r: [27, 29], s1: [48, 49], s2: [42, 44], s3: [49, 50] },
-            { r: [24, 26], s1: [46, 47], s2: [38, 40], s3: [47, 48] },
-            { r: [21, 23], s1: [45, 46], s2: [32, 36], s3: [44, 46] },
-            { r: [18, 20], s1: [43, 44], s2: [31, 31], s3: [41, 43] },
-            { r: [15, 17], s1: [40, 42], s2: [31, 31], s3: [37, 40] },
-            { r: [12, 14], s1: [36, 39], s2: [31, 31], s3: [31, 35] },
-            { r: [9, 11], s1: [32, 33], s2: [31, 31], s3: [31, 31] },
-            { r: [0, 8], s1: [31, 31], s2: [31, 31], s3: [31, 31] }
+        const conversionTable = [
+            { range: [48, 50], s1: [64, 68], s2: [63, 68], s3: [65, 67] },
+            { range: [45, 47], s1: [59, 62], s2: [59, 61], s3: [62, 64] },
+            { range: [42, 44], s1: [56, 58], s2: [56, 58], s3: [59, 61] },
+            { range: [39, 41], s1: [54, 56], s2: [53, 55], s3: [57, 58] },
+            { range: [36, 38], s1: [52, 54], s2: [50, 52], s3: [55, 56] },
+            { range: [33, 35], s1: [51, 52], s2: [48, 49], s3: [53, 54] },
+            { range: [30, 32], s1: [49, 50], s2: [45, 47], s3: [51, 52] },
+            { range: [27, 29], s1: [48, 49], s2: [42, 44], s3: [49, 50] },
+            { range: [24, 26], s1: [46, 47], s2: [38, 40], s3: [47, 48] },
+            { range: [21, 23], s1: [45, 46], s2: [32, 36], s3: [44, 46] },
+            { range: [18, 20], s1: [43, 44], s2: [31, 31], s3: [41, 43] },
+            { range: [15, 17], s1: [40, 42], s2: [31, 31], s3: [37, 40] },
+            { range: [12, 14], s1: [36, 39], s2: [31, 31], s3: [31, 35] },
+            { range: [9, 11], s1: [32, 33], s2: [31, 31], s3: [31, 31] },
+            { range: [0, 8], s1: [31, 31], s2: [31, 31], s3: [31, 31] }
         ];
 
         function calificarTest() {
             clearInterval(qTimerInt); clearInterval(generalTimerInt);
             ocultarTodo(); document.getElementById('btn-save').classList.add('hidden');
             
-            const countR = (s) => { let c = 0; if (examData[currentTest][s]) examData[currentTest][s].forEach(q => { if (session.answers[q.id] === q.correcta) c++; }); return c; };
-            const nr1 = countR('listening'), nr2 = countR('structure'), nr3 = countR('reading');
+            const getC = (s) => { let c = 0; if (examData[currentTest][s]) examData[currentTest][s].forEach(q => { if (session.answers[q.id] === q.correcta) c++; }); return c; };
+            const r1 = getC('listening'), r2 = getC('structure'), r3 = getC('reading');
             
-            document.getElementById('res-s1').innerText = `${nr1} / 50`;
-            document.getElementById('res-s2').innerText = `${nr2} / 40`;
-            document.getElementById('res-s3').innerText = `${nr3} / 50`;
+            document.getElementById('res-s1').innerText = `${r1} / 50`;
+            document.getElementById('res-s2').innerText = `${r2} / 40`;
+            document.getElementById('res-s3').innerText = `${r3} / 50`;
 
-            const getScaled = (score, secKey) => scaleTable.find(t => score >= t.r[0] && score <= t.r[1])[secKey];
-            const sc1 = getScaled(nr1, 's1');
-            const sc2 = getScaled(nr2, 's2');
-            const sc3 = getScaled(nr3, 's3');
-
-            const sumLow = sc1[0] + sc2[0] + sc3[0];
-            const sumHigh = sc1[1] + sc2[1] + sc3[1];
-
-            const calcITP = (val) => {
-                let raw = val * (10/3);
-                let dec = raw % 1;
-                return dec > 0.5 ? Math.ceil(raw) : Math.floor(raw);
+            const conv = (score, key) => { 
+                const entry = conversionTable.find(t => score >= t.range[0] && score <= t.range[1]) || { s1: [31, 31], s2: [31, 31], s3: [31, 31] }; 
+                return entry[key]; 
             };
 
-            const finalLow = calcITP(sumLow);
-            const finalHigh = calcITP(sumHigh);
-            const avg = Math.round((finalLow + finalHigh) / 2);
+            const s1Range = conv(r1, 's1');
+            const s2Range = conv(r2, 's2');
+            const s3Range = conv(r3, 's3');
+
+            const sumLow = s1Range[0] + s2Range[0] + s3Range[0];
+            const sumHigh = s1Range[1] + s2Range[1] + s3Range[1];
+
+            const finalLow = Math.round(sumLow * 10 / 3);
+            const finalHigh = Math.round(sumHigh * 10 / 3);
 
             document.getElementById('final-score').innerText = `${finalLow} - ${finalHigh}`;
             
+            const avg = (finalLow + finalHigh) / 2;
             let mcer = "A2"; 
             if (avg >= 627) mcer = "C1"; 
             else if (avg >= 543) mcer = "B2"; 
@@ -1031,200 +1161,70 @@
             document.getElementById('view-results').classList.remove('hidden-section');
         }
 
-        // --- KARAOKE & AUDIO SYNC ---
-        function loadTranscript(startT, endT) {
-            const container = document.getElementById('transcript-text');
-            if(!transcriptsData || !transcriptsData[currentTest]) {
-                container.innerHTML = '<p class="text-rose-500 font-bold">Sin datos de transcripción.</p>';
-                return;
-            }
-            
-            // Expandimos el rango 5 segundos para no cortar oraciones a medias
-            currentTranscriptLines = transcriptsData[currentTest].filter(t => t.time >= startT - 5 && t.time <= endT + 5);
-            
-            if(currentTranscriptLines.length === 0) {
-                container.innerHTML = '<p class="text-slate-500">No hay subtítulos para esta sección.</p>';
-                return;
-            }
-
-            container.innerHTML = currentTranscriptLines.map(t => 
-                `<p id="tl-${t.time}" class="transcript-line mb-3" data-time="${t.time}">${t.text}</p>`
-            ).join('');
-        }
-
-        function setupAudioPlayerLogic() {
-            const player = document.getElementById('audio-player');
-            player.addEventListener('timeupdate', () => {
-                if (session.section !== 'listening') return;
-                
-                // Karaoke Logic
-                if (currentTranscriptLines.length > 0 && isGuideMode) {
-                    let activeLine = null;
-                    const ct = player.currentTime;
-                    
-                    for (let i = 0; i < currentTranscriptLines.length; i++) {
-                        if (ct >= currentTranscriptLines[i].time) {
-                            activeLine = currentTranscriptLines[i];
-                        } else { break; }
-                    }
-
-                    if (activeLine && activeLine.time !== currentActiveTime) {
-                        currentActiveTime = activeLine.time;
-                        // Actualizar UI
-                        document.querySelectorAll('.transcript-line').forEach(el => {
-                            const ltime = parseInt(el.dataset.time);
-                            if(ltime < activeLine.time) {
-                                el.className = "transcript-line mb-3 transcript-past";
-                            } else if (ltime === activeLine.time) {
-                                el.className = "transcript-line mb-3 transcript-active";
-                                // Auto-scroll
-                                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            } else {
-                                el.className = "transcript-line mb-3";
-                            }
-                        });
-                    }
-                }
-                
-                // Limits Logic (Examen mode or Auto-Play)
-                if (audioEndTime > 0 && player.currentTime >= audioEndTime) {
-                    player.pause();
-                    if(!isGuideMode && repsCount < 1) { 
-                        repsCount++;
-                        // Si es modo examen, reinicia el bloque completo (no implementado repeat visual)
-                    } else {
-                        audioEndTime = 0;
-                    }
-                }
-            });
-        }
-
-        function gestionarAudioAutoPlay(slice, data) {
-            const player = document.getElementById('audio-player');
-            if(!localAudios[currentTest]) return;
-            if(!player.src || !player.src.startsWith('blob:')) player.src = URL.createObjectURL(localAudios[currentTest]);
-            
-            const startT = parseTimestamp(slice[0].timestamp);
-            let endT = startT + 30; // fallback
-            const pages = getPagesForSection(session.section, data.length);
-            const [startIdx, endIdx] = pages[session.step];
-            if(data[endIdx]) endT = parseTimestamp(data[endIdx].timestamp);
-
-            audioEndTime = endT; repsCount = 0;
-            player.currentTime = startT; 
-            player.play().catch(e=>{});
-        }
-
-        function startSpeedTimer(slice, data) {
-            clearInterval(qTimerInt); document.getElementById('q-timer-display').classList.add('hidden');
-            if(isGuideMode) return; 
-            
-            if (session.section === 'listening') {
-                const startT = parseTimestamp(slice[0].timestamp);
-                const pages = getPagesForSection(session.section, data.length);
-                const [startIdx, endIdx] = pages[session.step];
-                let endT = startT + 60;
-                if(data[endIdx]) endT = parseTimestamp(data[endIdx].timestamp);
-
-                const numQ = endIdx - startIdx;
-                qTimeLeft = Math.ceil((endT - startT)*2) + (numQ * 12); 
-            } else { qTimeLeft = (session.section === 'structure' ? 25 : 54) * 2; } 
-            
-            document.getElementById('q-timer-display').classList.remove('hidden');
-            qTimerInt = setInterval(() => {
-                qTimeLeft--;
-                const m = Math.floor(qTimeLeft / 60), s = qTimeLeft % 60;
-                const el = document.getElementById('q-timer-val');
-                el.innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
-                if (qTimeLeft <= 10) el.parentElement.classList.add('timer-warning'); else el.parentElement.classList.remove('timer-warning');
-                if (qTimeLeft <= 0) { clearInterval(qTimerInt); play8BitSound('fail'); navegarPasos(1); }
-            }, 1000);
-        }
-
-        function iniciarRelojGeneral(m) { 
-            clearInterval(generalTimerInt); let t = m * 60; 
-            generalTimerInt = setInterval(() => { 
-                let mm = Math.floor(t / 60), ss = t % 60; 
-                document.getElementById('timer').innerText = `${mm < 10 ? '0'+mm : mm}:${ss < 10 ? '0'+ss : ss}`; t--; 
-                if(t<=0) calificarTest();
-            }, 1000); 
-        }
-
-        // --- VOCABULARY MEMORY SYSTEM (SRS) ---
+        // --- VOCABULARY SRS ENGINE ---
         let vocabIndex = 0;
-        let lastVocabIndex = -1;
-        let vocabSeenCounts = [];
         let isCardFlipped = false;
         let cardsSeenToday = 0;
+        let vocabWeights = [];
 
         window.startVocab = () => {
-            if(!vocabData || vocabData.length === 0) return alert("No se ha cargado el archivo vocabulary.json");
-            ocultarTodo(); 
-            document.getElementById('btn-home').classList.remove('hidden');
-            document.getElementById('view-vocab').classList.remove('hidden-section');
+            if(!vocabData || vocabData.length === 0) return alert("Falta el archivo vocabulary.json");
+            ocultarTodo(); document.getElementById('btn-home').classList.remove('hidden');
             
-            if(vocabSeenCounts.length !== vocabData.length) vocabSeenCounts = new Array(vocabData.length).fill(0);
+            if(vocabWeights.length !== vocabData.length) vocabWeights = new Array(vocabData.length).fill(1);
             
             cardsSeenToday = 0;
-            document.getElementById('v-counter').innerText = cardsSeenToday;
             pickNextVocab();
+            document.getElementById('view-vocab').classList.remove('hidden-section');
         };
 
         function pickNextVocab() {
-            let totalWeight = 0;
-            for(let i=0; i<vocabData.length; i++) {
-                if(i === lastVocabIndex && vocabData.length > 1) continue; 
-                totalWeight += vocabSeenCounts[i] > 0 ? 3 : 1; // SRS: 3x chance si ya la vio
-            }
-            
+            let totalWeight = vocabWeights.reduce((a, b) => a + b, 0);
             let randomVal = Math.random() * totalWeight;
             let sum = 0;
-            for(let i=0; i<vocabData.length; i++) {
-                if(i === lastVocabIndex && vocabData.length > 1) continue;
-                sum += vocabSeenCounts[i] > 0 ? 3 : 1;
+            
+            for(let i=0; i<vocabWeights.length; i++) {
+                sum += vocabWeights[i];
                 if(randomVal <= sum) {
                     vocabIndex = i;
                     break;
                 }
             }
-            lastVocabIndex = vocabIndex;
-            renderVocabCard();
+            renderVocab();
         }
 
-        function renderVocabCard() {
+        function renderVocab() {
             isCardFlipped = false;
-            const container = document.getElementById('vocab-card-container');
-            container.classList.remove('flipped');
-            container.style.opacity = '1';
-            container.style.transform = 'scale(1)';
+            const card = document.getElementById('vocab-card-container');
+            card.classList.remove('flipped');
+            card.style.opacity = '1';
+            card.style.transform = 'scale(1)';
             
-            const word = vocabData[vocabIndex];
-            document.getElementById('v-type').innerText = word.type || "vocabulary";
-            document.getElementById('v-word').innerText = word.en;
-            document.getElementById('v-def-front').innerText = `"${word.def}"`;
-            
-            document.getElementById('v-word-back').innerText = word.en;
-            document.getElementById('v-es').innerText = word.es;
+            setTimeout(() => {
+                const word = vocabData[vocabIndex];
+                document.getElementById('v-type').innerText = word.type || "word";
+                document.getElementById('v-word').innerText = word.en;
+                document.getElementById('v-def-front').innerText = `"${word.def}"`;
+                document.getElementById('v-es').innerText = word.es;
+                document.getElementById('v-counter').innerText = cardsSeenToday;
+            }, 300); 
         }
 
         window.handleCardClick = () => {
             if(!isCardFlipped) {
                 isCardFlipped = true;
-                vocabSeenCounts[vocabIndex]++; 
+                vocabWeights[vocabIndex] += 2; // SRS: Triple probabilidad la prox vez
                 cardsSeenToday++;
                 document.getElementById('v-counter').innerText = cardsSeenToday;
-                
                 document.getElementById('vocab-card-container').classList.add('flipped');
                 play8BitSound('flip');
                 createParticles('sparks');
             } else {
                 play8BitSound('explode');
                 createParticles('explosion');
-                
                 const card = document.getElementById('vocab-card-container');
                 card.style.opacity = '0';
                 card.style.transform = 'scale(0.5)';
-                
                 setTimeout(() => { pickNextVocab(); }, 500); 
             }
         };
@@ -1238,21 +1238,16 @@
                 const p = document.createElement('div');
                 p.className = 'particle';
                 const size = Math.random() * 12 + 6;
-                p.style.width = size + 'px';
-                p.style.height = size + 'px';
+                p.style.width = size + 'px'; p.style.height = size + 'px';
                 p.style.background = colors[Math.floor(Math.random() * colors.length)];
-                
-                p.style.top = '50%';
-                p.style.left = '50%';
+                p.style.top = '50%'; p.style.left = '50%';
                 
                 const angle = Math.random() * Math.PI * 2;
                 const distance = type === 'sparks' ? (Math.random() * 60 + 40) : (Math.random() * 300 + 100);
-                const tx = Math.cos(angle) * distance;
-                const ty = Math.sin(angle) * distance;
+                const tx = Math.cos(angle) * distance; const ty = Math.sin(angle) * distance;
 
                 p.style.transition = `all ${type === 'sparks' ? 0.4 : 0.6}s cubic-bezier(0.25, 1, 0.5, 1)`;
                 p.style.transform = 'translate(-50%, -50%)';
-
                 container.appendChild(p);
 
                 requestAnimationFrame(() => {
