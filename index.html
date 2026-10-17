@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOEFL ITP Pro Simulator - Ultimate Edition</title>
+    <title>TOEFL ITP Pro Simulator - Speed Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -25,6 +25,11 @@
         .hidden-section { display: none !important; }
         .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .active-nav { background: #f0f9ff; border-left: 5px solid #0ea5e9; color: #0369a1; font-weight: 900; }
+        
+        .timer-warning { animation: pulse-red 1s infinite; color: #ef4444; font-weight: 900; }
+        @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); text-shadow: 0 0 8px rgba(239, 68, 68, 0.5); } 100% { transform: scale(1); } }
 
         .answer-correct { animation: pulseGreen 0.5s ease; background-color: #ecfdf5 !important; border-color: #10b981 !important; color: #065f46 !important; }
         .answer-incorrect { animation: shakeRed 0.5s ease; background-color: #fff1f2 !important; border-color: #f43f5e !important; color: #9f1239 !important; }
@@ -95,8 +100,42 @@
         <h2 class="mt-6 font-black text-teal-900 text-2xl tracking-tight">Cargando sistema...</h2>
     </div>
 
+    <div id="welcome-hub" class="hidden fixed inset-0 z-[250] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-[2rem] p-8 max-w-lg w-full shadow-2xl text-center border-t-8 border-sky-500 fade-in">
+            <div class="text-5xl mb-4 animate-bounce">👋</div>
+            <h2 class="text-3xl font-black text-slate-900 mb-2">¡Qué bueno verte!</h2>
+            <p class="text-slate-500 mb-6 text-sm">Tienes un entrenamiento guardado en pausa. ¿Qué energía traes hoy?</p>
+            <div class="grid gap-3">
+                <button onclick="continuarSesion()" class="vibrant-gradient-a text-white py-4 rounded-2xl font-black text-lg shadow-md hover:scale-105 transition-all flex justify-center items-center gap-2">
+                    Continuar donde lo dejé 🚀
+                </button>
+                <button onclick="iniciarDesdeCero()" class="bg-slate-100 text-slate-500 py-3 rounded-2xl font-bold text-sm hover:bg-rose-50 hover:text-rose-600 transition-all">
+                    Borrar progreso y empezar de cero 🔄
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- MAIN CONTAINER -->
     <div class="flex flex-1 overflow-hidden relative">
+
+        <aside id="main-sidebar" class="w-64 md:w-72 bg-white border-r border-slate-200 shadow-md hidden flex-col z-40 shrink-0">
+            <div class="p-6 border-b border-slate-100 bg-slate-50/50">
+                <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1.5">Tu Misión</h2>
+                <div id="test-info-nav" class="text-xs font-black text-sky-700">Test no seleccionado</div>
+            </div>
+            <nav class="flex-1 overflow-y-auto py-3" id="main-nav">
+                <button id="nav-listening" onclick="jumpSection('listening')" class="w-full text-left px-6 py-4 hover:bg-sky-50 flex items-center gap-3 transition-all text-slate-600 font-bold mb-1 rounded-r-2xl text-sm">
+                    <i class="fas fa-headphones-alt text-sky-500 w-5 text-center"></i> 1. Listening
+                </button>
+                <button id="nav-structure" onclick="jumpSection('structure')" class="w-full text-left px-6 py-4 hover:bg-sky-50 flex items-center gap-3 transition-all text-slate-600 font-bold mb-1 rounded-r-2xl text-sm">
+                    <i class="fas fa-pen-nib text-teal-500 w-5 text-center"></i> 2. Structure
+                </button>
+                <button id="nav-reading" onclick="jumpSection('reading')" class="w-full text-left px-6 py-4 hover:bg-sky-50 flex items-center gap-3 transition-all text-slate-600 font-bold mb-1 rounded-r-2xl text-sm">
+                    <i class="fas fa-book-open text-indigo-500 w-5 text-center"></i> 3. Reading
+                </button>
+            </nav>
+        </aside>
 
         <div id="view-auth" class="w-full h-full flex items-center justify-center p-4 bg-slate-50 fade-in overflow-y-auto">
             <div class="glass-card w-full max-w-md rounded-[2rem] p-8 shadow-2xl relative overflow-hidden my-auto">
@@ -150,36 +189,25 @@
             <div class="max-w-5xl mx-auto">
                 <h2 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-2">Tu Panel de Entrenamiento</h2>
                 <p class="text-slate-500 text-lg font-bold mb-10">Selecciona tu misión para el día de hoy.</p>
-                
-                <div id="resume-card" class="hidden mb-8 bg-sky-50 border border-sky-200 p-6 rounded-3xl flex justify-between items-center shadow-sm">
-                    <div>
-                        <h3 class="text-sky-800 font-black text-xl mb-1">¡Tienes un test en pausa!</h3>
-                        <p class="text-sky-600 text-sm font-bold">Continúa justo donde te quedaste.</p>
-                    </div>
-                    <div class="flex gap-3">
-                        <button onclick="iniciarDesdeCero()" class="px-4 py-2 bg-white text-rose-500 rounded-xl font-bold text-sm hover:bg-rose-50">Borrar</button>
-                        <button onclick="continuarSesion()" class="px-6 py-2 vibrant-gradient-a text-white rounded-xl font-black shadow-md">Continuar</button>
-                    </div>
-                </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div onclick="openSetup('guide')" class="glass-card p-8 rounded-[2rem] border-2 border-white transition-all hover:-translate-y-2 hover:shadow-2xl cursor-pointer group">
                         <div class="w-16 h-16 vibrant-gradient-a rounded-2xl flex items-center justify-center text-white text-3xl mb-6 shadow-lg group-hover:rotate-12 transition-transform"><i class="fas fa-book-reader"></i></div>
                         <h3 class="text-2xl font-black mb-2 text-slate-800">Guía de Estudio</h3>
-                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Aprende sin presión. Te mostraremos la respuesta y explicación al instante si te equivocas. Controla los audios manualmente.</p>
+                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Aprende sin presión. Te mostraremos la respuesta y explicación al instante si te equivocas. Control manual del audio y sin límite de tiempo.</p>
                     </div>
 
                     <div onclick="openSetup('test')" class="bg-slate-900 p-8 rounded-[2rem] transition-all hover:-translate-y-2 hover:shadow-2xl cursor-pointer group relative overflow-hidden">
                         <div class="absolute -right-10 -top-10 w-40 h-40 bg-sky-500/20 rounded-full blur-2xl"></div>
                         <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-sky-400 text-3xl mb-6 shadow-lg group-hover:scale-110 transition-transform"><i class="fas fa-stopwatch"></i></div>
                         <h3 class="text-2xl font-black mb-2 text-white">Comenzar Test</h3>
-                        <p class="text-slate-400 text-sm font-bold leading-relaxed mb-4">Simulación real. Temporizador activo, sin explicaciones, audios automáticos. Mide tu puntaje oficial ITP.</p>
+                        <p class="text-slate-400 text-sm font-bold leading-relaxed mb-4">Simulación real. Temporizador activo, sin explicaciones durante el examen. Audios automáticos. Mide tu puntaje oficial.</p>
                     </div>
 
                     <div onclick="startVocab()" class="glass-card p-8 rounded-[2rem] border-2 border-white transition-all hover:-translate-y-2 hover:shadow-2xl cursor-pointer group">
                         <div class="w-16 h-16 vibrant-warning rounded-2xl flex items-center justify-center text-white text-3xl mb-6 shadow-lg group-hover:-rotate-12 transition-transform"><i class="fas fa-layer-group"></i></div>
                         <h3 class="text-2xl font-black mb-2 text-slate-800">Vocabulario</h3>
-                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Expande tu léxico con Flashcards. Sistema de memoria a largo plazo para las palabras esenciales del TOEFL.</p>
+                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Expande tu léxico. Tarjetas interactivas con sistema SRS para memorizar las palabras más usadas y verbos irregulares del TOEFL.</p>
                     </div>
                 </div>
 
@@ -210,7 +238,7 @@
                     <div class="glass-card p-6 md:p-8 rounded-[2rem] border-2 border-white">
                         <div class="flex justify-between items-start mb-4">
                             <div class="w-12 h-12 vibrant-gradient-a rounded-2xl flex items-center justify-center text-white text-2xl shadow-md"><i class="fas fa-star"></i></div>
-                            <div id="display-a" class="bg-slate-100 text-slate-500 px-3 py-1 rounded-xl text-[9px] font-black uppercase tracking-widest border border-slate-200">Falta Audio</div>
+                            <div id="display-a" class="bg-slate-100 text-slate-500 px-3 py-1 rounded-xl text-[9px] font-black uppercase tracking-widest border border-slate-200">Buscando Audio...</div>
                         </div>
                         <h3 class="text-2xl font-black mb-2 text-slate-800">Test A: Volume 3</h3>
                         
@@ -224,7 +252,7 @@
                     <div class="glass-card p-6 md:p-8 rounded-[2rem] border-2 border-white">
                         <div class="flex justify-between items-start mb-4">
                             <div class="w-12 h-12 vibrant-gradient-b rounded-2xl flex items-center justify-center text-white text-2xl shadow-md"><i class="fas fa-fire"></i></div>
-                            <div id="display-b" class="bg-slate-100 text-slate-500 px-3 py-1 rounded-xl text-[9px] font-black uppercase tracking-widest border border-slate-200">Falta Audio</div>
+                            <div id="display-b" class="bg-slate-100 text-slate-500 px-3 py-1 rounded-xl text-[9px] font-black uppercase tracking-widest border border-slate-200">Buscando Audio...</div>
                         </div>
                         <h3 class="text-2xl font-black mb-2 text-slate-800">Test B: Advanced</h3>
                         
@@ -238,40 +266,25 @@
             </div>
         </div>
 
-        <div id="view-test" class="hidden-section w-full flex flex-col h-full fade-in">
-            <div class="flex flex-1 overflow-hidden">
-                <aside class="w-48 bg-white border-r border-slate-200 shrink-0 hidden md:flex flex-col shadow-md z-10">
-                    <div class="p-4 bg-slate-50 border-b border-slate-200 text-center">
-                        <p id="live-mode-badge" class="text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded">MODO</p>
+        <div id="view-test" class="hidden-section w-full overflow-y-auto p-4 md:p-8 fade-in relative" id="test-scroll-area">
+            <div class="max-w-3xl mx-auto pb-20">
+                <div class="bg-slate-900 p-6 md:p-8 rounded-3xl shadow-lg mb-6 flex justify-between items-center sticky top-0 z-20">
+                    <h2 id="live-sec-title" class="text-2xl font-black uppercase tracking-tight text-white">Section</h2>
+                    <div id="audio-panel" class="hidden flex flex-col items-end gap-1">
+                        <audio id="audio-player" class="h-8 w-48 opacity-70 hover:opacity-100 transition-opacity hidden" controls controlsList="nodownload"></audio>
+                        <span id="modo-audio-indicator" class="text-[9px] font-black text-amber-500 uppercase tracking-widest bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700"></span>
                     </div>
-                    <nav class="flex-1 py-4 space-y-2 px-2" id="test-nav">
-                        <button onclick="jumpSection('listening')" id="nav-listening" class="w-full text-left px-4 py-3 rounded-xl font-bold text-sm text-slate-500 hover:bg-slate-50 transition-colors"><i class="fas fa-headphones-alt mr-2 text-sky-500"></i> Listening</button>
-                        <button onclick="jumpSection('structure')" id="nav-structure" class="w-full text-left px-4 py-3 rounded-xl font-bold text-sm text-slate-500 hover:bg-slate-50 transition-colors"><i class="fas fa-pen-nib mr-2 text-teal-500"></i> Structure</button>
-                        <button onclick="jumpSection('reading')" id="nav-reading" class="w-full text-left px-4 py-3 rounded-xl font-bold text-sm text-slate-500 hover:bg-slate-50 transition-colors"><i class="fas fa-book-open mr-2 text-indigo-500"></i> Reading</button>
-                    </nav>
-                </aside>
-
-                <main class="flex-1 overflow-y-auto p-4 md:p-8 relative" id="test-scroll-area">
-                    <div class="max-w-3xl mx-auto pb-20">
-                        <div class="bg-slate-900 p-6 md:p-8 rounded-3xl shadow-lg mb-6 flex justify-between items-center sticky top-0 z-20">
-                            <h2 id="live-sec-title" class="text-2xl font-black uppercase tracking-tight text-white">Section</h2>
-                            <div id="audio-panel" class="hidden flex flex-col items-end gap-1">
-                                <audio id="audio-player" class="h-8 w-48 opacity-70 hover:opacity-100 transition-opacity hidden" controls controlsList="nodownload"></audio>
-                                <span id="modo-audio-indicator" class="text-[9px] font-black text-amber-500 uppercase tracking-widest bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700"></span>
-                            </div>
-                        </div>
-                        
-                        <div id="q-box" class="space-y-6"></div>
-                        
-                        <div class="mt-8 flex justify-between items-center bg-white p-4 rounded-2xl shadow-md border border-slate-100">
-                            <button id="p-btn" onclick="navegarPasos(-1)" class="px-6 py-3 font-bold text-slate-400 hover:text-slate-800 transition-colors disabled:opacity-20 text-sm">Anterior</button>
-                            <div class="flex-1 mx-4 h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                                <div id="p-bar" class="h-full vibrant-gradient-a transition-all duration-500" style="width: 0%"></div>
-                            </div>
-                            <button id="n-btn" onclick="navegarPasos(1)" class="bg-slate-900 text-white px-8 py-3 rounded-xl font-black uppercase text-xs tracking-widest hover:bg-sky-600 transition-colors shadow-md">Siguiente</button>
-                        </div>
+                </div>
+                
+                <div id="q-box" class="space-y-6"></div>
+                
+                <div class="mt-8 flex justify-between items-center bg-white p-4 rounded-2xl shadow-md border border-slate-100">
+                    <button id="p-btn" onclick="navegarPasos(-1)" class="px-6 py-3 font-bold text-slate-400 hover:text-slate-800 transition-colors disabled:opacity-20 text-sm">Anterior</button>
+                    <div class="flex-1 mx-4 h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                        <div id="p-bar" class="h-full vibrant-gradient-a transition-all duration-500" style="width: 0%"></div>
                     </div>
-                </main>
+                    <button id="n-btn" onclick="navegarPasos(1)" class="bg-slate-900 text-white px-8 py-3 rounded-xl font-black uppercase text-xs tracking-widest hover:bg-sky-600 transition-colors shadow-md">Siguiente</button>
+                </div>
             </div>
         </div>
 
@@ -334,7 +347,7 @@
 
                 <div class="flex justify-center mt-8">
                     <div class="bg-slate-800 border border-slate-700 text-sky-400 px-6 py-3 rounded-2xl font-black text-sm tracking-widest shadow-inner">
-                        REPASOS HOY: <span id="v-counter" class="text-white ml-2 text-lg">0</span>
+                        CARTAS VISTAS HOY: <span id="v-counter" class="text-white ml-2 text-lg">0</span>
                     </div>
                 </div>
             </div>
@@ -405,6 +418,14 @@
                 osc.start(); osc.stop(audioCtx.currentTime + 0.4);
             }
         }
+
+        let currentFontSize = 16;
+        window.changeFontSize = (dir) => {
+            currentFontSize += (dir * 2);
+            if(currentFontSize < 12) currentFontSize = 12;
+            if(currentFontSize > 24) currentFontSize = 24;
+            document.documentElement.style.setProperty('--base-size', currentFontSize + 'px');
+        };
 
         // --- LOCAL USER MANAGEMENT (Max 10) ---
         let usersDB = JSON.parse(localStorage.getItem('toefl_users_db')) || [];
@@ -484,6 +505,8 @@
             document.getElementById('btn-home').classList.add('hidden');
             document.getElementById('btn-save').classList.add('hidden');
             document.getElementById('general-timer-container').classList.add('hidden');
+            document.getElementById('main-sidebar').classList.remove('flex');
+            document.getElementById('main-sidebar').classList.add('hidden');
             ocultarTodo();
             document.getElementById('view-auth').classList.remove('hidden-section');
         };
@@ -581,6 +604,7 @@
             }
         }
 
+        // --- SESSION LOGIC ---
         function initSession() {
             document.getElementById('user-display-name').innerText = currentUser.username;
             document.getElementById('btn-logout').classList.remove('hidden');
@@ -622,6 +646,8 @@
             document.getElementById('q-timer-display').classList.add('hidden');
             document.getElementById('general-timer-container').classList.add('hidden');
             document.getElementById('audio-player').pause();
+            document.getElementById('main-sidebar').classList.remove('flex');
+            document.getElementById('main-sidebar').classList.add('hidden');
             
             if(currentUser && currentUser.progress) document.getElementById('resume-card').classList.remove('hidden');
             document.getElementById('view-dashboard').classList.remove('hidden-section');
@@ -629,6 +655,7 @@
 
         function ocultarTodo() { ['view-auth', 'view-dashboard', 'view-setup', 'view-test', 'view-results', 'view-vocab'].forEach(id => document.getElementById(id).classList.add('hidden-section')); }
 
+        // --- TEST SETUP & RENDER ---
         window.openSetup = (mode) => {
             if(!examData) return alert("Falta el archivo JSON de datos.");
             isGuideMode = (mode === 'guide');
@@ -650,6 +677,8 @@
             document.getElementById('btn-home').classList.remove('hidden');
             document.getElementById('btn-save').classList.remove('hidden');
             document.getElementById('general-timer-container').classList.remove('hidden');
+            document.getElementById('main-sidebar').classList.add('flex');
+            document.getElementById('main-sidebar').classList.remove('hidden');
             
             const badge = document.getElementById('live-mode-badge');
             const ind = document.getElementById('modo-audio-indicator');
@@ -668,10 +697,9 @@
 
         window.jumpSection = (sec) => { session.section = sec; session.step = 0; renderSection(); };
 
-        // --- MAPEO MILIMÉTRICO DE AUDIOS INDIVIDUALES (EXTRACTO DE TUS TRANSCRIPCIONES) ---
         const indAudioTimings = {
             testA: {
-                1: [143, 169], 2: [169, 194], 3: [194, 225], 4: [225, 252], 5: [252, 278],
+                1: [143, 158], 2: [158, 194], 3: [194, 225], 4: [225, 252], 5: [252, 278],
                 6: [278, 310], 7: [310, 335], 8: [335, 351], 9: [351, 392], 10: [392, 423],
                 11: [423, 451], 12: [451, 480], 13: [480, 505], 14: [505, 532], 15: [532, 563],
                 16: [563, 591], 17: [591, 621], 18: [621, 649], 19: [649, 676], 20: [676, 704],
@@ -679,7 +707,7 @@
                 26: [845, 869], 27: [869, 903], 28: [903, 933], 29: [933, 964], 30: [964, 993]
             },
             testB: {
-                1: [143, 169], 2: [169, 191], 3: [191, 220], 4: [220, 245], 5: [245, 273],
+                1: [143, 158], 2: [158, 191], 3: [191, 220], 4: [220, 245], 5: [245, 273],
                 6: [273, 302], 7: [302, 321], 8: [321, 358], 9: [358, 376], 10: [376, 416],
                 11: [416, 443], 12: [443, 469], 13: [469, 498], 14: [498, 524], 15: [524, 553],
                 16: [553, 581], 17: [581, 609], 18: [609, 633], 19: [633, 660], 20: [660, 689],
@@ -690,10 +718,10 @@
 
         const blockAudioTimings = {
             testA: {
-                31: [1046, 1191], 35: [1194, 1350], 38: [1534, 1712], 42: [1715, 1900], 47: [1903, 2083]
+                31: [1043, 1191], 35: [1191, 1360], 38: [1531, 1712], 42: [1712, 1900], 47: [1900, 2083]
             },
             testB: {
-                31: [1040, 1186], 35: [1189, 1346], 38: [1530, 1705], 42: [1708, 1909], 47: [1917, 2080]
+                31: [1043, 1191], 35: [1191, 1360], 38: [1527, 1705], 42: [1705, 1909], 47: [1909, 2080]
             }
         };
 
@@ -711,23 +739,30 @@
             }
         }
 
-        window.playManualAudio = (id, isBlock, btnElement) => {
+        window.playIndividualAudio = (id, btnElement) => {
             const player = document.getElementById('audio-player');
             if(!player.src || !player.src.startsWith('blob:')) player.src = URL.createObjectURL(localAudios[currentTest]);
             
-            const map = isBlock ? blockAudioTimings : indAudioTimings;
-            if(!map[currentTest] || !map[currentTest][id]) return;
-
-            const [startT, endT] = map[currentTest][id];
+            const [startT, endT] = indAudioTimings[currentTest][id];
             audioEndTime = endT;
             player.currentTime = startT;
             player.play().catch(e => console.log(e));
 
-            // Change button state
-            if(btnElement) {
-                btnElement.innerHTML = `<i class="fas fa-sync-alt mr-2"></i> Repetir Fragmento`;
-                btnElement.className = "bg-sky-100 text-sky-700 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-sky-200 transition-colors shadow-sm shrink-0 border border-sky-200";
-            }
+            btnElement.innerHTML = `<i class="fas fa-sync-alt mr-1"></i> Repetir Audio`;
+            btnElement.className = "bg-sky-100 text-sky-700 px-3 py-1 rounded-lg text-xs font-bold hover:bg-sky-200 transition-colors whitespace-nowrap border border-sky-200";
+        };
+
+        window.playBlockAudio = (firstId, btnElement) => {
+            const player = document.getElementById('audio-player');
+            if(!player.src || !player.src.startsWith('blob:')) player.src = URL.createObjectURL(localAudios[currentTest]);
+            
+            const [startT, endT] = blockAudioTimings[currentTest][firstId];
+            audioEndTime = endT;
+            player.currentTime = startT;
+            player.play().catch(e => console.log(e));
+
+            btnElement.innerHTML = `<i class="fas fa-sync-alt mr-1"></i> Repetir Conferencia`;
+            btnElement.className = "bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-indigo-700 transition-colors whitespace-nowrap border border-indigo-700";
         };
 
         function renderSection() {
@@ -758,15 +793,14 @@
                 document.getElementById('audio-player').pause(); 
             }
 
-            // Headers & Play Buttons for Long Blocks (B & C)
             if(session.section === 'listening' && slice.length > 2) {
                 let playBtn = '';
                 if(isGuideMode) {
-                    playBtn = `<button onclick="playManualAudio(${slice[0].id}, true, this)" class="mt-3 bg-sky-500 text-white px-6 py-2.5 rounded-xl text-sm font-black uppercase tracking-widest hover:bg-sky-600 transition-colors shadow-md border border-sky-600"><i class="fas fa-play mr-2"></i> Escuchar Audio Completo</button>`;
+                    playBtn = `<button onclick="playBlockAudio(${slice[0].id}, this)" class="bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-indigo-600 transition-colors whitespace-nowrap shadow-sm"><i class="fas fa-play mr-1"></i> Escuchar Conferencia</button>`;
                 }
                 box.innerHTML += `
-                    <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-5 text-center shadow-sm">
-                        <p class="font-black text-indigo-800 text-sm uppercase tracking-widest"><i class="fas fa-bullhorn mr-2"></i>Conferencia - Preguntas ${slice[0].id} a ${slice[slice.length-1].id}</p>
+                    <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-5 flex justify-between items-center text-indigo-800 shadow-sm fade-in gap-4">
+                        <p class="font-black text-sm uppercase tracking-widest leading-tight"><i class="fas fa-bullhorn mr-2"></i>Escucha la conferencia y contesta este bloque.</p>
                         ${playBtn}
                     </div>`;
             }
@@ -808,7 +842,7 @@
 
                 let playIndBtn = '';
                 if(isGuideMode && session.section === 'listening' && slice.length <= 2) {
-                    playIndBtn = `<button onclick="playManualAudio(${q.id}, false, this)" class="ml-auto bg-sky-500 text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-sky-600 transition-colors shadow-sm shrink-0 border border-sky-600"><i class="fas fa-play mr-2"></i> Escuchar</button>`;
+                    playIndBtn = `<button onclick="playIndividualAudio(${q.id}, this)" class="bg-sky-50 text-sky-600 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-sky-100 transition-colors whitespace-nowrap border border-sky-200 shadow-sm"><i class="fas fa-play mr-1"></i> Escuchar Audio</button>`;
                 }
 
                 card.innerHTML = `
@@ -874,7 +908,6 @@
             session.step += dir; renderSection();
         };
 
-        // --- CALCULADORA OFICIAL TOEFL ITP (Basada en tabla págs 140-141) ---
         const scaleTable = [
             { r: [48, 50], s1: [64, 68], s2: [63, 68], s3: [65, 67] },
             { r: [45, 47], s1: [59, 62], s2: [59, 61], s3: [62, 64] },
@@ -944,7 +977,6 @@
                 if (player.currentTime >= audioEndTime) {
                     player.pause();
                     if(!isGuideMode && repsCount < 1) { 
-                        // Examen Mode auto-repeat
                         repsCount++;
                         const pages = getPagesForSection(session.section, examData[currentTest][session.section].length);
                         const slice = examData[currentTest][session.section].slice(pages[session.step][0], pages[session.step][1]);
