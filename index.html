@@ -270,8 +270,9 @@
                         <div class="bg-slate-900 p-6 md:p-8 rounded-3xl shadow-lg mb-6 flex justify-between items-center sticky top-0 z-20">
                             <h2 id="live-sec-title" class="text-2xl font-black uppercase tracking-tight text-white">Section</h2>
                             <div id="audio-panel" class="hidden flex flex-col items-end gap-1">
-                                <audio id="audio-player" class="h-8 w-48 opacity-70 hover:opacity-100 transition-opacity" controls controlsList="nodownload"></audio>
-                                <span class="text-[9px] font-black text-amber-500 uppercase tracking-widest bg-slate-800 px-2 py-1 rounded">Reps: <span id="reps-label">1 / 2</span></span>
+                                <!-- Reproductor base oculto visualmente pero disponible en el DOM -->
+                                <audio id="audio-player" class="h-8 w-48 opacity-70 hover:opacity-100 transition-opacity hidden" controls controlsList="nodownload"></audio>
+                                <span id="modo-audio-indicator" class="text-[9px] font-black text-amber-500 uppercase tracking-widest bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700"><i class="fas fa-headphones mr-1"></i> Control Manual</span>
                             </div>
                         </div>
                         
@@ -311,7 +312,7 @@
                 
                 <div class="text-center mb-10">
                     <h2 class="text-4xl md:text-5xl font-black text-white tracking-tighter mb-3">Vocabulario Activo</h2>
-                    <p class="text-slate-400 font-bold text-sm">Lee la definición en inglés. Haz clic para ver su significado en español.<br>Haz clic de nuevo para avanzar a la siguiente tarjeta.</p>
+                    <p class="text-slate-400 font-bold text-sm">Lee la definición en inglés. Haz clic en la carta para voltearla y ver la traducción.<br>Haz clic de nuevo para avanzar.</p>
                 </div>
 
                 <div id="vocab-card-container" class="flip-card w-full max-w-xl mx-auto mb-10 transition-all duration-[600ms]" onclick="handleCardClick()">
@@ -327,7 +328,8 @@
                         <div class="flip-card-back flex flex-col justify-center items-center relative overflow-hidden">
                             <div class="absolute inset-0 bg-gradient-to-br from-slate-900 to-slate-800 z-0"></div>
                             <div class="z-10 flex flex-col items-center">
-                                <p class="text-[10px] font-black text-teal-400 uppercase tracking-[0.2em] mb-4 border border-teal-400/30 px-3 py-1 rounded-full">Traducción</p>
+                                <h3 id="v-word-back" class="text-4xl font-black text-sky-200 tracking-tight mb-8" style="font-family: 'Playfair Display', serif;">---</h3>
+                                <p class="text-[10px] font-black text-teal-400 uppercase tracking-[0.2em] mb-3 border border-teal-400/30 px-3 py-1 rounded-full">Traducción</p>
                                 <p id="v-es" class="text-5xl md:text-6xl text-amber-400 font-black uppercase tracking-tight" style="font-family: 'Fredoka', sans-serif;">---</p>
                             </div>
                         </div>
@@ -356,7 +358,7 @@
             globalVolume = parseFloat(val);
             const player = document.getElementById('audio-player');
             if (player) player.volume = globalVolume;
-            if (globalVolume > 0 && isMuted) toggleMute();
+            if (globalVolume > 0 && isMuted) toggleMute(); // Quitar mute si sube el slider
         };
 
         window.toggleMute = () => {
@@ -393,6 +395,7 @@
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.3);
             } else if(type === 'spark') {
+                // Sonido agudo al voltear carta
                 osc.type = 'triangle';
                 osc.frequency.setValueAtTime(800, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(1400, audioCtx.currentTime + 0.1);
@@ -400,6 +403,7 @@
                 gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.1);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.1);
             } else if(type === 'explode') {
+                // Sonido grave al avanzar carta
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(200, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.4);
@@ -500,14 +504,43 @@
         const localAudios = { testA: null, testB: null };
         let audioEndTime = 0; let repsCount = 0; let qTimerInt; let qTimeLeft = 0; let generalTimerInt;
 
-        // PAGINATION LOGIC
+        // --- MILIMETRIC AUDIO TIMINGS ---
+        // Extraidos manualmente de las transcripciones para sincronización perfecta
+        const individualAudioMap = {
+            testA: {
+                1: [143, 169], 2: [169, 194], 3: [194, 225], 4: [225, 252], 5: [252, 278],
+                6: [278, 310], 7: [310, 335], 8: [335, 351], 9: [351, 392], 10: [392, 423],
+                11: [423, 451], 12: [451, 480], 13: [480, 505], 14: [505, 532], 15: [532, 563],
+                16: [563, 591], 17: [591, 621], 18: [621, 649], 19: [649, 676], 20: [676, 704],
+                21: [704, 734], 22: [734, 758], 23: [758, 787], 24: [787, 815], 25: [815, 845],
+                26: [845, 869], 27: [869, 903], 28: [903, 933], 29: [933, 964], 30: [964, 993]
+            },
+            testB: {
+                1: [143, 169], 2: [169, 191], 3: [191, 220], 4: [220, 245], 5: [245, 273],
+                6: [273, 302], 7: [302, 321], 8: [321, 358], 9: [358, 376], 10: [376, 416],
+                11: [416, 443], 12: [443, 469], 13: [469, 498], 14: [498, 524], 15: [524, 553],
+                16: [553, 581], 17: [581, 609], 18: [609, 633], 19: [633, 660], 20: [660, 689],
+                21: [689, 718], 22: [718, 753], 23: [753, 786], 24: [786, 810], 25: [810, 836],
+                26: [836, 867], 27: [867, 897], 28: [897, 927], 29: [927, 954], 30: [954, 983]
+            }
+        };
+
+        const blockAudioMap = {
+            testA: {
+                31: [1043, 1191], 35: [1191, 1350], 38: [1530, 1708], 42: [1708, 1900], 47: [1900, 2080]
+            },
+            testB: {
+                31: [1033, 1186], 35: [1186, 1346], 38: [1527, 1705], 42: [1705, 1909], 47: [1909, 2080]
+            }
+        };
+
         function getPagesForSection(section, dataLength) {
             if (section === 'listening' && dataLength >= 50) {
                 return [
                     [0,2], [2,4], [4,6], [6,8], [8,10],
                     [10,12], [12,14], [14,16], [16,18], [18,20],
-                    [20,22], [22,24], [24,26], [26,28], [28,30], // Part A
-                    [30,34], [34,37], [37,41], [41,46], [46,50]  // Part B & C Blocks
+                    [20,22], [22,24], [24,26], [26,28], [28,30], // Part A (2 por página)
+                    [30,34], [34,37], [37,41], [41,46], [46,50]  // Part B & C (Bloques enteros)
                 ];
             } else {
                 let pages = [];
@@ -515,21 +548,6 @@
                 return pages;
             }
         }
-
-        const audioTimings = {
-            testA: [
-                [143, 194], [194, 252], [252, 310], [310, 351], [351, 423],
-                [423, 480], [480, 532], [532, 591], [591, 649], [649, 704],
-                [704, 758], [758, 815], [815, 869], [869, 933], [933, 993],
-                [1046, 1191], [1194, 1350], [1534, 1712], [1715, 1900], [1903, 2083]
-            ],
-            testB: [
-                [143, 191], [191, 245], [245, 302], [302, 358], [358, 416],
-                [416, 469], [469, 524], [524, 581], [581, 633], [633, 689],
-                [689, 753], [753, 810], [810, 867], [867, 927], [927, 983],
-                [1040, 1186], [1189, 1346], [1530, 1705], [1708, 1909], [1917, 2080]
-            ]
-        };
 
         window.onload = async () => {
             const cacheBuster = '?nocache=' + new Date().getTime();
@@ -562,6 +580,8 @@
 
             setupAudioPlayerLogic();
             document.getElementById('loading-screen').classList.add('hidden');
+            
+            // Set init volume
             document.getElementById('audio-player').volume = globalVolume;
         };
 
@@ -686,10 +706,14 @@
             document.getElementById('general-timer-container').classList.remove('hidden');
             
             const badge = document.getElementById('live-mode-badge');
+            const ind = document.getElementById('modo-audio-indicator');
+
             if(isGuideMode) {
                 badge.innerText = "MODO GUÍA"; badge.className = "text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded bg-sky-100 text-sky-700";
+                ind.innerHTML = `<i class="fas fa-hand-pointer mr-1"></i> Control Manual`;
             } else {
                 badge.innerText = "MODO EXAMEN"; badge.className = "text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded bg-rose-100 text-rose-700";
+                ind.innerHTML = `<i class="fas fa-forward mr-1"></i> Auto-Play (Real)`;
                 iniciarRelojGeneral(115); 
             }
             document.getElementById('view-test').classList.remove('hidden-section');
@@ -698,33 +722,24 @@
 
         window.jumpSection = (sec) => { session.section = sec; session.step = 0; renderSection(); };
 
-        window.replayQuestionAudio = (qid) => {
+        // Nueva función para reproducir audios INDIVIDUALES al presionar el botón
+        window.playItemAudio = (id, isBlock, btnEl) => {
+            const timings = isBlock ? blockAudioMap[currentTest][id] : individualAudioMap[currentTest][id];
+            if(!timings) return;
+            const [startT, endT] = timings;
+            
             const player = document.getElementById('audio-player');
-            const timings = audioTimings[currentTest];
-            if(!timings || !timings[session.step]) return;
-            
-            let [startT, endT] = timings[session.step];
-            
-            // Smart Split logic for Part A (ID <= 30) where 2 questions share 1 block
-            if (qid <= 30) {
-                const data = examData[currentTest][session.section];
-                const pages = getPagesForSection(session.section, data.length);
-                const [startIdx, endIdx] = pages[session.step];
-                const slice = data.slice(startIdx, endIdx);
-                
-                if (slice.length === 2) {
-                    const midT = startT + (endT - startT) / 2;
-                    if (slice[0].id === qid) {
-                        endT = midT; // Replay first half
-                    } else if (slice[1].id === qid) {
-                        startT = midT; // Replay second half
-                    }
-                }
-            }
+            if(!player.src || !player.src.startsWith('blob:')) player.src = URL.createObjectURL(localAudios[currentTest]);
             
             audioEndTime = endT;
             player.currentTime = startT;
-            player.play().catch(e=>{});
+            player.play().catch(e => console.log(e));
+            
+            // Cambiar estilo del botón a "Repetir"
+            if (btnEl) {
+                btnEl.innerHTML = `<i class="fas fa-sync-alt mr-2"></i> Repetir Audio`;
+                btnEl.className = "ml-auto bg-amber-100 text-amber-700 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest hover:bg-amber-200 transition-colors shadow-sm shrink-0";
+            }
         };
 
         function renderSection() {
@@ -747,11 +762,20 @@
             document.getElementById('p-btn').disabled = (session.step === 0);
 
             const audioPanel = document.getElementById('audio-panel');
-            if(session.section === 'listening') { audioPanel.classList.remove('hidden'); gestionarAudioDePagina(); } 
+            if(session.section === 'listening') { audioPanel.classList.remove('hidden'); gestionarAudioDePagina(slice); } 
             else { audioPanel.classList.add('hidden'); document.getElementById('audio-player').pause(); }
 
+            // Header para bloques largos (Parte B y C)
             if(session.section === 'listening' && slice.length > 2) {
-                box.innerHTML += `<div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-4 text-center text-indigo-800 shadow-sm"><p class="font-black text-sm uppercase tracking-widest"><i class="fas fa-bullhorn mr-2"></i>Escucha la conferencia y contesta este bloque.</p></div>`;
+                let playBtnHTML = '';
+                if(isGuideMode) {
+                    playBtnHTML = `<button onclick="playItemAudio(${slice[0].id}, true, this)" class="mx-auto mt-3 block bg-sky-100 text-sky-600 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-sky-200 transition-colors shadow-sm"><i class="fas fa-play mr-2"></i> Escuchar Conferencia</button>`;
+                }
+                box.innerHTML += `
+                    <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-5 text-center shadow-sm">
+                        <p class="font-black text-indigo-800 text-sm uppercase tracking-widest"><i class="fas fa-bullhorn mr-2"></i>Conferencia - Preguntas ${slice[0].id} a ${slice[slice.length-1].id}</p>
+                        ${playBtnHTML}
+                    </div>`;
             }
 
             slice.forEach(q => {
@@ -789,19 +813,19 @@
                     }
                 }
 
-                let replayBtnHTML = '';
-                if (isGuideMode && session.section === 'listening') {
-                    replayBtnHTML = `<button onclick="replayQuestionAudio(${q.id})" class="ml-auto bg-sky-100 text-sky-600 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest hover:bg-sky-200 transition-colors shadow-sm"><i class="fas fa-volume-up mr-2"></i>Repetir Fragmento</button>`;
+                let playIndividualBtn = '';
+                if (isGuideMode && session.section === 'listening' && q.id <= 30) {
+                    playIndividualBtn = `<button onclick="playItemAudio(${q.id}, false, this)" class="ml-auto bg-sky-100 text-sky-600 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest hover:bg-sky-200 transition-colors shadow-sm shrink-0"><i class="fas fa-play mr-2"></i> Escuchar</button>`;
                 }
 
                 card.innerHTML = `
                     ${prepHTML}
                     <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-50 pb-4 mb-5 gap-3">
                         <div class="flex gap-3 items-center">
-                            <span class="bg-slate-900 text-white w-8 h-8 flex items-center justify-center rounded-lg font-black text-sm">${q.id}</span>
+                            <span class="bg-slate-900 text-white w-8 h-8 flex items-center justify-center rounded-lg font-black text-sm shrink-0">${q.id}</span>
                             <span class="font-black text-base text-slate-800">${q.pregunta || 'Select answer:'}</span>
                         </div>
-                        ${replayBtnHTML}
+                        ${playIndividualBtn}
                     </div>
                     <div class="grid gap-3" id="opts-${q.id}">${opcionesHTML}</div>
                     <div id="feed-${q.id}">${feedHTML}</div>`;
@@ -814,7 +838,7 @@
                 }
             });
 
-            startSpeedTimer();
+            startSpeedTimer(slice);
             document.getElementById('test-scroll-area').scrollTo(0,0);
         }
 
@@ -843,6 +867,8 @@
         };
 
         window.navegarPasos = (dir) => {
+            const player = document.getElementById('audio-player');
+            player.pause();
             const data = examData[currentTest][session.section];
             const pages = getPagesForSection(session.section, data.length);
             if (session.step + dir >= pages.length) {
@@ -877,44 +903,68 @@
             const player = document.getElementById('audio-player');
             player.addEventListener('timeupdate', () => {
                 if (session.section !== 'listening' || audioEndTime === 0) return;
+                
                 if (player.currentTime >= audioEndTime) {
                     player.pause();
-                    if (repsCount < 1) { 
-                        repsCount++; document.getElementById('reps-label').innerText = "2 / 2";
-                        const timings = audioTimings[currentTest];
-                        if(timings && timings[session.step]) { player.currentTime = timings[session.step][0]; player.play().catch(e=>{}); }
-                    } else { audioEndTime = 0; }
+                    if (!isGuideMode && repsCount < 1) { 
+                        // Auto-replay ONLY in EXAM MODE
+                        repsCount++; 
+                        // To auto-replay, we need to restart from the beginning of the page logic
+                        // Since this gets tricky with blocks, we'll just let Exam Mode play once, or replay exactly.
+                        // ITP audio plays ONCE. Let's strictly play once in exam mode.
+                        audioEndTime = 0; 
+                    } else { 
+                        audioEndTime = 0; 
+                    }
                 }
             });
         }
 
-        function gestionarAudioDePagina() {
+        function gestionarAudioDePagina(slice) {
             const player = document.getElementById('audio-player');
             if(!localAudios[currentTest]) return;
             if(!player.src || !player.src.startsWith('blob:')) player.src = URL.createObjectURL(localAudios[currentTest]);
             
-            const timings = audioTimings[currentTest];
-            if(timings && timings[session.step]) {
-                const [startT, endT] = timings[session.step];
-                audioEndTime = endT; repsCount = 0;
-                document.getElementById('reps-label').innerText = "1 / 2";
-                player.currentTime = startT; player.play().catch(e=>{});
+            // Si es Modo Guía, NO se reproduce solo. El usuario debe usar los botones.
+            if (isGuideMode) {
+                return;
             }
+
+            // MODO EXAMEN: Reproducir la página completa
+            let startT, endT;
+            if (slice[0].id <= 30) {
+                // Parte A: reproducir desde el inicio de la Q1 hasta el final de la última en la página
+                startT = individualAudioMap[currentTest][slice[0].id][0];
+                endT = individualAudioMap[currentTest][slice[slice.length-1].id][1];
+            } else {
+                // Parte B o C: reproducir el bloque completo
+                startT = blockAudioMap[currentTest][slice[0].id][0];
+                endT = blockAudioMap[currentTest][slice[0].id][1];
+            }
+
+            audioEndTime = endT; repsCount = 0;
+            player.currentTime = startT; 
+            player.play().catch(e=>{});
         }
 
-        function startSpeedTimer() {
+        function startSpeedTimer(slice) {
             clearInterval(qTimerInt); document.getElementById('q-timer-display').classList.add('hidden');
             if(isGuideMode) return; 
             
             if (session.section === 'listening') {
-                const timings = audioTimings[currentTest];
-                if (timings && timings[session.step]) {
-                    const [startT, endT] = timings[session.step];
-                    const pages = getPagesForSection(session.section, examData[currentTest][session.section].length);
-                    const numQ = pages[session.step][1] - pages[session.step][0];
-                    qTimeLeft = Math.ceil(((endT || (startT + 60)) - startT) * 2) + (numQ * 15); 
-                } else { qTimeLeft = 60; }
-            } else { qTimeLeft = (session.section === 'structure' ? 25 : 54) * 2; }
+                let startT, endT;
+                if (slice[0].id <= 30) {
+                    startT = individualAudioMap[currentTest][slice[0].id][0];
+                    endT = individualAudioMap[currentTest][slice[slice.length-1].id][1];
+                } else {
+                    startT = blockAudioMap[currentTest][slice[0].id][0];
+                    endT = blockAudioMap[currentTest][slice[0].id][1];
+                }
+                
+                const numQ = slice.length;
+                // Tiempo de audio de la página + 15 seg por cada pregunta para pensar
+                qTimeLeft = Math.ceil((endT - startT)) + (numQ * 15); 
+            } else { qTimeLeft = (session.section === 'structure' ? 25 : 54) * 2; } // Simplificado para Reading/Structure
             
             document.getElementById('q-timer-display').classList.remove('hidden');
             qTimerInt = setInterval(() => {
@@ -936,6 +986,7 @@
             }, 1000); 
         }
 
+        // --- VOCABULARY MEMORY SYSTEM (SRS) ---
         let vocabIndex = 0;
         let lastVocabIndex = -1;
         let vocabSeenCounts = [];
@@ -961,6 +1012,7 @@
             let totalWeight = 0;
             for(let i=0; i<vocabData.length; i++) {
                 if(i === lastVocabIndex && vocabData.length > 1) continue; 
+                // SRS Logic: Si ya la vio, pesa el TRIPLE para forzar repaso. Si no, pesa 1.
                 totalWeight += vocabSeenCounts[i] > 0 ? 3 : 1; 
             }
             
@@ -989,6 +1041,8 @@
             document.getElementById('v-type').innerText = word.type || "vocabulary";
             document.getElementById('v-word').innerText = word.en;
             document.getElementById('v-def-front').innerText = `"${word.def}"`;
+            
+            document.getElementById('v-word-back').innerText = word.en;
             document.getElementById('v-es').innerText = word.es;
         }
 
