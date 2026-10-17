@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOEFL ITP Pro Simulator - Speed Edition</title>
+    <title>TOEFL ITP Pro Simulator - Ultimate Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Fuentes para segmentación visual en vocabulario -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&family=Playfair+Display:ital,wght@0,800;1,800&family=Fredoka:wght@600&display=swap" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&family=Playfair+Display:ital,wght@0,800;1,800&family=Fredoka:wght@600&display=swap');
+        
         :root { --base-size: 16px; }
         html { font-size: var(--base-size); transition: font-size 0.3s ease; }
         body { font-family: 'Nunito', sans-serif; background-color: #f0fdfa; } 
@@ -19,20 +19,13 @@
         .vibrant-success { background: linear-gradient(135deg, #34d399 0%, #10b981 100%); }
         .vibrant-warning { background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); }
         
-        .toefl-radio { appearance: none; width: 22px; height: 22px; border: 3px solid #cbd5e1; border-radius: 50%; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .toefl-radio:checked { background-color: #0f172a; border-color: #0f172a; box-shadow: inset 0 0 0 5px #fff; transform: scale(1.1); }
+        .toefl-radio { appearance: none; width: 1.5rem; height: 1.5rem; border: 3px solid #cbd5e1; border-radius: 50%; cursor: pointer; transition: all 0.3s ease; flex-shrink: 0;}
+        .toefl-radio:checked { background-color: #0f172a; border-color: #0f172a; box-shadow: inset 0 0 0 4px #fff; transform: scale(1.1); }
         
         .hidden-section { display: none !important; }
         .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        .active-nav { background: #f0f9ff; border-left: 5px solid #0ea5e9; color: #0369a1; font-weight: 900; }
-        
-        .timer-warning { animation: pulse-red 1s infinite; color: #ef4444; font-weight: 900; }
-        @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); text-shadow: 0 0 8px rgba(239, 68, 68, 0.5); } 100% { transform: scale(1); } }
-
-        .glow-success { box-shadow: 0 0 15px rgba(52, 211, 153, 0.5); border-color: #34d399; }
-        
         .answer-correct { animation: pulseGreen 0.5s ease; background-color: #ecfdf5 !important; border-color: #10b981 !important; color: #065f46 !important; }
         .answer-incorrect { animation: shakeRed 0.5s ease; background-color: #fff1f2 !important; border-color: #f43f5e !important; color: #9f1239 !important; }
         
@@ -48,7 +41,7 @@
         
         .particle { position: absolute; border-radius: 50%; pointer-events: none; z-index: 100; }
 
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
@@ -56,27 +49,24 @@
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-slate-800">
 
-    <!-- HEADER MÁS COMPACTO Y CONTROLES -->
     <header class="bg-slate-900 text-white py-3 px-6 flex justify-between items-center shadow-lg z-50 shrink-0">
         <div class="flex items-center gap-3">
             <div class="vibrant-gradient-a p-2 rounded-xl shadow-md rotate-3">
                 <i class="fas fa-rocket text-lg text-white"></i>
             </div>
             <div>
-                <h1 class="text-xl font-black tracking-tight leading-none uppercase">TOEFL Speed Pro ⚡</h1>
+                <h1 class="text-xl font-black tracking-tight leading-none uppercase">TOEFL Speed Pro</h1>
                 <p id="user-display-name" class="text-[10px] text-sky-400 font-bold uppercase mt-0.5 tracking-widest">Inicia Sesión</p>
             </div>
         </div>
         
-        <div class="flex items-center gap-4">
-            
-            <!-- Controles de Audio y Accesibilidad -->
-            <div class="hidden md:flex bg-slate-800 rounded-lg overflow-hidden border border-slate-700 items-center">
+        <div class="flex items-center gap-3">
+            <div class="hidden md:flex bg-slate-800 rounded-lg overflow-hidden border border-slate-700 items-center mr-2">
                 <button onclick="changeFontSize(-1)" class="px-3 py-1 hover:bg-slate-700 text-sm font-bold" title="Reducir letra">A-</button>
                 <div class="w-px h-5 bg-slate-700"></div>
                 <button onclick="changeFontSize(1)" class="px-3 py-1 hover:bg-slate-700 text-lg font-bold" title="Aumentar letra">A+</button>
                 <div class="w-px h-5 bg-slate-700 mx-1"></div>
-                <button onclick="toggleMute()" id="btn-mute" class="px-3 py-1 hover:bg-slate-700 text-slate-400 transition-colors" title="Silenciar Sonidos">
+                <button onclick="toggleMute()" id="btn-mute" class="px-3 py-1 hover:bg-slate-700 text-slate-400 transition-colors" title="Silenciar">
                     <i class="fas fa-volume-up"></i>
                 </button>
                 <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.8" class="w-20 mx-2 accent-sky-500 cursor-pointer" onchange="changeVolume(this.value)" title="Volumen">
@@ -88,8 +78,7 @@
             <div id="general-timer-container" class="hidden bg-slate-800 px-4 py-1.5 rounded-xl font-mono text-xl text-sky-400 border border-slate-700 shadow-inner">
                 <span id="timer">00:00</span>
             </div>
-            
-            <button id="btn-home" onclick="goHome()" class="hidden bg-sky-500/10 text-sky-500 hover:bg-sky-500 hover:text-white p-2.5 rounded-xl transition-all mr-1" title="Ir al Panel">
+            <button id="btn-home" onclick="goHome()" class="hidden bg-sky-500/10 text-sky-500 hover:bg-sky-500 hover:text-white p-2.5 rounded-xl transition-all" title="Ir al Panel">
                 <i class="fas fa-home"></i>
             </button>
             <button id="btn-save" onclick="pausarYSalir()" class="hidden bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white p-2.5 rounded-xl transition-all" title="Guardar y Salir">
@@ -101,17 +90,14 @@
         </div>
     </header>
 
-    <!-- PANTALLA DE CARGA -->
-    <div id="loading-screen" class="absolute inset-0 bg-teal-50 z-[300] flex flex-col items-center justify-center">
+    <div id="loading-screen" class="absolute inset-0 bg-teal-50 z-[300] flex flex-col items-center justify-center fade-in">
         <div class="w-16 h-16 border-8 border-teal-200 border-t-teal-500 rounded-full animate-spin shadow-md"></div>
-        <h2 class="mt-6 font-black text-teal-900 text-2xl tracking-tight">Preparando tu entorno... 🌟</h2>
-        <p class="text-teal-600 mt-2 font-bold text-sm">Sincronizando tus avances y base de datos.</p>
+        <h2 class="mt-6 font-black text-teal-900 text-2xl tracking-tight">Cargando sistema...</h2>
     </div>
 
     <!-- MAIN CONTAINER -->
     <div class="flex flex-1 overflow-hidden relative">
 
-        <!-- AUTH VIEW -->
         <div id="view-auth" class="w-full h-full flex items-center justify-center p-4 bg-slate-50 fade-in overflow-y-auto">
             <div class="glass-card w-full max-w-md rounded-[2rem] p-8 shadow-2xl relative overflow-hidden my-auto">
                 <div class="absolute top-0 left-0 w-full h-2 vibrant-gradient-a"></div>
@@ -180,35 +166,35 @@
                     <div onclick="openSetup('guide')" class="glass-card p-8 rounded-[2rem] border-2 border-white transition-all hover:-translate-y-2 hover:shadow-2xl cursor-pointer group">
                         <div class="w-16 h-16 vibrant-gradient-a rounded-2xl flex items-center justify-center text-white text-3xl mb-6 shadow-lg group-hover:rotate-12 transition-transform"><i class="fas fa-book-reader"></i></div>
                         <h3 class="text-2xl font-black mb-2 text-slate-800">Guía de Estudio</h3>
-                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Aprende sin presión. Te mostraremos la respuesta y explicación al instante si te equivocas. Sin límite de tiempo.</p>
+                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Aprende sin presión. Te mostraremos la respuesta y explicación al instante si te equivocas. Controla los audios manualmente.</p>
                     </div>
 
                     <div onclick="openSetup('test')" class="bg-slate-900 p-8 rounded-[2rem] transition-all hover:-translate-y-2 hover:shadow-2xl cursor-pointer group relative overflow-hidden">
                         <div class="absolute -right-10 -top-10 w-40 h-40 bg-sky-500/20 rounded-full blur-2xl"></div>
                         <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-sky-400 text-3xl mb-6 shadow-lg group-hover:scale-110 transition-transform"><i class="fas fa-stopwatch"></i></div>
                         <h3 class="text-2xl font-black mb-2 text-white">Comenzar Test</h3>
-                        <p class="text-slate-400 text-sm font-bold leading-relaxed mb-4">Simulación real. Temporizador activo, sin explicaciones durante el examen. Mide tu puntaje oficial.</p>
+                        <p class="text-slate-400 text-sm font-bold leading-relaxed mb-4">Simulación real. Temporizador activo, sin explicaciones, audios automáticos. Mide tu puntaje oficial ITP.</p>
                     </div>
 
                     <div onclick="startVocab()" class="glass-card p-8 rounded-[2rem] border-2 border-white transition-all hover:-translate-y-2 hover:shadow-2xl cursor-pointer group">
                         <div class="w-16 h-16 vibrant-warning rounded-2xl flex items-center justify-center text-white text-3xl mb-6 shadow-lg group-hover:-rotate-12 transition-transform"><i class="fas fa-layer-group"></i></div>
                         <h3 class="text-2xl font-black mb-2 text-slate-800">Vocabulario</h3>
-                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Expande tu léxico. Tarjetas interactivas con memoria a largo plazo de las palabras esenciales del TOEFL.</p>
+                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Expande tu léxico con Flashcards. Sistema de memoria a largo plazo para las palabras esenciales del TOEFL.</p>
                     </div>
                 </div>
 
                 <div id="json-fallback-container" class="hidden mt-10 bg-rose-50 p-6 rounded-[2rem] border border-rose-200 text-center shadow-md">
-                    <h3 class="text-rose-700 font-black mb-2 text-xl">Archivos JSON mal formateados o no encontrados</h3>
+                    <h3 class="text-rose-700 font-black mb-2 text-xl">Faltan archivos de base de datos</h3>
                     <p id="error-log-json" class="text-xs text-rose-600 font-bold mb-4 font-mono"></p>
-                    <p class="text-sm text-slate-700 mb-4">Puedes cargar los archivos manualmente aquí si el problema persiste:</p>
+                    <p class="text-sm text-slate-700 mb-4">Por favor sube tus archivos JSON manualmente aquí:</p>
                     <div class="flex flex-col md:flex-row gap-4 justify-center">
                         <div>
                             <label class="block text-[10px] font-black uppercase text-rose-400 mb-1">datos.json (Test)</label>
-                            <input type="file" id="file-json-data" accept=".json" class="text-xs w-full file:bg-rose-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-xl">
+                            <input type="file" id="file-json-data" accept=".json" class="text-xs w-full file:bg-rose-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-xl cursor-pointer">
                         </div>
                         <div>
                             <label class="block text-[10px] font-black uppercase text-rose-400 mb-1">vocabulary.json (Cartas)</label>
-                            <input type="file" id="file-json-vocab" accept=".json" class="text-xs w-full file:bg-rose-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-xl">
+                            <input type="file" id="file-json-vocab" accept=".json" class="text-xs w-full file:bg-rose-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-xl cursor-pointer">
                         </div>
                     </div>
                 </div>
@@ -223,8 +209,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="glass-card p-6 md:p-8 rounded-[2rem] border-2 border-white">
                         <div class="flex justify-between items-start mb-4">
-                            <div class="w-12 h-12 vibrant-gradient-a rounded-2xl flex items-center justify-center text-white text-2xl"><i class="fas fa-star"></i></div>
-                            <div id="display-a" class="bg-slate-100 text-slate-500 px-3 py-1 rounded-xl text-[9px] font-black uppercase border border-slate-200">Buscando Audio...</div>
+                            <div class="w-12 h-12 vibrant-gradient-a rounded-2xl flex items-center justify-center text-white text-2xl shadow-md"><i class="fas fa-star"></i></div>
+                            <div id="display-a" class="bg-slate-100 text-slate-500 px-3 py-1 rounded-xl text-[9px] font-black uppercase tracking-widest border border-slate-200">Falta Audio</div>
                         </div>
                         <h3 class="text-2xl font-black mb-2 text-slate-800">Test A: Volume 3</h3>
                         
@@ -237,8 +223,8 @@
 
                     <div class="glass-card p-6 md:p-8 rounded-[2rem] border-2 border-white">
                         <div class="flex justify-between items-start mb-4">
-                            <div class="w-12 h-12 vibrant-gradient-b rounded-2xl flex items-center justify-center text-white text-2xl"><i class="fas fa-fire"></i></div>
-                            <div id="display-b" class="bg-slate-100 text-slate-500 px-3 py-1 rounded-xl text-[9px] font-black uppercase border border-slate-200">Buscando Audio...</div>
+                            <div class="w-12 h-12 vibrant-gradient-b rounded-2xl flex items-center justify-center text-white text-2xl shadow-md"><i class="fas fa-fire"></i></div>
+                            <div id="display-b" class="bg-slate-100 text-slate-500 px-3 py-1 rounded-xl text-[9px] font-black uppercase tracking-widest border border-slate-200">Falta Audio</div>
                         </div>
                         <h3 class="text-2xl font-black mb-2 text-slate-800">Test B: Advanced</h3>
                         
@@ -270,9 +256,8 @@
                         <div class="bg-slate-900 p-6 md:p-8 rounded-3xl shadow-lg mb-6 flex justify-between items-center sticky top-0 z-20">
                             <h2 id="live-sec-title" class="text-2xl font-black uppercase tracking-tight text-white">Section</h2>
                             <div id="audio-panel" class="hidden flex flex-col items-end gap-1">
-                                <!-- Reproductor base oculto visualmente pero disponible en el DOM -->
                                 <audio id="audio-player" class="h-8 w-48 opacity-70 hover:opacity-100 transition-opacity hidden" controls controlsList="nodownload"></audio>
-                                <span id="modo-audio-indicator" class="text-[9px] font-black text-amber-500 uppercase tracking-widest bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700"><i class="fas fa-headphones mr-1"></i> Control Manual</span>
+                                <span id="modo-audio-indicator" class="text-[9px] font-black text-amber-500 uppercase tracking-widest bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700"></span>
                             </div>
                         </div>
                         
@@ -291,14 +276,25 @@
         </div>
 
         <div id="view-results" class="hidden-section w-full overflow-y-auto p-6 md:p-10 fade-in flex items-center justify-center">
-            <div class="glass-card p-10 rounded-[3rem] shadow-2xl border-2 border-white text-center max-w-lg w-full relative overflow-hidden">
+            <div class="glass-card p-10 rounded-[3rem] shadow-2xl border-2 border-white text-center max-w-2xl w-full relative overflow-hidden">
                 <div class="text-7xl mb-6 animate-bounce">🏆</div>
-                <h2 class="text-4xl font-black text-slate-900 mb-2">¡Terminaste!</h2>
-                <p class="text-slate-500 font-bold mb-8">Desempeño estimado ITP.</p>
+                <h2 class="text-4xl font-black text-slate-900 mb-2">¡Simulacro Oficial Completado!</h2>
+                <p class="text-slate-500 font-bold mb-8">Cálculo basado en la tabla "Converted Score" oficial de ETS (Pág 140-141).</p>
                 
-                <div class="bg-slate-900 text-white p-8 rounded-[2rem] mb-8 shadow-inner relative">
-                    <h3 id="final-score" class="text-7xl font-black mb-3 text-transparent bg-clip-text bg-gradient-to-br from-sky-300 to-white">---</h3>
-                    <div id="final-level" class="vibrant-gradient-b text-white px-6 py-1.5 rounded-full inline-block font-black text-sm uppercase tracking-widest">Nivel: ---</div>
+                <div class="bg-slate-900 text-white p-8 rounded-[2rem] mb-8 shadow-inner relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center text-left">
+                    <div>
+                        <p class="text-xs text-sky-400 font-black uppercase tracking-widest mb-4">Desglose de Aciertos:</p>
+                        <ul class="space-y-2 text-sm font-bold text-slate-300">
+                            <li class="flex justify-between border-b border-slate-700 pb-1"><span>Listening:</span> <span id="res-s1" class="text-white"></span></li>
+                            <li class="flex justify-between border-b border-slate-700 pb-1"><span>Structure:</span> <span id="res-s2" class="text-white"></span></li>
+                            <li class="flex justify-between pb-1"><span>Reading:</span> <span id="res-s3" class="text-white"></span></li>
+                        </ul>
+                    </div>
+                    <div class="text-center md:border-l md:border-slate-700 pl-0 md:pl-8">
+                        <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Rango Estimado ITP</p>
+                        <h3 id="final-score" class="text-5xl lg:text-6xl font-black mb-3 text-transparent bg-clip-text bg-gradient-to-br from-sky-300 to-white">---</h3>
+                        <div id="final-level" class="vibrant-gradient-b text-white px-6 py-1.5 rounded-full inline-block font-black text-xs uppercase tracking-widest shadow-md">Nivel: ---</div>
+                    </div>
                 </div>
                 <button onclick="goHome()" class="w-full bg-slate-100 text-slate-800 py-4 rounded-xl font-black text-sm hover:bg-slate-200 transition-all uppercase tracking-widest">Volver al Panel</button>
             </div>
@@ -312,33 +308,33 @@
                 
                 <div class="text-center mb-10">
                     <h2 class="text-4xl md:text-5xl font-black text-white tracking-tighter mb-3">Vocabulario Activo</h2>
-                    <p class="text-slate-400 font-bold text-sm">Lee la definición en inglés. Haz clic en la carta para voltearla y ver la traducción.<br>Haz clic de nuevo para avanzar.</p>
+                    <p class="text-slate-400 font-bold text-sm">Lee la definición. Haz clic en la carta para ver la traducción. <br>Haz clic de nuevo para avanzar y memorizar.</p>
                 </div>
 
                 <div id="vocab-card-container" class="flip-card w-full max-w-xl mx-auto mb-10 transition-all duration-[600ms]" onclick="handleCardClick()">
                     <div class="flip-card-inner shadow-2xl">
-                        <!-- Frente: Todo Inglés -->
+                        <!-- Frente: Inglés (Elegante) -->
                         <div class="flip-card-front">
                             <span id="v-type" class="text-[10px] font-black text-sky-500 uppercase tracking-[0.2em] mb-4 bg-sky-50 px-3 py-1 rounded-full border border-sky-100">---</span>
-                            <h3 id="v-word" class="text-5xl md:text-6xl font-black text-blue-800 tracking-tight" style="font-family: 'Playfair Display', serif;">Cargando...</h3>
+                            <h3 id="v-word" class="text-5xl md:text-6xl font-black text-blue-900 tracking-tight" style="font-family: 'Playfair Display', serif;">Cargando...</h3>
                             <div class="w-16 h-px bg-slate-200 my-6"></div>
                             <p id="v-def-front" class="text-slate-600 text-lg md:text-xl font-medium px-4">"..."</p>
                         </div>
-                        <!-- Reverso: Español -->
+                        <!-- Reverso: Español (Moderno/Llamativo) -->
                         <div class="flip-card-back flex flex-col justify-center items-center relative overflow-hidden">
                             <div class="absolute inset-0 bg-gradient-to-br from-slate-900 to-slate-800 z-0"></div>
                             <div class="z-10 flex flex-col items-center">
                                 <h3 id="v-word-back" class="text-4xl font-black text-sky-200 tracking-tight mb-8" style="font-family: 'Playfair Display', serif;">---</h3>
                                 <p class="text-[10px] font-black text-teal-400 uppercase tracking-[0.2em] mb-3 border border-teal-400/30 px-3 py-1 rounded-full">Traducción</p>
-                                <p id="v-es" class="text-5xl md:text-6xl text-amber-400 font-black uppercase tracking-tight" style="font-family: 'Fredoka', sans-serif;">---</p>
+                                <p id="v-es" class="text-4xl md:text-5xl text-amber-400 font-black uppercase tracking-tight" style="font-family: 'Fredoka', sans-serif;">---</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex justify-center mt-8">
-                    <div class="bg-slate-800 border border-slate-700 text-sky-400 px-6 py-3 rounded-2xl font-black text-sm tracking-widest">
-                        CARTAS VISTAS HOY: <span id="v-counter" class="text-white ml-2 text-lg">0</span>
+                    <div class="bg-slate-800 border border-slate-700 text-sky-400 px-6 py-3 rounded-2xl font-black text-sm tracking-widest shadow-inner">
+                        REPASOS HOY: <span id="v-counter" class="text-white ml-2 text-lg">0</span>
                     </div>
                 </div>
             </div>
@@ -346,7 +342,6 @@
 
     </div>
 
-    <!-- SCRIPT PRINCIPAL -->
     <script>
         // --- AUDIO & GAMIFICATION ---
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -358,7 +353,7 @@
             globalVolume = parseFloat(val);
             const player = document.getElementById('audio-player');
             if (player) player.volume = globalVolume;
-            if (globalVolume > 0 && isMuted) toggleMute(); // Quitar mute si sube el slider
+            if (globalVolume > 0 && isMuted) toggleMute(); 
         };
 
         window.toggleMute = () => {
@@ -384,30 +379,28 @@
                 osc.type = 'square';
                 osc.frequency.setValueAtTime(400, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.15 * volMultiplier, audioCtx.currentTime); 
+                gain.gain.setValueAtTime(0.2 * volMultiplier, audioCtx.currentTime); 
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.2);
             } else if(type === 'fail') {
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(150, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.3);
-                gain.gain.setValueAtTime(0.15 * volMultiplier, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.2 * volMultiplier, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.3);
-            } else if(type === 'spark') {
-                // Sonido agudo al voltear carta
+            } else if(type === 'flip') {
                 osc.type = 'triangle';
                 osc.frequency.setValueAtTime(800, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(1400, audioCtx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.20 * volMultiplier, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.25 * volMultiplier, audioCtx.currentTime);
                 gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.1);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.1);
             } else if(type === 'explode') {
-                // Sonido grave al avanzar carta
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(200, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.4);
-                gain.gain.setValueAtTime(0.25 * volMultiplier, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.3 * volMultiplier, audioCtx.currentTime);
                 gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.4);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.4);
             }
@@ -504,51 +497,6 @@
         const localAudios = { testA: null, testB: null };
         let audioEndTime = 0; let repsCount = 0; let qTimerInt; let qTimeLeft = 0; let generalTimerInt;
 
-        // --- MILIMETRIC AUDIO TIMINGS ---
-        // Extraidos manualmente de las transcripciones para sincronización perfecta
-        const individualAudioMap = {
-            testA: {
-                1: [143, 169], 2: [169, 194], 3: [194, 225], 4: [225, 252], 5: [252, 278],
-                6: [278, 310], 7: [310, 335], 8: [335, 351], 9: [351, 392], 10: [392, 423],
-                11: [423, 451], 12: [451, 480], 13: [480, 505], 14: [505, 532], 15: [532, 563],
-                16: [563, 591], 17: [591, 621], 18: [621, 649], 19: [649, 676], 20: [676, 704],
-                21: [704, 734], 22: [734, 758], 23: [758, 787], 24: [787, 815], 25: [815, 845],
-                26: [845, 869], 27: [869, 903], 28: [903, 933], 29: [933, 964], 30: [964, 993]
-            },
-            testB: {
-                1: [143, 169], 2: [169, 191], 3: [191, 220], 4: [220, 245], 5: [245, 273],
-                6: [273, 302], 7: [302, 321], 8: [321, 358], 9: [358, 376], 10: [376, 416],
-                11: [416, 443], 12: [443, 469], 13: [469, 498], 14: [498, 524], 15: [524, 553],
-                16: [553, 581], 17: [581, 609], 18: [609, 633], 19: [633, 660], 20: [660, 689],
-                21: [689, 718], 22: [718, 753], 23: [753, 786], 24: [786, 810], 25: [810, 836],
-                26: [836, 867], 27: [867, 897], 28: [897, 927], 29: [927, 954], 30: [954, 983]
-            }
-        };
-
-        const blockAudioMap = {
-            testA: {
-                31: [1043, 1191], 35: [1191, 1350], 38: [1530, 1708], 42: [1708, 1900], 47: [1900, 2080]
-            },
-            testB: {
-                31: [1033, 1186], 35: [1186, 1346], 38: [1527, 1705], 42: [1705, 1909], 47: [1909, 2080]
-            }
-        };
-
-        function getPagesForSection(section, dataLength) {
-            if (section === 'listening' && dataLength >= 50) {
-                return [
-                    [0,2], [2,4], [4,6], [6,8], [8,10],
-                    [10,12], [12,14], [14,16], [16,18], [18,20],
-                    [20,22], [22,24], [24,26], [26,28], [28,30], // Part A (2 por página)
-                    [30,34], [34,37], [37,41], [41,46], [46,50]  // Part B & C (Bloques enteros)
-                ];
-            } else {
-                let pages = [];
-                for(let i=0; i<dataLength; i+=2) pages.push([i, Math.min(i+2, dataLength)]);
-                return pages;
-            }
-        }
-
         window.onload = async () => {
             const cacheBuster = '?nocache=' + new Date().getTime();
             let jsonErrors = [];
@@ -580,8 +528,6 @@
 
             setupAudioPlayerLogic();
             document.getElementById('loading-screen').classList.add('hidden');
-            
-            // Set init volume
             document.getElementById('audio-player').volume = globalVolume;
         };
 
@@ -710,10 +656,10 @@
 
             if(isGuideMode) {
                 badge.innerText = "MODO GUÍA"; badge.className = "text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded bg-sky-100 text-sky-700";
-                ind.innerHTML = `<i class="fas fa-hand-pointer mr-1"></i> Control Manual`;
+                ind.innerHTML = `<i class="fas fa-hand-pointer mr-1"></i> Control Manual (Botones)`;
             } else {
                 badge.innerText = "MODO EXAMEN"; badge.className = "text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded bg-rose-100 text-rose-700";
-                ind.innerHTML = `<i class="fas fa-forward mr-1"></i> Auto-Play (Real)`;
+                ind.innerHTML = `<i class="fas fa-forward mr-1"></i> Auto-Play (Estricto)`;
                 iniciarRelojGeneral(115); 
             }
             document.getElementById('view-test').classList.remove('hidden-section');
@@ -722,23 +668,65 @@
 
         window.jumpSection = (sec) => { session.section = sec; session.step = 0; renderSection(); };
 
-        // Nueva función para reproducir audios INDIVIDUALES al presionar el botón
-        window.playItemAudio = (id, isBlock, btnEl) => {
-            const timings = isBlock ? blockAudioMap[currentTest][id] : individualAudioMap[currentTest][id];
-            if(!timings) return;
-            const [startT, endT] = timings;
-            
+        // --- MAPEO MILIMÉTRICO DE AUDIOS INDIVIDUALES (EXTRACTO DE TUS TRANSCRIPCIONES) ---
+        const indAudioTimings = {
+            testA: {
+                1: [143, 169], 2: [169, 194], 3: [194, 225], 4: [225, 252], 5: [252, 278],
+                6: [278, 310], 7: [310, 335], 8: [335, 351], 9: [351, 392], 10: [392, 423],
+                11: [423, 451], 12: [451, 480], 13: [480, 505], 14: [505, 532], 15: [532, 563],
+                16: [563, 591], 17: [591, 621], 18: [621, 649], 19: [649, 676], 20: [676, 704],
+                21: [704, 734], 22: [734, 758], 23: [758, 787], 24: [787, 815], 25: [815, 845],
+                26: [845, 869], 27: [869, 903], 28: [903, 933], 29: [933, 964], 30: [964, 993]
+            },
+            testB: {
+                1: [143, 169], 2: [169, 191], 3: [191, 220], 4: [220, 245], 5: [245, 273],
+                6: [273, 302], 7: [302, 321], 8: [321, 358], 9: [358, 376], 10: [376, 416],
+                11: [416, 443], 12: [443, 469], 13: [469, 498], 14: [498, 524], 15: [524, 553],
+                16: [553, 581], 17: [581, 609], 18: [609, 633], 19: [633, 660], 20: [660, 689],
+                21: [689, 718], 22: [718, 753], 23: [753, 786], 24: [786, 810], 25: [810, 836],
+                26: [836, 867], 27: [867, 897], 28: [897, 927], 29: [927, 954], 30: [954, 983]
+            }
+        };
+
+        const blockAudioTimings = {
+            testA: {
+                31: [1046, 1191], 35: [1194, 1350], 38: [1534, 1712], 42: [1715, 1900], 47: [1903, 2083]
+            },
+            testB: {
+                31: [1040, 1186], 35: [1189, 1346], 38: [1530, 1705], 42: [1708, 1909], 47: [1917, 2080]
+            }
+        };
+
+        function getPagesForSection(section, dataLength) {
+            if (section === 'listening' && dataLength >= 50) {
+                return [
+                    [0,2], [2,4], [4,6], [6,8], [8,10], [10,12], [12,14], [14,16], [16,18], [18,20],
+                    [20,22], [22,24], [24,26], [26,28], [28,30], // Part A
+                    [30,34], [34,37], [37,41], [41,46], [46,50]  // Part B & C Blocks
+                ];
+            } else {
+                let pages = [];
+                for(let i=0; i<dataLength; i+=2) pages.push([i, Math.min(i+2, dataLength)]);
+                return pages;
+            }
+        }
+
+        window.playManualAudio = (id, isBlock, btnElement) => {
             const player = document.getElementById('audio-player');
             if(!player.src || !player.src.startsWith('blob:')) player.src = URL.createObjectURL(localAudios[currentTest]);
             
+            const map = isBlock ? blockAudioTimings : indAudioTimings;
+            if(!map[currentTest] || !map[currentTest][id]) return;
+
+            const [startT, endT] = map[currentTest][id];
             audioEndTime = endT;
             player.currentTime = startT;
             player.play().catch(e => console.log(e));
-            
-            // Cambiar estilo del botón a "Repetir"
-            if (btnEl) {
-                btnEl.innerHTML = `<i class="fas fa-sync-alt mr-2"></i> Repetir Audio`;
-                btnEl.className = "ml-auto bg-amber-100 text-amber-700 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest hover:bg-amber-200 transition-colors shadow-sm shrink-0";
+
+            // Change button state
+            if(btnElement) {
+                btnElement.innerHTML = `<i class="fas fa-sync-alt mr-2"></i> Repetir Fragmento`;
+                btnElement.className = "bg-sky-100 text-sky-700 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-sky-200 transition-colors shadow-sm shrink-0 border border-sky-200";
             }
         };
 
@@ -762,19 +750,24 @@
             document.getElementById('p-btn').disabled = (session.step === 0);
 
             const audioPanel = document.getElementById('audio-panel');
-            if(session.section === 'listening') { audioPanel.classList.remove('hidden'); gestionarAudioDePagina(slice); } 
-            else { audioPanel.classList.add('hidden'); document.getElementById('audio-player').pause(); }
+            if(session.section === 'listening') { 
+                audioPanel.classList.remove('hidden'); 
+                if(!isGuideMode) gestionarAudioAutoPlay(slice); 
+            } else { 
+                audioPanel.classList.add('hidden'); 
+                document.getElementById('audio-player').pause(); 
+            }
 
-            // Header para bloques largos (Parte B y C)
+            // Headers & Play Buttons for Long Blocks (B & C)
             if(session.section === 'listening' && slice.length > 2) {
-                let playBtnHTML = '';
+                let playBtn = '';
                 if(isGuideMode) {
-                    playBtnHTML = `<button onclick="playItemAudio(${slice[0].id}, true, this)" class="mx-auto mt-3 block bg-sky-100 text-sky-600 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-sky-200 transition-colors shadow-sm"><i class="fas fa-play mr-2"></i> Escuchar Conferencia</button>`;
+                    playBtn = `<button onclick="playManualAudio(${slice[0].id}, true, this)" class="mt-3 bg-sky-500 text-white px-6 py-2.5 rounded-xl text-sm font-black uppercase tracking-widest hover:bg-sky-600 transition-colors shadow-md border border-sky-600"><i class="fas fa-play mr-2"></i> Escuchar Audio Completo</button>`;
                 }
                 box.innerHTML += `
                     <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-5 text-center shadow-sm">
                         <p class="font-black text-indigo-800 text-sm uppercase tracking-widest"><i class="fas fa-bullhorn mr-2"></i>Conferencia - Preguntas ${slice[0].id} a ${slice[slice.length-1].id}</p>
-                        ${playBtnHTML}
+                        ${playBtn}
                     </div>`;
             }
 
@@ -813,19 +806,19 @@
                     }
                 }
 
-                let playIndividualBtn = '';
-                if (isGuideMode && session.section === 'listening' && q.id <= 30) {
-                    playIndividualBtn = `<button onclick="playItemAudio(${q.id}, false, this)" class="ml-auto bg-sky-100 text-sky-600 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest hover:bg-sky-200 transition-colors shadow-sm shrink-0"><i class="fas fa-play mr-2"></i> Escuchar</button>`;
+                let playIndBtn = '';
+                if(isGuideMode && session.section === 'listening' && slice.length <= 2) {
+                    playIndBtn = `<button onclick="playManualAudio(${q.id}, false, this)" class="ml-auto bg-sky-500 text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-sky-600 transition-colors shadow-sm shrink-0 border border-sky-600"><i class="fas fa-play mr-2"></i> Escuchar</button>`;
                 }
 
                 card.innerHTML = `
                     ${prepHTML}
                     <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-50 pb-4 mb-5 gap-3">
-                        <div class="flex gap-3 items-center">
+                        <div class="flex gap-3 items-start md:items-center">
                             <span class="bg-slate-900 text-white w-8 h-8 flex items-center justify-center rounded-lg font-black text-sm shrink-0">${q.id}</span>
-                            <span class="font-black text-base text-slate-800">${q.pregunta || 'Select answer:'}</span>
+                            <span class="font-black text-base text-slate-800 pt-1 md:pt-0">${q.pregunta || 'Select answer:'}</span>
                         </div>
-                        ${playIndividualBtn}
+                        ${playIndBtn}
                     </div>
                     <div class="grid gap-3" id="opts-${q.id}">${opcionesHTML}</div>
                     <div id="feed-${q.id}">${feedHTML}</div>`;
@@ -881,20 +874,64 @@
             session.step += dir; renderSection();
         };
 
+        // --- CALCULADORA OFICIAL TOEFL ITP (Basada en tabla págs 140-141) ---
+        const scaleTable = [
+            { r: [48, 50], s1: [64, 68], s2: [63, 68], s3: [65, 67] },
+            { r: [45, 47], s1: [59, 62], s2: [59, 61], s3: [62, 64] },
+            { r: [42, 44], s1: [56, 58], s2: [56, 58], s3: [59, 61] },
+            { r: [39, 41], s1: [54, 56], s2: [53, 55], s3: [57, 58] },
+            { r: [36, 38], s1: [52, 54], s2: [50, 52], s3: [55, 56] },
+            { r: [33, 35], s1: [51, 52], s2: [48, 49], s3: [53, 54] },
+            { r: [30, 32], s1: [49, 50], s2: [45, 47], s3: [51, 52] },
+            { r: [27, 29], s1: [48, 49], s2: [42, 44], s3: [49, 50] },
+            { r: [24, 26], s1: [46, 47], s2: [38, 40], s3: [47, 48] },
+            { r: [21, 23], s1: [45, 46], s2: [32, 36], s3: [44, 46] },
+            { r: [18, 20], s1: [43, 44], s2: [31, 31], s3: [41, 43] },
+            { r: [15, 17], s1: [40, 42], s2: [31, 31], s3: [37, 40] },
+            { r: [12, 14], s1: [36, 39], s2: [31, 31], s3: [31, 35] },
+            { r: [9, 11], s1: [32, 33], s2: [31, 31], s3: [31, 31] },
+            { r: [0, 8], s1: [31, 31], s2: [31, 31], s3: [31, 31] }
+        ];
+
         function calificarTest() {
             clearInterval(qTimerInt); clearInterval(generalTimerInt);
             ocultarTodo(); document.getElementById('btn-save').classList.add('hidden');
             
-            const getC = (s) => { let c = 0; if (examData[currentTest][s]) examData[currentTest][s].forEach(q => { if (session.answers[q.id] === q.correcta) c++; }); return c; };
-            const r1 = getC('listening'), r2 = getC('structure'), r3 = getC('reading');
+            const countR = (s) => { let c = 0; if (examData[currentTest][s]) examData[currentTest][s].forEach(q => { if (session.answers[q.id] === q.correcta) c++; }); return c; };
+            const nr1 = countR('listening'), nr2 = countR('structure'), nr3 = countR('reading');
             
-            const conv = (score) => Math.min(68, Math.max(31, Math.round((score / 50) * (68-31) + 31)));
-            const total = Math.round(((conv(r1) + conv(r2 * 1.25) + conv(r3)) * 10) / 3);
+            document.getElementById('res-s1').innerText = `${nr1} / 50`;
+            document.getElementById('res-s2').innerText = `${nr2} / 40`;
+            document.getElementById('res-s3').innerText = `${nr3} / 50`;
+
+            const getScaled = (score, secKey) => scaleTable.find(t => score >= t.r[0] && score <= t.r[1])[secKey];
+            const sc1 = getScaled(nr1, 's1');
+            const sc2 = getScaled(nr2, 's2');
+            const sc3 = getScaled(nr3, 's3');
+
+            const sumLow = sc1[0] + sc2[0] + sc3[0];
+            const sumHigh = sc1[1] + sc2[1] + sc3[1];
+
+            const calcITP = (val) => {
+                let raw = val * (10/3);
+                let dec = raw % 1;
+                return dec > 0.5 ? Math.ceil(raw) : Math.floor(raw);
+            };
+
+            const finalLow = calcITP(sumLow);
+            const finalHigh = calcITP(sumHigh);
+            const avg = Math.round((finalLow + finalHigh) / 2);
+
+            document.getElementById('final-score').innerText = `${finalLow} - ${finalHigh}`;
             
-            document.getElementById('final-score').innerText = total;
-            document.getElementById('final-level').innerText = `Nivel MCER: ${total >= 627 ? "C1" : (total >= 543 ? "B2" : "B1")}`;
+            let mcer = "A2"; 
+            if (avg >= 627) mcer = "C1"; 
+            else if (avg >= 543) mcer = "B2"; 
+            else if (avg >= 460) mcer = "B1";
+            
+            document.getElementById('final-level').innerText = `Nivel MCER: ${mcer}`;
+            
             if(currentUser) { currentUser.progress = null; saveUsersDB(); }
-            
             play8BitSound('success'); setTimeout(() => play8BitSound('success'), 200);
             document.getElementById('view-results').classList.remove('hidden-section');
         }
@@ -906,40 +943,37 @@
                 
                 if (player.currentTime >= audioEndTime) {
                     player.pause();
-                    if (!isGuideMode && repsCount < 1) { 
-                        // Auto-replay ONLY in EXAM MODE
-                        repsCount++; 
-                        // To auto-replay, we need to restart from the beginning of the page logic
-                        // Since this gets tricky with blocks, we'll just let Exam Mode play once, or replay exactly.
-                        // ITP audio plays ONCE. Let's strictly play once in exam mode.
-                        audioEndTime = 0; 
-                    } else { 
-                        audioEndTime = 0; 
+                    if(!isGuideMode && repsCount < 1) { 
+                        // Examen Mode auto-repeat
+                        repsCount++;
+                        const pages = getPagesForSection(session.section, examData[currentTest][session.section].length);
+                        const slice = examData[currentTest][session.section].slice(pages[session.step][0], pages[session.step][1]);
+                        
+                        let startT;
+                        if(slice[0].id <= 30) startT = indAudioTimings[currentTest][slice[0].id][0];
+                        else startT = blockAudioTimings[currentTest][slice[0].id][0];
+                        
+                        player.currentTime = startT; 
+                        player.play().catch(e=>{});
+                    } else {
+                        audioEndTime = 0;
                     }
                 }
             });
         }
 
-        function gestionarAudioDePagina(slice) {
+        function gestionarAudioAutoPlay(slice) {
             const player = document.getElementById('audio-player');
             if(!localAudios[currentTest]) return;
             if(!player.src || !player.src.startsWith('blob:')) player.src = URL.createObjectURL(localAudios[currentTest]);
             
-            // Si es Modo Guía, NO se reproduce solo. El usuario debe usar los botones.
-            if (isGuideMode) {
-                return;
-            }
-
-            // MODO EXAMEN: Reproducir la página completa
             let startT, endT;
             if (slice[0].id <= 30) {
-                // Parte A: reproducir desde el inicio de la Q1 hasta el final de la última en la página
-                startT = individualAudioMap[currentTest][slice[0].id][0];
-                endT = individualAudioMap[currentTest][slice[slice.length-1].id][1];
+                startT = indAudioTimings[currentTest][slice[0].id][0];
+                endT = indAudioTimings[currentTest][slice[slice.length-1].id][1];
             } else {
-                // Parte B o C: reproducir el bloque completo
-                startT = blockAudioMap[currentTest][slice[0].id][0];
-                endT = blockAudioMap[currentTest][slice[0].id][1];
+                startT = blockAudioTimings[currentTest][slice[0].id][0];
+                endT = blockAudioTimings[currentTest][slice[0].id][1];
             }
 
             audioEndTime = endT; repsCount = 0;
@@ -954,17 +988,15 @@
             if (session.section === 'listening') {
                 let startT, endT;
                 if (slice[0].id <= 30) {
-                    startT = individualAudioMap[currentTest][slice[0].id][0];
-                    endT = individualAudioMap[currentTest][slice[slice.length-1].id][1];
+                    startT = indAudioTimings[currentTest][slice[0].id][0];
+                    endT = indAudioTimings[currentTest][slice[slice.length-1].id][1];
                 } else {
-                    startT = blockAudioMap[currentTest][slice[0].id][0];
-                    endT = blockAudioMap[currentTest][slice[0].id][1];
+                    startT = blockAudioTimings[currentTest][slice[0].id][0];
+                    endT = blockAudioTimings[currentTest][slice[0].id][1];
                 }
-                
                 const numQ = slice.length;
-                // Tiempo de audio de la página + 15 seg por cada pregunta para pensar
-                qTimeLeft = Math.ceil((endT - startT)) + (numQ * 15); 
-            } else { qTimeLeft = (session.section === 'structure' ? 25 : 54) * 2; } // Simplificado para Reading/Structure
+                qTimeLeft = Math.ceil((endT - startT)*2) + (numQ * 12); // x2 audio + 12 sec per Q
+            } else { qTimeLeft = (session.section === 'structure' ? 25 : 54) * 2; } 
             
             document.getElementById('q-timer-display').classList.remove('hidden');
             qTimerInt = setInterval(() => {
@@ -999,12 +1031,10 @@
             document.getElementById('btn-home').classList.remove('hidden');
             document.getElementById('view-vocab').classList.remove('hidden-section');
             
-            if(vocabSeenCounts.length !== vocabData.length) {
-                vocabSeenCounts = new Array(vocabData.length).fill(0);
-            }
+            if(vocabSeenCounts.length !== vocabData.length) vocabSeenCounts = new Array(vocabData.length).fill(0);
+            
             cardsSeenToday = 0;
             document.getElementById('v-counter').innerText = cardsSeenToday;
-            
             pickNextVocab();
         };
 
@@ -1012,8 +1042,7 @@
             let totalWeight = 0;
             for(let i=0; i<vocabData.length; i++) {
                 if(i === lastVocabIndex && vocabData.length > 1) continue; 
-                // SRS Logic: Si ya la vio, pesa el TRIPLE para forzar repaso. Si no, pesa 1.
-                totalWeight += vocabSeenCounts[i] > 0 ? 3 : 1; 
+                totalWeight += vocabSeenCounts[i] > 0 ? 3 : 1; // SRS: 3x chance si ya la vio
             }
             
             let randomVal = Math.random() * totalWeight;
@@ -1054,7 +1083,7 @@
                 document.getElementById('v-counter').innerText = cardsSeenToday;
                 
                 document.getElementById('vocab-card-container').classList.add('flipped');
-                play8BitSound('spark');
+                play8BitSound('flip');
                 createParticles('sparks');
             } else {
                 play8BitSound('explode');
@@ -1102,15 +1131,6 @@
                 setTimeout(() => { if(p.parentNode) p.parentNode.removeChild(p); }, 600);
             }
         }
-
-        let currentFontSize = 16;
-        window.changeFontSize = (dir) => {
-            currentFontSize += (dir * 2);
-            if(currentFontSize < 12) currentFontSize = 12;
-            if(currentFontSize > 24) currentFontSize = 24;
-            document.documentElement.style.setProperty('--base-size', currentFontSize + 'px');
-        };
-
     </script>
 </body>
 </html>
