@@ -781,5 +781,5 @@
   { "en": "withdraw", "def": "to remove or take away something from a particular place or position", "es": "retirar / sacar", "type": "verb" },
   { "en": "withhold", "def": "to refuse to give something that is due to or is desired by another", "es": "retener / ocultar", "type": "verb" },
   { "en": "yield", "def": "to produce or provide a natural, agricultural, or industrial product; to give way to arguments, demands, or pressure", "es": "producir / ceder", "type": "verb / noun" },
-  { "en": "zone", "def": "an area or stretch of land having a particular characteristic, purpose, or use, or subject to particular restrictions", "es": "zona", "type": "noun" },
+  { "en": "zone", "def": "an area or stretch of land having a particular characteristic, purpose, or use, or subject to particular restrictions", "es": "zona", "type": "noun" }
 ]
