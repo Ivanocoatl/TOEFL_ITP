@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOEFL ITP Pro Simulator - Speed Edition</title>
+    <title>TOEFL ITP Pro Simulator - Ultimate Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -46,6 +46,21 @@
         
         .particle { position: absolute; border-radius: 50%; pointer-events: none; z-index: 100; }
 
+        /* KARAOKE STYLES */
+        .transcript-line { transition: all 0.3s ease; opacity: 0.3; }
+        .transcript-past { opacity: 0.7; color: #94a3b8; }
+        .transcript-active {
+            opacity: 1;
+            font-weight: 800;
+            background: linear-gradient(to right, #38bdf8 50%, #475569 50%);
+            background-size: 200% 100%;
+            background-position: right bottom;
+            -webkit-background-clip: text;
+            color: transparent;
+            transform: scale(1.02);
+            transform-origin: left;
+        }
+
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
@@ -66,6 +81,7 @@
         </div>
         
         <div class="flex items-center gap-3">
+            <!-- CONTROLES DE ACCESIBILIDAD Y AUDIO -->
             <div class="hidden md:flex bg-slate-800 rounded-lg overflow-hidden border border-slate-700 items-center mr-2">
                 <button onclick="changeFontSize(-1)" class="px-3 py-1 hover:bg-slate-700 text-sm font-bold" title="Reducir letra">A-</button>
                 <div class="w-px h-5 bg-slate-700"></div>
@@ -123,6 +139,7 @@
             <div class="p-6 border-b border-slate-100 bg-slate-50/50">
                 <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1.5">Tu Misión</h2>
                 <div id="test-info-nav" class="text-xs font-black text-sky-700">Test no seleccionado</div>
+                <div id="live-mode-badge" class="mt-2 inline-block text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded">MODO</div>
             </div>
             <nav class="flex-1 overflow-y-auto py-3" id="main-nav">
                 <button id="nav-listening" onclick="jumpSection('listening')" class="w-full text-left px-6 py-4 hover:bg-sky-50 flex items-center gap-3 transition-all text-slate-600 font-bold mb-1 rounded-r-2xl text-sm">
@@ -194,20 +211,20 @@
                     <div onclick="openSetup('guide')" class="glass-card p-8 rounded-[2rem] border-2 border-white transition-all hover:-translate-y-2 hover:shadow-2xl cursor-pointer group">
                         <div class="w-16 h-16 vibrant-gradient-a rounded-2xl flex items-center justify-center text-white text-3xl mb-6 shadow-lg group-hover:rotate-12 transition-transform"><i class="fas fa-book-reader"></i></div>
                         <h3 class="text-2xl font-black mb-2 text-slate-800">Guía de Estudio</h3>
-                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Aprende sin presión. Te mostraremos la respuesta y explicación al instante si te equivocas. Control manual del audio y sin límite de tiempo.</p>
+                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Aprende sin presión. Reproduce audios individuales. Te mostraremos la respuesta y explicación al instante si te equivocas.</p>
                     </div>
 
                     <div onclick="openSetup('test')" class="bg-slate-900 p-8 rounded-[2rem] transition-all hover:-translate-y-2 hover:shadow-2xl cursor-pointer group relative overflow-hidden">
                         <div class="absolute -right-10 -top-10 w-40 h-40 bg-sky-500/20 rounded-full blur-2xl"></div>
                         <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-sky-400 text-3xl mb-6 shadow-lg group-hover:scale-110 transition-transform"><i class="fas fa-stopwatch"></i></div>
                         <h3 class="text-2xl font-black mb-2 text-white">Comenzar Test</h3>
-                        <p class="text-slate-400 text-sm font-bold leading-relaxed mb-4">Simulación real. Temporizador activo, sin explicaciones durante el examen. Audios automáticos. Mide tu puntaje oficial.</p>
+                        <p class="text-slate-400 text-sm font-bold leading-relaxed mb-4">Simulación real. Temporizador activo, audio automático sin pausas. Mide tu puntaje oficial.</p>
                     </div>
 
                     <div onclick="startVocab()" class="glass-card p-8 rounded-[2rem] border-2 border-white transition-all hover:-translate-y-2 hover:shadow-2xl cursor-pointer group">
                         <div class="w-16 h-16 vibrant-warning rounded-2xl flex items-center justify-center text-white text-3xl mb-6 shadow-lg group-hover:-rotate-12 transition-transform"><i class="fas fa-layer-group"></i></div>
                         <h3 class="text-2xl font-black mb-2 text-slate-800">Vocabulario</h3>
-                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Expande tu léxico. Tarjetas interactivas con sistema SRS para memorizar las palabras más usadas y verbos irregulares del TOEFL.</p>
+                        <p class="text-slate-500 text-sm font-bold leading-relaxed mb-4">Expande tu léxico. Tarjetas interactivas con sistema de repetición espaciada para las palabras más usadas del TOEFL.</p>
                     </div>
                 </div>
 
@@ -215,14 +232,18 @@
                     <h3 class="text-rose-700 font-black mb-2 text-xl">Faltan archivos de base de datos</h3>
                     <p id="error-log-json" class="text-xs text-rose-600 font-bold mb-4 font-mono"></p>
                     <p class="text-sm text-slate-700 mb-4">Por favor sube tus archivos JSON manualmente aquí:</p>
-                    <div class="flex flex-col md:flex-row gap-4 justify-center">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 justify-center">
                         <div>
                             <label class="block text-[10px] font-black uppercase text-rose-400 mb-1">datos.json (Test)</label>
                             <input type="file" id="file-json-data" accept=".json" class="text-xs w-full file:bg-rose-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-xl cursor-pointer">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-black uppercase text-rose-400 mb-1">vocabulary.json (Cartas)</label>
+                            <label class="block text-[10px] font-black uppercase text-rose-400 mb-1">vocabulary.json</label>
                             <input type="file" id="file-json-vocab" accept=".json" class="text-xs w-full file:bg-rose-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-xl cursor-pointer">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black uppercase text-rose-400 mb-1">transcripts.json (Karaoke)</label>
+                            <input type="file" id="file-json-trans" accept=".json" class="text-xs w-full file:bg-rose-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-xl cursor-pointer">
                         </div>
                     </div>
                 </div>
@@ -266,26 +287,39 @@
             </div>
         </div>
 
-        <div id="view-test" class="hidden-section w-full overflow-y-auto p-4 md:p-8 fade-in relative" id="test-scroll-area">
-            <div class="max-w-3xl mx-auto pb-20">
-                <div class="bg-slate-900 p-6 md:p-8 rounded-3xl shadow-lg mb-6 flex justify-between items-center sticky top-0 z-20">
-                    <h2 id="live-sec-title" class="text-2xl font-black uppercase tracking-tight text-white">Section</h2>
-                    <div id="audio-panel" class="hidden flex flex-col items-end gap-1">
-                        <audio id="audio-player" class="h-8 w-48 opacity-70 hover:opacity-100 transition-opacity hidden" controls controlsList="nodownload"></audio>
-                        <span id="modo-audio-indicator" class="text-[9px] font-black text-amber-500 uppercase tracking-widest bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700"></span>
+        <div id="view-test" class="hidden-section w-full flex flex-col md:flex-row fade-in h-full">
+            <main class="flex-1 overflow-y-auto p-4 md:p-8 relative" id="test-scroll-area">
+                <div class="max-w-3xl mx-auto pb-20">
+                    <div class="bg-slate-900 p-6 md:p-8 rounded-3xl shadow-lg mb-6 flex justify-between items-center sticky top-0 z-20">
+                        <h2 id="live-sec-title" class="text-2xl font-black uppercase tracking-tight text-white">Section</h2>
+                        <div id="audio-panel" class="hidden flex flex-col items-end gap-1">
+                            <audio id="audio-player" class="h-8 w-48 opacity-70 hover:opacity-100 transition-opacity" controls controlsList="nodownload"></audio>
+                            <span id="modo-audio-indicator" class="text-[9px] font-black text-amber-500 uppercase tracking-widest bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700"></span>
+                        </div>
+                    </div>
+                    
+                    <div id="q-box" class="space-y-6"></div>
+                    
+                    <div class="mt-8 flex justify-between items-center bg-white p-4 rounded-2xl shadow-md border border-slate-100">
+                        <button id="p-btn" onclick="navegarPasos(-1)" class="px-6 py-3 font-bold text-slate-400 hover:text-slate-800 transition-colors disabled:opacity-20 text-sm">Anterior</button>
+                        <div class="flex-1 mx-4 h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                            <div id="p-bar" class="h-full vibrant-gradient-a transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                        <button id="n-btn" onclick="navegarPasos(1)" class="bg-slate-900 text-white px-8 py-3 rounded-xl font-black uppercase text-xs tracking-widest hover:bg-sky-600 transition-colors shadow-md">Siguiente</button>
                     </div>
                 </div>
-                
-                <div id="q-box" class="space-y-6"></div>
-                
-                <div class="mt-8 flex justify-between items-center bg-white p-4 rounded-2xl shadow-md border border-slate-100">
-                    <button id="p-btn" onclick="navegarPasos(-1)" class="px-6 py-3 font-bold text-slate-400 hover:text-slate-800 transition-colors disabled:opacity-20 text-sm">Anterior</button>
-                    <div class="flex-1 mx-4 h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                        <div id="p-bar" class="h-full vibrant-gradient-a transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                    <button id="n-btn" onclick="navegarPasos(1)" class="bg-slate-900 text-white px-8 py-3 rounded-xl font-black uppercase text-xs tracking-widest hover:bg-sky-600 transition-colors shadow-md">Siguiente</button>
+            </main>
+
+            <!-- PANEL DE SUBTÍTULOS KARAOKE (Solo visible en Listening Modo Guía) -->
+            <aside id="transcript-panel" class="hidden w-full md:w-80 bg-slate-900 border-l border-slate-800 shrink-0 flex-col shadow-2xl z-30">
+                <div class="p-5 border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-10 flex items-center justify-between">
+                    <h3 class="text-sky-400 font-black flex items-center gap-2 tracking-tight"><i class="fas fa-closed-captioning"></i> Live Transcript</h3>
+                    <div class="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></div>
                 </div>
-            </div>
+                <div id="transcript-text" class="flex-1 overflow-y-auto p-5 space-y-4 text-sm font-medium leading-relaxed" style="scroll-behavior: smooth;">
+                    <!-- Lineas inyectadas aquí -->
+                </div>
+            </aside>
         </div>
 
         <div id="view-results" class="hidden-section w-full overflow-y-auto p-6 md:p-10 fade-in flex items-center justify-center">
@@ -514,11 +548,17 @@
         // --- GLOBAL VARIABLES & DATA LOADING ---
         let examData = null;
         let vocabData = null;
+        let transcriptsData = null;
         let currentTest = null;
         let isGuideMode = false;
         let session = { section: 'listening', step: 0, answers: {} };
         const localAudios = { testA: null, testB: null };
+        
         let audioEndTime = 0; let repsCount = 0; let qTimerInt; let qTimeLeft = 0; let generalTimerInt;
+        
+        // Karaoke State
+        let currentTranscriptLines = [];
+        let currentActiveTime = -1;
 
         window.onload = async () => {
             const cacheBuster = '?nocache=' + new Date().getTime();
@@ -536,12 +576,19 @@
                 else jsonErrors.push(`Network: vocabulary.json respondió con código ${resVocab.status}`);
             } catch(e) { jsonErrors.push(`Syntax/Parse: vocabulary.json está mal formateado. (${e.message})`); }
 
+            try {
+                const resTrans = await fetch('./transcripts.json' + cacheBuster, { cache: "no-store" });
+                if(resTrans.ok) transcriptsData = await resTrans.json();
+                else console.warn("No se encontró transcripts.json. El modo Karaoke estará desactivado.");
+            } catch(e) { console.warn(`Syntax/Parse: transcripts.json error. (${e.message})`); }
+
             if (!examData || !vocabData) {
                 const errorBox = document.getElementById('json-fallback-container');
                 errorBox.classList.remove('hidden');
                 document.getElementById('error-log-json').innerHTML = jsonErrors.join("<br>");
                 document.getElementById('file-json-data').addEventListener('change', e => manualJsonLoad(e, 'data'));
                 document.getElementById('file-json-vocab').addEventListener('change', e => manualJsonLoad(e, 'vocab'));
+                document.getElementById('file-json-trans').addEventListener('change', e => manualJsonLoad(e, 'trans'));
             }
 
             attemptAudioAutoLoad();
@@ -562,8 +609,9 @@
                 try {
                     if(type === 'data') examData = JSON.parse(event.target.result);
                     if(type === 'vocab') vocabData = JSON.parse(event.target.result);
+                    if(type === 'trans') transcriptsData = JSON.parse(event.target.result);
                     if(examData && vocabData) {
-                        alert("Ambos archivos JSON cargados. Listo.");
+                        alert("Archivos principales cargados. Listo.");
                         document.getElementById('json-fallback-container').classList.add('hidden');
                     }
                 } catch(err) { alert(`Error de Sintaxis en el JSON que subiste: ${err.message}`); }
@@ -610,9 +658,10 @@
             document.getElementById('btn-logout').classList.remove('hidden');
             ocultarTodo();
             
-            if(currentUser.progress) document.getElementById('resume-card').classList.remove('hidden');
-            else document.getElementById('resume-card').classList.add('hidden');
-            
+            if(currentUser.progress) {
+                // Removemos aviso de reanudar, obligamos inicio limpio como lo pidio
+                currentUser.progress = null; saveUsersDB();
+            } 
             document.getElementById('view-dashboard').classList.remove('hidden-section');
         }
 
@@ -620,14 +669,14 @@
             if(currentUser && currentUser.progress) {
                 const p = currentUser.progress;
                 currentTest = p.test; isGuideMode = p.mode; session = p.session;
-                document.getElementById('resume-card').classList.add('hidden');
+                document.getElementById('welcome-hub').classList.add('hidden');
                 arrancarInterfazTest();
             }
         };
 
         window.iniciarDesdeCero = () => {
             if(currentUser) { currentUser.progress = null; saveUsersDB(); }
-            document.getElementById('resume-card').classList.add('hidden');
+            document.getElementById('welcome-hub').classList.add('hidden');
         };
 
         window.pausarYSalir = () => {
@@ -649,7 +698,7 @@
             document.getElementById('main-sidebar').classList.remove('flex');
             document.getElementById('main-sidebar').classList.add('hidden');
             
-            if(currentUser && currentUser.progress) document.getElementById('resume-card').classList.remove('hidden');
+            if(currentUser && currentUser.progress) document.getElementById('welcome-hub').classList.remove('hidden');
             document.getElementById('view-dashboard').classList.remove('hidden-section');
         };
 
@@ -682,13 +731,18 @@
             
             const badge = document.getElementById('live-mode-badge');
             const ind = document.getElementById('modo-audio-indicator');
+            const tp = document.getElementById('transcript-panel');
 
             if(isGuideMode) {
-                badge.innerText = "MODO GUÍA"; badge.className = "text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded bg-sky-100 text-sky-700";
-                ind.innerHTML = `<i class="fas fa-hand-pointer mr-1"></i> Control Manual (Botones)`;
+                badge.innerText = "MODO GUÍA"; badge.className = "mt-2 inline-block text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded bg-sky-100 text-sky-700";
+                ind.innerHTML = `<i class="fas fa-hand-pointer mr-1"></i> Control Manual`;
+                tp.classList.remove('hidden');
+                tp.classList.add('flex');
             } else {
-                badge.innerText = "MODO EXAMEN"; badge.className = "text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded bg-rose-100 text-rose-700";
+                badge.innerText = "MODO EXAMEN"; badge.className = "mt-2 inline-block text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded bg-rose-100 text-rose-700";
                 ind.innerHTML = `<i class="fas fa-forward mr-1"></i> Auto-Play (Estricto)`;
+                tp.classList.remove('flex');
+                tp.classList.add('hidden');
                 iniciarRelojGeneral(115); 
             }
             document.getElementById('view-test').classList.remove('hidden-section');
@@ -697,40 +751,20 @@
 
         window.jumpSection = (sec) => { session.section = sec; session.step = 0; renderSection(); };
 
-        const indAudioTimings = {
-            testA: {
-                1: [143, 158], 2: [158, 194], 3: [194, 225], 4: [225, 252], 5: [252, 278],
-                6: [278, 310], 7: [310, 335], 8: [335, 351], 9: [351, 392], 10: [392, 423],
-                11: [423, 451], 12: [451, 480], 13: [480, 505], 14: [505, 532], 15: [532, 563],
-                16: [563, 591], 17: [591, 621], 18: [621, 649], 19: [649, 676], 20: [676, 704],
-                21: [704, 734], 22: [734, 758], 23: [758, 787], 24: [787, 815], 25: [815, 845],
-                26: [845, 869], 27: [869, 903], 28: [903, 933], 29: [933, 964], 30: [964, 993]
-            },
-            testB: {
-                1: [143, 158], 2: [158, 191], 3: [191, 220], 4: [220, 245], 5: [245, 273],
-                6: [273, 302], 7: [302, 321], 8: [321, 358], 9: [358, 376], 10: [376, 416],
-                11: [416, 443], 12: [443, 469], 13: [469, 498], 14: [498, 524], 15: [524, 553],
-                16: [553, 581], 17: [581, 609], 18: [609, 633], 19: [633, 660], 20: [660, 689],
-                21: [689, 718], 22: [718, 753], 23: [753, 786], 24: [786, 810], 25: [810, 836],
-                26: [836, 867], 27: [867, 897], 28: [897, 927], 29: [927, 954], 30: [954, 983]
-            }
-        };
+        function parseTimestamp(tsStr) {
+            if(!tsStr) return 0;
+            const p = tsStr.split(':');
+            if(p.length === 2) return parseInt(p[0])*60 + parseInt(p[1]);
+            return 0;
+        }
 
-        const blockAudioTimings = {
-            testA: {
-                31: [1043, 1191], 35: [1191, 1360], 38: [1531, 1712], 42: [1712, 1900], 47: [1900, 2083]
-            },
-            testB: {
-                31: [1043, 1191], 35: [1191, 1360], 38: [1527, 1705], 42: [1705, 1909], 47: [1909, 2080]
-            }
-        };
-
+        // Paginacion Inteligente: 2 por pagina en Parte A. Bloques enteros en Partes B y C.
         function getPagesForSection(section, dataLength) {
             if (section === 'listening' && dataLength >= 50) {
                 return [
                     [0,2], [2,4], [4,6], [6,8], [8,10], [10,12], [12,14], [14,16], [16,18], [18,20],
                     [20,22], [22,24], [24,26], [26,28], [28,30], // Part A
-                    [30,34], [34,37], [37,41], [41,46], [46,50]  // Part B & C Blocks
+                    [30,34], [34,37], [37,41], [41,46], [46,50]  // Part B & C
                 ];
             } else {
                 let pages = [];
@@ -739,30 +773,40 @@
             }
         }
 
-        window.playIndividualAudio = (id, btnElement) => {
+        window.playIndividualAudio = (startT, endT, btnElement) => {
             const player = document.getElementById('audio-player');
             if(!player.src || !player.src.startsWith('blob:')) player.src = URL.createObjectURL(localAudios[currentTest]);
             
-            const [startT, endT] = indAudioTimings[currentTest][id];
+            // Pausar todos los botones primero
+            document.querySelectorAll('.btn-play-ind').forEach(b => {
+                b.innerHTML = `<i class="fas fa-play mr-1"></i> Escuchar Audio`;
+                b.className = "btn-play-ind bg-sky-50 text-sky-600 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-sky-100 transition-colors whitespace-nowrap border border-sky-200 shadow-sm";
+            });
+
             audioEndTime = endT;
             player.currentTime = startT;
             player.play().catch(e => console.log(e));
-
+            
             btnElement.innerHTML = `<i class="fas fa-sync-alt mr-1"></i> Repetir Audio`;
-            btnElement.className = "bg-sky-100 text-sky-700 px-3 py-1 rounded-lg text-xs font-bold hover:bg-sky-200 transition-colors whitespace-nowrap border border-sky-200";
+            btnElement.className = "btn-play-ind bg-sky-100 text-sky-700 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-sky-200 transition-colors whitespace-nowrap border border-sky-300 shadow-inner";
+
+            // Cargar y mostrar Karaoke Transcript
+            loadTranscript(startT, endT);
         };
 
-        window.playBlockAudio = (firstId, btnElement) => {
+        window.playBlockAudio = (startT, endT, btnElement) => {
             const player = document.getElementById('audio-player');
             if(!player.src || !player.src.startsWith('blob:')) player.src = URL.createObjectURL(localAudios[currentTest]);
             
-            const [startT, endT] = blockAudioTimings[currentTest][firstId];
             audioEndTime = endT;
             player.currentTime = startT;
             player.play().catch(e => console.log(e));
 
             btnElement.innerHTML = `<i class="fas fa-sync-alt mr-1"></i> Repetir Conferencia`;
-            btnElement.className = "bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-indigo-700 transition-colors whitespace-nowrap border border-indigo-700";
+            btnElement.className = "bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-indigo-700 transition-colors whitespace-nowrap border border-indigo-700 shadow-inner";
+
+            // Cargar y mostrar Karaoke Transcript
+            loadTranscript(startT, endT);
         };
 
         function renderSection() {
@@ -773,6 +817,9 @@
             document.getElementById('live-sec-title').innerText = session.section;
 
             const box = document.getElementById('q-box'); box.innerHTML = '';
+            document.getElementById('transcript-text').innerHTML = '<div class="text-center text-slate-600 mt-10"><i class="fas fa-music text-3xl mb-2 opacity-50"></i><br>Presiona "Escuchar Audio" para activar los subtítulos.</div>';
+            currentActiveTime = -1;
+            
             const data = examData[currentTest][session.section];
             if(!data) return;
 
@@ -785,27 +832,36 @@
             document.getElementById('p-btn').disabled = (session.step === 0);
 
             const audioPanel = document.getElementById('audio-panel');
+            const tp = document.getElementById('transcript-panel');
+
             if(session.section === 'listening') { 
                 audioPanel.classList.remove('hidden'); 
-                if(!isGuideMode) gestionarAudioAutoPlay(slice); 
+                if(isGuideMode) { tp.classList.remove('hidden'); tp.classList.add('flex'); }
+                if(!isGuideMode) gestionarAudioAutoPlay(slice, data); 
             } else { 
                 audioPanel.classList.add('hidden'); 
+                tp.classList.remove('flex'); tp.classList.add('hidden');
                 document.getElementById('audio-player').pause(); 
             }
 
             if(session.section === 'listening' && slice.length > 2) {
                 let playBtn = '';
                 if(isGuideMode) {
-                    playBtn = `<button onclick="playBlockAudio(${slice[0].id}, this)" class="bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-indigo-600 transition-colors whitespace-nowrap shadow-sm"><i class="fas fa-play mr-1"></i> Escuchar Conferencia</button>`;
+                    const blockStartT = parseTimestamp(slice[0].timestamp);
+                    // Para el final, tomamos el inicio del siguiente bloque o un estimado
+                    let blockEndT = blockStartT + 120; // fallback
+                    if(data[end]) blockEndT = parseTimestamp(data[end].timestamp);
+
+                    playBtn = `<button onclick="playBlockAudio(${blockStartT}, ${blockEndT}, this)" class="bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-indigo-600 transition-colors whitespace-nowrap shadow-sm"><i class="fas fa-play mr-1"></i> Escuchar Conferencia</button>`;
                 }
                 box.innerHTML += `
-                    <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-5 flex justify-between items-center text-indigo-800 shadow-sm fade-in gap-4">
+                    <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-5 flex flex-col md:flex-row justify-between items-center text-indigo-800 shadow-sm fade-in gap-4">
                         <p class="font-black text-sm uppercase tracking-widest leading-tight"><i class="fas fa-bullhorn mr-2"></i>Escucha la conferencia y contesta este bloque.</p>
                         ${playBtn}
                     </div>`;
             }
 
-            slice.forEach(q => {
+            slice.forEach((q, idx) => {
                 const card = document.createElement('div');
                 card.className = "bg-white p-6 md:p-8 rounded-[2rem] border border-slate-100 shadow-md fade-in";
                 const answered = session.answers[q.id];
@@ -842,7 +898,13 @@
 
                 let playIndBtn = '';
                 if(isGuideMode && session.section === 'listening' && slice.length <= 2) {
-                    playIndBtn = `<button onclick="playIndividualAudio(${q.id}, this)" class="bg-sky-50 text-sky-600 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-sky-100 transition-colors whitespace-nowrap border border-sky-200 shadow-sm"><i class="fas fa-play mr-1"></i> Escuchar Audio</button>`;
+                    const startT = parseTimestamp(q.timestamp);
+                    // Para el final del audio, checamos el timestamp de la SIGUIENTE pregunta
+                    let endT = startT + 12; // 12 segs de padding minimo
+                    if(idx + 1 < slice.length) endT = parseTimestamp(slice[idx+1].timestamp);
+                    else if (data[end]) endT = parseTimestamp(data[end].timestamp);
+                    
+                    playIndBtn = `<button onclick="playIndividualAudio(${startT}, ${endT}, this)" class="btn-play-ind bg-sky-50 text-sky-600 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-sky-100 transition-colors whitespace-nowrap border border-sky-200 shadow-sm"><i class="fas fa-play mr-1"></i> Escuchar Audio</button>`;
                 }
 
                 card.innerHTML = `
@@ -865,7 +927,7 @@
                 }
             });
 
-            startSpeedTimer(slice);
+            startSpeedTimer(slice, data);
             document.getElementById('test-scroll-area').scrollTo(0,0);
         }
 
@@ -969,24 +1031,67 @@
             document.getElementById('view-results').classList.remove('hidden-section');
         }
 
+        // --- KARAOKE & AUDIO SYNC ---
+        function loadTranscript(startT, endT) {
+            const container = document.getElementById('transcript-text');
+            if(!transcriptsData || !transcriptsData[currentTest]) {
+                container.innerHTML = '<p class="text-rose-500 font-bold">Sin datos de transcripción.</p>';
+                return;
+            }
+            
+            // Expandimos el rango 5 segundos para no cortar oraciones a medias
+            currentTranscriptLines = transcriptsData[currentTest].filter(t => t.time >= startT - 5 && t.time <= endT + 5);
+            
+            if(currentTranscriptLines.length === 0) {
+                container.innerHTML = '<p class="text-slate-500">No hay subtítulos para esta sección.</p>';
+                return;
+            }
+
+            container.innerHTML = currentTranscriptLines.map(t => 
+                `<p id="tl-${t.time}" class="transcript-line mb-3" data-time="${t.time}">${t.text}</p>`
+            ).join('');
+        }
+
         function setupAudioPlayerLogic() {
             const player = document.getElementById('audio-player');
             player.addEventListener('timeupdate', () => {
-                if (session.section !== 'listening' || audioEndTime === 0) return;
+                if (session.section !== 'listening') return;
                 
-                if (player.currentTime >= audioEndTime) {
+                // Karaoke Logic
+                if (currentTranscriptLines.length > 0 && isGuideMode) {
+                    let activeLine = null;
+                    const ct = player.currentTime;
+                    
+                    for (let i = 0; i < currentTranscriptLines.length; i++) {
+                        if (ct >= currentTranscriptLines[i].time) {
+                            activeLine = currentTranscriptLines[i];
+                        } else { break; }
+                    }
+
+                    if (activeLine && activeLine.time !== currentActiveTime) {
+                        currentActiveTime = activeLine.time;
+                        // Actualizar UI
+                        document.querySelectorAll('.transcript-line').forEach(el => {
+                            const ltime = parseInt(el.dataset.time);
+                            if(ltime < activeLine.time) {
+                                el.className = "transcript-line mb-3 transcript-past";
+                            } else if (ltime === activeLine.time) {
+                                el.className = "transcript-line mb-3 transcript-active";
+                                // Auto-scroll
+                                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            } else {
+                                el.className = "transcript-line mb-3";
+                            }
+                        });
+                    }
+                }
+                
+                // Limits Logic (Examen mode or Auto-Play)
+                if (audioEndTime > 0 && player.currentTime >= audioEndTime) {
                     player.pause();
                     if(!isGuideMode && repsCount < 1) { 
                         repsCount++;
-                        const pages = getPagesForSection(session.section, examData[currentTest][session.section].length);
-                        const slice = examData[currentTest][session.section].slice(pages[session.step][0], pages[session.step][1]);
-                        
-                        let startT;
-                        if(slice[0].id <= 30) startT = indAudioTimings[currentTest][slice[0].id][0];
-                        else startT = blockAudioTimings[currentTest][slice[0].id][0];
-                        
-                        player.currentTime = startT; 
-                        player.play().catch(e=>{});
+                        // Si es modo examen, reinicia el bloque completo (no implementado repeat visual)
                     } else {
                         audioEndTime = 0;
                     }
@@ -994,40 +1099,35 @@
             });
         }
 
-        function gestionarAudioAutoPlay(slice) {
+        function gestionarAudioAutoPlay(slice, data) {
             const player = document.getElementById('audio-player');
             if(!localAudios[currentTest]) return;
             if(!player.src || !player.src.startsWith('blob:')) player.src = URL.createObjectURL(localAudios[currentTest]);
             
-            let startT, endT;
-            if (slice[0].id <= 30) {
-                startT = indAudioTimings[currentTest][slice[0].id][0];
-                endT = indAudioTimings[currentTest][slice[slice.length-1].id][1];
-            } else {
-                startT = blockAudioTimings[currentTest][slice[0].id][0];
-                endT = blockAudioTimings[currentTest][slice[0].id][1];
-            }
+            const startT = parseTimestamp(slice[0].timestamp);
+            let endT = startT + 30; // fallback
+            const pages = getPagesForSection(session.section, data.length);
+            const [startIdx, endIdx] = pages[session.step];
+            if(data[endIdx]) endT = parseTimestamp(data[endIdx].timestamp);
 
             audioEndTime = endT; repsCount = 0;
             player.currentTime = startT; 
             player.play().catch(e=>{});
         }
 
-        function startSpeedTimer(slice) {
+        function startSpeedTimer(slice, data) {
             clearInterval(qTimerInt); document.getElementById('q-timer-display').classList.add('hidden');
             if(isGuideMode) return; 
             
             if (session.section === 'listening') {
-                let startT, endT;
-                if (slice[0].id <= 30) {
-                    startT = indAudioTimings[currentTest][slice[0].id][0];
-                    endT = indAudioTimings[currentTest][slice[slice.length-1].id][1];
-                } else {
-                    startT = blockAudioTimings[currentTest][slice[0].id][0];
-                    endT = blockAudioTimings[currentTest][slice[0].id][1];
-                }
-                const numQ = slice.length;
-                qTimeLeft = Math.ceil((endT - startT)*2) + (numQ * 12); // x2 audio + 12 sec per Q
+                const startT = parseTimestamp(slice[0].timestamp);
+                const pages = getPagesForSection(session.section, data.length);
+                const [startIdx, endIdx] = pages[session.step];
+                let endT = startT + 60;
+                if(data[endIdx]) endT = parseTimestamp(data[endIdx].timestamp);
+
+                const numQ = endIdx - startIdx;
+                qTimeLeft = Math.ceil((endT - startT)*2) + (numQ * 12); 
             } else { qTimeLeft = (session.section === 'structure' ? 25 : 54) * 2; } 
             
             document.getElementById('q-timer-display').classList.remove('hidden');
