@@ -51,7 +51,6 @@
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-slate-800">
 
-    <!-- HEADER -->
     <header class="bg-slate-900 text-white py-3 px-6 flex justify-between items-center shadow-lg z-50 shrink-0">
         <div class="flex items-center gap-3">
             <div class="vibrant-gradient-a p-2 rounded-xl shadow-md rotate-3">
@@ -94,7 +93,6 @@
         </div>
     </header>
 
-    <!-- LOADING SCREEN -->
     <div id="loading-screen" class="absolute inset-0 bg-teal-50 z-[300] flex flex-col items-center justify-center fade-in">
         <div class="w-16 h-16 border-8 border-teal-200 border-t-teal-500 rounded-full animate-spin shadow-md"></div>
         <h2 class="mt-6 font-black text-teal-900 text-2xl tracking-tight">Cargando sistema...</h2>
@@ -103,7 +101,6 @@
     <!-- MAIN CONTAINER -->
     <div class="flex flex-1 overflow-hidden relative">
 
-        <!-- AUTH VIEW -->
         <div id="view-auth" class="w-full h-full flex items-center justify-center p-4 bg-slate-50 fade-in overflow-y-auto">
             <div class="glass-card w-full max-w-md rounded-[2rem] p-8 shadow-2xl relative overflow-hidden my-auto">
                 <div class="absolute top-0 left-0 w-full h-2 vibrant-gradient-a"></div>
@@ -152,7 +149,6 @@
             </div>
         </div>
 
-        <!-- DASHBOARD VIEW -->
         <div id="view-dashboard" class="hidden-section w-full overflow-y-auto p-6 md:p-10 fade-in">
             <div class="max-w-5xl mx-auto">
                 <h2 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-2">Tu Panel de Entrenamiento</h2>
@@ -212,7 +208,6 @@
             </div>
         </div>
 
-        <!-- SETUP VIEW -->
         <div id="view-setup" class="hidden-section w-full overflow-y-auto p-6 md:p-10 fade-in">
             <div class="max-w-4xl mx-auto">
                 <button onclick="goHome()" class="mb-6 text-slate-400 hover:text-slate-800 font-bold text-sm flex items-center gap-2 transition-colors"><i class="fas fa-arrow-left"></i> Volver al panel</button>
@@ -250,7 +245,6 @@
             </div>
         </div>
 
-        <!-- TEST WORKSPACE (Sidebar + Content) -->
         <div id="view-test" class="hidden-section w-full flex flex-col md:flex-row h-full fade-in">
             <!-- Sidebar Navigation -->
             <aside id="main-sidebar" class="w-64 md:w-72 bg-white border-r border-slate-200 shadow-md hidden flex-col z-40 shrink-0">
@@ -296,7 +290,6 @@
             </main>
         </div>
 
-        <!-- RESULTS VIEW -->
         <div id="view-results" class="hidden-section w-full overflow-y-auto p-6 md:p-10 fade-in flex items-center justify-center">
             <div class="glass-card p-10 rounded-[3rem] shadow-2xl border-2 border-white text-center max-w-2xl w-full relative overflow-hidden">
                 <div class="text-7xl mb-6 animate-bounce">🏆</div>
@@ -365,7 +358,7 @@
     </div>
 
     <script>
-        //        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
         let audioCtx;
         let globalVolume = 0.8;
         let isMuted = false;
@@ -435,8 +428,9 @@
             document.documentElement.style.setProperty('--base-size', currentFontSize + 'px');
         };
 
-        //        let usersDB = JSON.parse(localStorage.getItem('toefl_users_db')) || [];
+        let usersDB = JSON.parse(localStorage.getItem('toefl_users_db')) || [];
         let currentUser = null;
+        
         function saveUsersDB() { localStorage.setItem('toefl_users_db', JSON.stringify(usersDB)); }
 
         window.handleLogin = () => {
@@ -508,17 +502,17 @@
             ocultarTodo(); document.getElementById('view-auth').classList.remove('hidden-section');
         };
 
-        //        let examData = null; let vocabData = null; let transcriptsData = null;
+        let examData = null; let vocabData = null; let transcriptsData = null;
         let currentTest = null; let isGuideMode = false;
         let session = { section: 'listening', step: 0, answers: {} };
         const localAudios = { testA: null, testB: null };
         
         let audioEndTime = 0; let repsCount = 0; let qTimerInt; let qTimeLeft = 0; let generalTimerInt;
-        
-        // Karaoke State
         let activeTranscriptLines = [];
         let currentActiveIndex = -1;
         window.activeTranscriptBoxId = null;
+
+        let vocabIndex = 0; let isCardFlipped = false; let cardsSeenToday = 0; let vocabWeights = [];
 
         window.onload = async () => {
             const cacheBuster = '?nocache=' + new Date().getTime();
@@ -607,7 +601,7 @@
             }
         }
 
-        //        function initSession() {
+        function initSession() {
             document.getElementById('user-display-name').innerText = currentUser.username;
             document.getElementById('btn-logout').classList.remove('hidden');
             ocultarTodo();
@@ -715,6 +709,19 @@
             }
         }
 
+        window.navegarPasos = (dir) => {
+            const data = examData[currentTest][session.section];
+            const pages = getPagesForSection(session.section, data.length);
+            if (session.step + dir >= pages.length) {
+                if (session.section === 'listening') jumpSection('structure');
+                else if (session.section === 'structure') jumpSection('reading');
+                else calificarTest();
+                return;
+            }
+            if (session.step + dir < 0) return;
+            session.step += dir; renderSection();
+        };
+
         function getIndivTimings(qId, currentTest) {
             let startT = 0, endT = 0;
             if (transcriptsData && transcriptsData[currentTest]) {
@@ -760,7 +767,7 @@
             return { startT, endT };
         }
 
-        //        window.chk = (qid, sel) => {
+        window.chk = (qid, sel) => {
             session.answers[qid] = sel;
             const q = examData[currentTest][session.section].find(x => x.id === qid);
             const isCorrect = (sel === q.correcta);
@@ -803,6 +810,16 @@
             
             audioEndTime = playEnd;
             window.activeTranscriptBoxId = `transcript-text-${qId}`;
+            
+            // Clean other transcripts explicitly
+            document.querySelectorAll('[id^="transcript-text-"]').forEach(box => {
+                if(box.id !== window.activeTranscriptBoxId) {
+                    box.querySelectorAll('.transcript-line').forEach(line => {
+                        line.className = "transcript-line mb-4 text-slate-500 text-[1.3rem] font-medium opacity-30 transition-all duration-300 leading-relaxed";
+                    });
+                }
+            });
+
             loadTranscriptData(startT, endT, window.activeTranscriptBoxId);
             
             player.currentTime = playStart;
@@ -876,7 +893,7 @@
                 let tBlock = getBlockTimings(slice[0].id, slice[slice.length-1].id, currentTest);
                 let btnStr = isGuideMode ? `<button onclick="playBlockAudio(${tBlock.startT}, ${tBlock.endT}, this)" class="bg-white text-indigo-600 px-6 py-3 rounded-xl text-sm font-black shadow-md hover:scale-105 transition-transform">▶️ Escuchar Conferencia</button>` : '';
                 let transcriptCol = isGuideMode ? `
-                    <div class="bg-slate-900 rounded-[2rem] p-6 shadow-inner flex flex-col h-[350px]">
+                    <div class="bg-slate-900 rounded-[2rem] p-6 shadow-inner flex flex-col h-[350px] md:h-full">
                         <h4 class="text-sky-400 font-black mb-4 text-sm uppercase tracking-widest flex items-center gap-2"><i class="fas fa-closed-captioning"></i> Live Transcript</h4>
                         <div id="transcript-text-block" class="flex-1 overflow-y-auto space-y-3 pr-2 custom-scrollbar">
                              <div class="text-slate-500 text-center mt-10"><i class="fas fa-play-circle text-4xl mb-3 opacity-30"></i><br>Presiona "Escuchar Conferencia" para ver los subtítulos sincronizados.</div>
@@ -885,7 +902,7 @@
 
                 box.innerHTML += `
                     <div class="${isGuideMode ? 'grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-stretch' : 'mb-6'}">
-                        <div class="bg-indigo-50 border border-indigo-200 rounded-[2rem] p-8 flex flex-col justify-center items-center text-indigo-800 shadow-md text-center gap-4 h-full">
+                        <div class="bg-indigo-50 border border-indigo-200 rounded-[2rem] p-8 flex flex-col justify-center items-center text-indigo-800 shadow-md text-center gap-4 h-full min-h-[300px]">
                             <i class="fas fa-bullhorn text-5xl opacity-50 mb-2"></i>
                             <p class="font-black text-xl uppercase tracking-widest leading-tight">Escucha la conferencia y contesta este bloque.</p>
                             ${btnStr}
@@ -979,7 +996,7 @@
             document.getElementById('test-scroll-area').scrollTo(0,0);
         }
 
-        //        function gestionarAudioAutomaticoExamen(slice) {
+        function gestionarAudioAutomaticoExamen(slice) {
             if(session.section !== 'listening') return;
             const player = document.getElementById('audio-player');
             if(!localAudios[currentTest]) return;
@@ -1139,8 +1156,6 @@
             play8BitSound('success'); setTimeout(() => play8BitSound('success'), 200);
             document.getElementById('view-results').classList.remove('hidden-section');
         }
-
-        //        let vocabIndex = 0; let isCardFlipped = false; let cardsSeenToday = 0; let vocabWeights = [];
 
         window.startVocab = () => {
             if(!vocabData || vocabData.length === 0) return alert("Falta el archivo vocabulary.json");
